@@ -1,0 +1,83 @@
+@startuml
+class Panela{
+- id : long
+- modelo : String
+- preco : long
+- peso : double
+- capacidadeLitros : double
+- funcionalidade[] : String
+- isInducao : boolean
+}
+
+class Colecao{
+- id : long
+- nome : String
+}
+
+class Categoria{
+- id : long
+- tipo : String
+}
+
+class Cor{
+- id : long
+- nome : String
+}
+
+abstract Componente{
+- id : long
+- peso : double
+}
+
+enum Tamanho{
+- PEQUENA : int
+- MEDIA : int
+- GRANDE : int
+- GIGANTE : int
+}
+
+enum TipoSustentacao{
+- CABO : int
+- ALCA : int
+}
+class Fornecedor{
+- id : long
+- nome : String
+- telefone : String
+- cnpj : String
+}
+
+class Material{
+- id : long
+- nome : String
+- qualidades[] : String
+}
+
+class Tampa{
+- isDePressao : boolean
+}
+
+class Fundo{
+- espessura : double
+- isAntiaderente : boolean
+}
+
+class Sustentacao{
+- tamanhoEmCm : int
+- quantidade : int
+}
+
+Colecao "1" *-- "*" Panela
+Panela "1" *--> "1" Fundo
+Panela "1" *--> "1" Sustentacao
+Panela "1" o--> "1" Tampa
+Panela "*" *-right-> "1" Fornecedor
+Panela "*" --> "1" Tamanho
+Panela "*" *-left-> "1" Categoria
+Fundo "1" --|> "1" Componente
+Tampa "1" --|> "1" Componente
+Sustentacao "1" --|> "1" Componente
+Sustentacao "*" --> "1" TipoSustentacao
+Componente "*" *--> "1" Material
+Componente "*" o--> "1" Cor
+@enduml

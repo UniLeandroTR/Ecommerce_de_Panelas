@@ -12,7 +12,7 @@ public enum TipoSustentacao {
         this.nome = nome;
     }
 
-    public TipoSustentacao valueOf(Long id){
+    public static TipoSustentacao valueOf(Long id){
         for(TipoSustentacao tipo : TipoSustentacao.values()){
             if(tipo.getId().equals(id)){
                 return tipo;

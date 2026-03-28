@@ -1,18 +1,29 @@
 package leepans.mapper;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import leepans.dto.SustentacaoRequestDTO;
 import leepans.dto.SustentacaoResponseDTO;
 import leepans.model.Sustentacao;
+import leepans.repository.CorRepository;
+import leepans.repository.MaterialRepository;
 
+@ApplicationScoped
 public class SustentacaoMapper {
     
-    public static Sustentacao toEntity (SustentacaoResponseDTO dto){
+    @Inject
+    MaterialRepository materialRepository;
+
+    @Inject
+    CorRepository corRepository;
+
+    public Sustentacao toEntity (SustentacaoRequestDTO dto){
         if(dto == null) return null;
 
         Sustentacao sustentacao = new Sustentacao();
-        sustentacao.setId(dto.id());
         sustentacao.setPeso(dto.peso());
-        sustentacao.setMaterial(dto.material());
-        sustentacao.setCor(dto.cor());
+        sustentacao.setMaterial(materialRepository.findById(dto.idMaterial()));
+        sustentacao.setCor(corRepository.findById(dto.idCor()));
         sustentacao.setTamanhoEmCm(dto.tamanhoEmCm());
         sustentacao.setQuantidade(dto.quantidade());
         sustentacao.setTipoSustentacao(dto.tipoSustentacao());
@@ -20,7 +31,7 @@ public class SustentacaoMapper {
         return sustentacao;
     }
 
-    public static SustentacaoResponseDTO toResponseDTO (Sustentacao sustentacao){
+    public SustentacaoResponseDTO toResponseDTO (Sustentacao sustentacao){
         if(sustentacao == null) return null;
 
         return new SustentacaoResponseDTO(

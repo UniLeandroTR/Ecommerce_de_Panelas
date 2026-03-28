@@ -1,0 +1,15 @@
+package leepans.service;
+
+import java.util.List;
+
+import leepans.dto.MaterialRequestDTO;
+import leepans.model.Material;
+
+public interface MaterialService {
+
+    List<Material> findAll();
+    Material findById(Long id);
+    Material create(Material material);
+    void update(Long id, MaterialRequestDTO dto);
+    void delete(Long id);
+}

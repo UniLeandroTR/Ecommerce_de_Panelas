@@ -19,7 +19,7 @@ import leepans.dto.SustentacaoRequestDTO;
 import leepans.dto.SustentacaoResponseDTO;
 import leepans.mapper.SustentacaoMapper;
 import leepans.model.Sustentacao;
-import leepans.service.SustentacaoServiceImpl;
+import leepans.service.SustentacaoService;
 
 @Path("/sustentacoes")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,7 +27,7 @@ import leepans.service.SustentacaoServiceImpl;
 public class SustentacaoResource {
     
     @Inject
-    SustentacaoServiceImpl service;
+    SustentacaoService service;
 
     @Inject
     SustentacaoMapper sustentacaoMapper;

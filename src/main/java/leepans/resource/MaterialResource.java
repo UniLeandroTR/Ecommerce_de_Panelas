@@ -19,7 +19,7 @@ import leepans.dto.MaterialRequestDTO;
 import leepans.dto.MaterialResponseDTO;
 import leepans.mapper.MaterialMapper;
 import leepans.model.Material;
-import leepans.service.MaterialServiceImpl;
+import leepans.service.MaterialService;
 
 @Path("/materiais")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,7 +27,7 @@ import leepans.service.MaterialServiceImpl;
 public class MaterialResource {
     
     @Inject
-    MaterialServiceImpl service;
+    MaterialService service;
 
     @POST
     @Transactional

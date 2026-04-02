@@ -19,7 +19,7 @@ import leepans.dto.CorRequestDTO;
 import leepans.dto.CorResponseDTO;
 import leepans.mapper.CorMapper;
 import leepans.model.Cor;
-import leepans.service.CorServiceImpl;
+import leepans.service.CorService;
 
 @Path("/cores")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,7 +27,7 @@ import leepans.service.CorServiceImpl;
 public class CorResource {
     
     @Inject
-    CorServiceImpl service;
+    CorService service;
 
     @POST
     @Transactional

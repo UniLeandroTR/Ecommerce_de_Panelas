@@ -1,7 +1,5 @@
 package leepans.service;
 
-import jakarta.inject.Inject;
-
 import java.util.List;
 
 public interface GenericService<T, E> {

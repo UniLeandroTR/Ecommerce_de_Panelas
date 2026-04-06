@@ -1,80 +1,130 @@
-# panelas
+# 🛒 Ecommerce de Panelas para Restaurantes
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+API RESTful desenvolvida em Java com foco na gestão de um ecommerce especializado na venda de panelas para restaurantes.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+> ⚙️ Projeto backend em desenvolvimento, com arquitetura preparada para escalabilidade, organização e boas práticas de engenharia de software.
 
-## Running the application in dev mode
+---
 
-You can run your application in dev mode that enables live coding using:
+## 🚀 Tecnologias Utilizadas
 
-```shell script
+- **Java**
+- **Quarkus** – Framework moderno, otimizado para alta performance
+- **PostgreSQL** – Banco de dados relacional robusto
+- **Hibernate ORM / JPA**
+- **REST API (HTTP + JSON)**
+
+---
+
+## 📌 Objetivo do Projeto
+
+Construir um sistema completo de ecommerce voltado para o setor gastronômico, permitindo:
+
+- Gestão de produtos
+- Controle de estoque
+- Cadastro de clientes
+- Processamento de pedidos
+- Base sólida para futuras integrações (pagamentos, frontend, etc.)
+
+---
+
+## 🧱 Arquitetura
+
+O projeto segue uma arquitetura em camadas:
+- `┣ 📂 src`
+  - `┣ 📂 main`
+    - `┣ 📂 java`
+      - `┣ 📂 leepans`
+        - `┣ 📂 converter` - converter enum para a base de dados
+        - `┣ 📂 dto` - padronizar os dados enviados em requests e responses da api
+        - `┣ 📂 mapper` - transformar RequestDTO em Entidade e Entidade em ResponseDTO
+        - `┣ 📂 model` - entidades e regras de negócio do projeto
+        - `┣ 📂 repository` - classes de comunicação com a base de dados
+        - `┣ 📂 resources` - recursos da api
+        - `┣ 📂 service` - implementação das operações entre o repository e o resource
+
+Separação clara de responsabilidades,
+Baixo acoplamento e
+Facilidade de manutenção e evolução
+
+---
+
+## 🔗 Endpoints (Em desenvolvimento)
+
+- `GET:` cores | materiais | fundos | sustentacoes | tampas
+- `GET:` cores/{id} | materiais/{id} | fundos/{id} | sustentacoes/{id} | tampas/{id}
+- `POST:` cores | materiais | fundos | sustentacoes | tampas
+- `PUT:` cores/{id} | materiais/{id} | fundos/{id} | sustentacoes/{id} | tampas/{id}
+- `DELETE:` cores/{id} | materiais/{id} | fundos/{id} | sustentacoes/{id} | tampas/{id}
+
+> Novos endpoints serão adicionados conforme evolução do projeto.
+
+---
+
+## ⚙️ Como Executar o Projeto
+
+### Pré-requisitos
+
+- Java 25+
+- Maven
+- PostgreSQL
+
+### Passos:
+
+```bash
+# Clone o repositório
+git clone https://github.com/UniLeandroTR/Ecommerce_de_Panelas.git
+
+# Acesse o diretório
+cd Ecommerce_de_Panelas
+````
+#### Configure do Banco de Dados
+Configure o arquivo : `src/main/resources/application.properties` e altere as propriedades:
+````
+quarkus.datasource.db-kind=postgresql
+quarkus.datasource.username=seu_usuario
+quarkus.datasource.password=sua_senha
+quarkus.datasource.jdbc.url=jdbc:postgresql://localhost:5432/banco_de_dados
+````
+````bash
+# Execute o projeto
 ./mvnw quarkus:dev
-```
+````
+A api estará disponível em localhost:8080
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+---
 
-## Packaging and running the application
+## 📈 Roadmap
+- [x] Estrutura inicial do projeto _`em andamento`_
+- [ ] CRUD de produtos
+- [ ] CRUD de clientes
+- [ ] Sistema de pedidos
+- [ ] Autenticação e autorização (JWT)
+- [ ] Integração com frontend
+- [ ] Deploy em ambiente cloud
 
-The application can be packaged using:
+---
 
-```shell script
-./mvnw package
-```
+## 📚 Aprendizados
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+Este projeto está sendo desenvolvido com foco em:
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+- Arquitetura de APIs REST
+- Boas práticas com Java e Quarkus
+- Modelagem de dados
+- Organização de código profissional
+- Preparação para projetos reais de mercado
 
-If you want to build an _über-jar_, execute the following command:
+---
+## 🤝 Contribuição
 
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
+Sinta-se à vontade para contribuir:
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+- Fork do projeto
+- Crie uma branch (feature/sua-feature)
+- Commit suas alterações
+- Abra um Pull Request
 
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/panelas-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- SmallRye OpenAPI ([guide](https://quarkus.io/guides/openapi-swaggerui)): Document your REST APIs with OpenAPI - comes with Swagger UI
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
-
-## Provided Code
-
-### Hibernate ORM
-
-Create your first JPA entity
-
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
-
-
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
-
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+---
+## 👨‍💻 Autor
+**[Leandro Tavares Rosendo](https://github.com/Rosendoxx/Rosendoxx)**

@@ -30,15 +30,15 @@ abstract Componente{
 }
 
 enum Tamanho{
-- PEQUENA : int
-- MEDIA : int
-- GRANDE : int
-- GIGANTE : int
++ PEQUENA : int
++ MEDIA : int
++ GRANDE : int
++ GIGANTE : int
 }
 
 enum TipoSustentacao{
-- CABO : int
-- ALCA : int
++ CABO : int
++ ALCA : int
 }
 class Fornecedor{
 - id : long
@@ -67,17 +67,17 @@ class Sustentacao{
 - quantidade : int
 }
 
-Colecao "1" *-- "*" Panela
+Panela "*" o-up-> "1" Colecao
 Panela "1" *--> "1" Fundo
 Panela "1" *--> "1" Sustentacao
-Panela "1" o--> "1" Tampa
-Panela "*" *-right-> "1" Fornecedor
+Panela "1" *--> "0..1" Tampa
+Panela "*" o-right-> "1" Fornecedor
 Panela "*" --> "1" Tamanho
-Panela "*" *-left-> "1" Categoria
-Fundo "1" --|> "1" Componente
-Tampa "1" --|> "1" Componente
-Sustentacao "1" --|> "1" Componente
+Panela "*" o-left-> "1" Categoria
+Fundo --|>  Componente
+Tampa --|>  Componente
+Sustentacao --|> Componente
 Sustentacao "*" --> "1" TipoSustentacao
-Componente "*" *--> "1" Material
+Componente "*" o--> "1" Material
 Componente "*" o--> "1" Cor
 @enduml

@@ -2,6 +2,7 @@ package leepans.resource;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -23,7 +24,7 @@ public class FornecedorResource {
 
     @POST
     @Transactional
-    public Response create(FornecedorRequestDTO dto){
+    public Response create(@Valid FornecedorRequestDTO dto){
         Fornecedor fornecedor = service.create(FornecedorMapper.toEntity(dto));
         return Response.status(Response.Status.CREATED).entity(FornecedorMapper.toResponse(fornecedor)).build();
     }

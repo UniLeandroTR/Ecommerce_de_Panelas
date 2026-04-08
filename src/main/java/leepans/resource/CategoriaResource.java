@@ -2,6 +2,7 @@ package leepans.resource;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -23,7 +24,7 @@ public class CategoriaResource {
 
     @POST
     @Transactional
-    public Response create(CategoriaRequestDTO dto){
+    public Response create(@Valid CategoriaRequestDTO dto){
         Categoria categoria = service.create(CategoriaMapper.toEntity(dto));
         return Response.status(Response.Status.CREATED).entity(CategoriaMapper.toResponse(categoria)).build();
     }

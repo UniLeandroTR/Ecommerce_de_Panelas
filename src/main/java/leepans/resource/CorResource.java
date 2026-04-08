@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -31,7 +32,7 @@ public class CorResource {
 
     @POST
     @Transactional
-    public Response create(CorRequestDTO dto){
+    public Response create(@Valid CorRequestDTO dto){
         Cor cor = service.create(CorMapper.toEntity(dto));
         return Response.status(Status.CREATED).entity(CorMapper.toResponseDTO(cor)).build();
     }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -34,7 +35,7 @@ public class FundoResource {
 
     @POST
     @Transactional
-    public Response create(FundoRequestDTO dto){
+    public Response create(@Valid FundoRequestDTO dto){
         Fundo fundo = service.create(fundoMapper.toEntity(dto));
         return Response.status(Status.CREATED).entity(fundoMapper.toResponseDTO(fundo)).build();
     }

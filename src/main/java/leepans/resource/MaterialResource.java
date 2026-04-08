@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -31,7 +32,7 @@ public class MaterialResource {
 
     @POST
     @Transactional
-    public Response create(MaterialRequestDTO dto){
+    public Response create(@Valid MaterialRequestDTO dto){
         Material material = service.create(MaterialMapper.toEntity(dto));
         return Response.status(Status.CREATED).entity(MaterialMapper.toResponseDTO(material)).build();
     }

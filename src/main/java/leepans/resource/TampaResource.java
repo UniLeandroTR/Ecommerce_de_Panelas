@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -34,7 +35,7 @@ public class TampaResource {
 
     @POST
     @Transactional
-    public Response create(TampaRequestDTO dto){
+    public Response create(@Valid TampaRequestDTO dto){
         Tampa tampa = service.create(tampaMapper.toEntity(dto));
         return Response.status(Status.CREATED).entity(tampaMapper.toResponseDTO(tampa)).build();
     }

@@ -9,7 +9,7 @@ import leepans.model.Material;
 import leepans.repository.MaterialRepository;
 
 @ApplicationScoped
-public class MaterialService implements GenericService<Material, MaterialRequestDTO>{
+public class MaterialService implements MaterialServiceInter{
 
     @Inject
     MaterialRepository repository;

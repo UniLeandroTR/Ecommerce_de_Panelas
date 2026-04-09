@@ -9,7 +9,7 @@ import leepans.model.Cor;
 import leepans.repository.CorRepository;
 
 @ApplicationScoped
-public class CorService implements GenericService<Cor, CorRequestDTO>{
+public class CorService implements CorServiceInter{
 
     @Inject
     CorRepository repository;

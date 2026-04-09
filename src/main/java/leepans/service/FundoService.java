@@ -11,7 +11,7 @@ import leepans.repository.MaterialRepository;
 import java.util.List;
 
 @ApplicationScoped
-public class FundoService implements GenericService<Fundo, FundoRequestDTO>{
+public class FundoService implements FundoServiceInter{
 
     @Inject
     FundoRepository repository;
@@ -33,9 +33,9 @@ public class FundoService implements GenericService<Fundo, FundoRequestDTO>{
     }
 
     @Override
-    public Fundo create(Fundo entity) {
-        repository.persist(entity);
-        return entity;
+    public Fundo create(Fundo fundo) {
+        repository.persist(fundo);
+        return fundo;
     }
 
     @Override

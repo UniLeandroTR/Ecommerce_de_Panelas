@@ -9,7 +9,7 @@ import leepans.repository.CategoriaRepository;
 import java.util.List;
 
 @ApplicationScoped
-public class CategoriaService implements GenericService<Categoria, CategoriaRequestDTO> {
+public class CategoriaService implements CategoriaServiceInter {
 
     @Inject
     CategoriaRepository repository;
@@ -25,9 +25,9 @@ public class CategoriaService implements GenericService<Categoria, CategoriaRequ
     }
 
     @Override
-    public Categoria create(Categoria entity) {
-        repository.persist(entity);
-        return entity;
+    public Categoria create(Categoria categoria) {
+        repository.persist(categoria);
+        return categoria;
     }
 
     @Override

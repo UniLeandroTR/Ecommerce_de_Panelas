@@ -13,7 +13,7 @@ import leepans.repository.MaterialRepository;
 import leepans.repository.SustentacaoRepository;
 
 @ApplicationScoped
-public class SustentacaoService implements GenericService<Sustentacao, SustentacaoRequestDTO>{
+public class SustentacaoService implements SustentacaoServiceInter{
 
     @Inject
     SustentacaoRepository repository;

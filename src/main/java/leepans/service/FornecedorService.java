@@ -9,7 +9,7 @@ import leepans.repository.FornecedorRepository;
 import java.util.List;
 
 @ApplicationScoped
-public class FornecedorService implements GenericService<Fornecedor, FornecedorRequestDTO> {
+public class FornecedorService implements FornecedorServiceInter {
 
     @Inject
     FornecedorRepository repository;
@@ -25,9 +25,9 @@ public class FornecedorService implements GenericService<Fornecedor, FornecedorR
     }
 
     @Override
-    public Fornecedor create(Fornecedor entity) {
-        repository.persist(entity);
-        return entity;
+    public Fornecedor create(Fornecedor fornecedor) {
+        repository.persist(fornecedor);
+        return fornecedor;
     }
 
     @Override

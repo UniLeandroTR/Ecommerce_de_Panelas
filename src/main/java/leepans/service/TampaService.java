@@ -1,18 +1,17 @@
 package leepans.service;
 
+import java.util.List;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import leepans.dto.TampaRequestDTO;
 import leepans.model.Tampa;
 import leepans.repository.CorRepository;
-import leepans.repository.FundoRepository;
 import leepans.repository.MaterialRepository;
 import leepans.repository.TampaRepository;
 
-import java.util.List;
-
 @ApplicationScoped
-public class TampaService implements GenericService<Tampa, TampaRequestDTO> {
+public class TampaService implements TampaServiceInter {
 
     @Inject
     TampaRepository repository;
@@ -34,9 +33,9 @@ public class TampaService implements GenericService<Tampa, TampaRequestDTO> {
     }
 
     @Override
-    public Tampa create(Tampa entity) {
-        repository.persist(entity);
-        return entity;
+    public Tampa create(Tampa tampa) {
+        repository.persist(tampa);
+        return tampa;
     }
 
     @Override

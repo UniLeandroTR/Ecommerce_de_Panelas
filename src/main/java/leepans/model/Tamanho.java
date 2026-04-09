@@ -17,7 +17,7 @@ public enum Tamanho {
         this.nome = nome;
     }
 
-    public Tamanho valueOf(Long id){
+    public static Tamanho valueOf(Long id){
         for(Tamanho tamanho : Tamanho.values()){
             if(tamanho.getId().equals(id)){
                 return tamanho;

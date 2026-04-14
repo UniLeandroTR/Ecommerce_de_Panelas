@@ -2,7 +2,7 @@ package leepans.service;
 
 import java.util.List;
 
-import leepans.dto.TampaRequestDTO;
+import leepans.dto.tampa.TampaRequestDTO;
 import leepans.model.Tampa;
 
 public interface TampaServiceInter {

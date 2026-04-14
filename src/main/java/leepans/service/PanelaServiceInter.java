@@ -2,7 +2,7 @@ package leepans.service;
 
 import java.util.List;
 
-import leepans.dto.PanelaRequestDTO;
+import leepans.dto.panela.PanelaRequestDTO;
 import leepans.model.Panela;
 
 public interface PanelaServiceInter {

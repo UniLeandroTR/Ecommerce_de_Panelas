@@ -2,7 +2,7 @@ package leepans.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import leepans.dto.FornecedorRequestDTO;
+import leepans.dto.fornecedor.FornecedorRequestDTO;
 import leepans.model.Fornecedor;
 import leepans.repository.FornecedorRepository;
 

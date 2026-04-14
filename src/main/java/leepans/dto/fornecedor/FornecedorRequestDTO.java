@@ -1,4 +1,4 @@
-package leepans.dto;
+package leepans.dto.fornecedor;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

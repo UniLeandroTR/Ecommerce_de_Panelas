@@ -14,8 +14,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import leepans.dto.ColecaoRequestDTO;
-import leepans.dto.ColecaoResponseDTO;
+import leepans.dto.colecao.ColecaoRequestDTO;
+import leepans.dto.colecao.ColecaoResponseDTO;
 import leepans.mapper.ColecaoMapper;
 import leepans.model.Colecao;
 import leepans.service.ColecaoService;
@@ -56,7 +56,7 @@ public class ColecaoResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(Long id, ColecaoRequestDTO dto){
+    public Response update(@PathParam("id") Long id, ColecaoRequestDTO dto){
         service.update(id, dto);
         return Response.noContent().build();
     }

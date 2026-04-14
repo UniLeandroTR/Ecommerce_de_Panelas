@@ -1,4 +1,4 @@
-package leepans.dto;
+package leepans.dto.fundo;
 
 import jakarta.validation.constraints.NotNull;
 

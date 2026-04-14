@@ -2,7 +2,7 @@ package leepans.service;
 
 import java.util.List;
 
-import leepans.dto.MaterialRequestDTO;
+import leepans.dto.material.MaterialRequestDTO;
 import leepans.model.Material;
 
 public interface MaterialServiceInter {

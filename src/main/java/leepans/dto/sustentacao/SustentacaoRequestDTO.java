@@ -1,4 +1,4 @@
-package leepans.dto;
+package leepans.dto.sustentacao;
 
 import jakarta.validation.constraints.NotNull;
 import leepans.model.TipoSustentacao;

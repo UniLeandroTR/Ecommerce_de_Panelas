@@ -2,7 +2,7 @@ package leepans.service;
 
 import java.util.List;
 
-import leepans.dto.SustentacaoRequestDTO;
+import leepans.dto.sustentacao.SustentacaoRequestDTO;
 import leepans.model.Sustentacao;
 
 public interface SustentacaoServiceInter {

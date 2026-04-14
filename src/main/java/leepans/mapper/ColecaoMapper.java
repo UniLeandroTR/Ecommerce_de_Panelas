@@ -1,8 +1,8 @@
 package leepans.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import leepans.dto.ColecaoRequestDTO;
-import leepans.dto.ColecaoResponseDTO;
+import leepans.dto.colecao.ColecaoRequestDTO;
+import leepans.dto.colecao.ColecaoResponseDTO;
 import leepans.model.Colecao;
 
 @ApplicationScoped

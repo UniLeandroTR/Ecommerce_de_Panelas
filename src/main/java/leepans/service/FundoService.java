@@ -2,7 +2,7 @@ package leepans.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import leepans.dto.FundoRequestDTO;
+import leepans.dto.fundo.FundoRequestDTO;
 import leepans.model.Fundo;
 import leepans.repository.CorRepository;
 import leepans.repository.FundoRepository;

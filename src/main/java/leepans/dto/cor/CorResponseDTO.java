@@ -1,4 +1,4 @@
-package leepans.dto;
+package leepans.dto.cor;
 
 public record CorResponseDTO(Long id, String nome) {
     

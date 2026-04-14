@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import leepans.dto.PanelaRequestDTO;
+import leepans.dto.panela.PanelaRequestDTO;
 import leepans.model.Panela;
 import leepans.repository.CategoriaRepository;
 import leepans.repository.FornecedorRepository;

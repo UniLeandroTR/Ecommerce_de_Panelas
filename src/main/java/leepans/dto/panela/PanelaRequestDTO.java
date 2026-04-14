@@ -1,4 +1,4 @@
-package leepans.dto;
+package leepans.dto.panela;
 
 import java.util.List;
 

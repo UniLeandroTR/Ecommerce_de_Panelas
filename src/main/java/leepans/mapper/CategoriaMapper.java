@@ -1,7 +1,7 @@
 package leepans.mapper;
 
-import leepans.dto.CategoriaRequestDTO;
-import leepans.dto.CategoriaResponseDTO;
+import leepans.dto.categoria.CategoriaRequestDTO;
+import leepans.dto.categoria.CategoriaResponseDTO;
 import leepans.model.Categoria;
 
 public class CategoriaMapper {

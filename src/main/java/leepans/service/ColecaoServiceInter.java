@@ -2,7 +2,7 @@ package leepans.service;
 
 import java.util.List;
 
-import leepans.dto.ColecaoRequestDTO;
+import leepans.dto.colecao.ColecaoRequestDTO;
 import leepans.model.Colecao;
 
 public interface ColecaoServiceInter {

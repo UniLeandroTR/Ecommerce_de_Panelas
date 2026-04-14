@@ -1,4 +1,4 @@
-package leepans.dto;
+package leepans.dto.sustentacao;
 
 import leepans.model.TipoSustentacao;
 

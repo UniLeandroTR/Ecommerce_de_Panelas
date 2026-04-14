@@ -2,8 +2,8 @@ package leepans.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import leepans.dto.TampaRequestDTO;
-import leepans.dto.TampaResponseDTO;
+import leepans.dto.tampa.TampaRequestDTO;
+import leepans.dto.tampa.TampaResponseDTO;
 import leepans.model.Tampa;
 import leepans.repository.CorRepository;
 import leepans.repository.MaterialRepository;

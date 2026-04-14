@@ -1,4 +1,4 @@
-package leepans.dto;
+package leepans.dto.colecao;
 
 public record ColecaoResponseDTO(
     Long id,

@@ -2,7 +2,7 @@ package leepans.service;
 
 import java.util.List;
 
-import leepans.dto.CategoriaRequestDTO;
+import leepans.dto.categoria.CategoriaRequestDTO;
 import leepans.model.Categoria;
 
 public interface CategoriaServiceInter {

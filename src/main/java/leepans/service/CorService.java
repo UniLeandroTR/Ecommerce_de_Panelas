@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import leepans.dto.CorRequestDTO;
+import leepans.dto.cor.CorRequestDTO;
 import leepans.model.Cor;
 import leepans.repository.CorRepository;
 

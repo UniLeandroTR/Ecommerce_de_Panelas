@@ -4,19 +4,15 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import leepans.dto.ColecaoRequestDTO;
+import leepans.dto.colecao.ColecaoRequestDTO;
 import leepans.model.Colecao;
 import leepans.repository.ColecaoRepository;
-import leepans.repository.PanelaRepository;
 
 @ApplicationScoped
 public class ColecaoService implements ColecaoServiceInter{
 
     @Inject
     ColecaoRepository repository;
-
-    @Inject
-    PanelaRepository panelaRepository;
 
     @Override
     public List<Colecao> findAll() {

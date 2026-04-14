@@ -1,7 +1,7 @@
 package leepans.mapper;
 
-import leepans.dto.CorRequestDTO;
-import leepans.dto.CorResponseDTO;
+import leepans.dto.cor.CorRequestDTO;
+import leepans.dto.cor.CorResponseDTO;
 import leepans.model.Cor;
 
 public class CorMapper {

@@ -2,7 +2,7 @@ package leepans.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import leepans.dto.CategoriaRequestDTO;
+import leepans.dto.categoria.CategoriaRequestDTO;
 import leepans.model.Categoria;
 import leepans.repository.CategoriaRepository;
 

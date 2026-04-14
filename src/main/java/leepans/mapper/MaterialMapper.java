@@ -1,7 +1,7 @@
 package leepans.mapper;
 
-import leepans.dto.MaterialRequestDTO;
-import leepans.dto.MaterialResponseDTO;
+import leepans.dto.material.MaterialRequestDTO;
+import leepans.dto.material.MaterialResponseDTO;
 import leepans.model.Material;
 
 public class MaterialMapper {

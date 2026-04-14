@@ -2,7 +2,7 @@ package leepans.service;
 
 import java.util.List;
 
-import leepans.dto.FornecedorRequestDTO;
+import leepans.dto.fornecedor.FornecedorRequestDTO;
 import leepans.model.Fornecedor;
 
 public interface FornecedorServiceInter {

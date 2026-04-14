@@ -6,7 +6,7 @@ import org.hibernate.Hibernate;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import leepans.dto.SustentacaoRequestDTO;
+import leepans.dto.sustentacao.SustentacaoRequestDTO;
 import leepans.model.Sustentacao;
 import leepans.repository.CorRepository;
 import leepans.repository.MaterialRepository;

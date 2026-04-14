@@ -1,4 +1,4 @@
-package leepans.dto;
+package leepans.dto.material;
 
 import java.util.List;
 

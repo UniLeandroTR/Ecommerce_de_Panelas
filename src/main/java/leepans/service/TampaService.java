@@ -4,7 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import leepans.dto.TampaRequestDTO;
+import leepans.dto.tampa.TampaRequestDTO;
 import leepans.model.Tampa;
 import leepans.repository.CorRepository;
 import leepans.repository.MaterialRepository;

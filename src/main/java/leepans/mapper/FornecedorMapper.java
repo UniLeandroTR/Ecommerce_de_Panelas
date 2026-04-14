@@ -1,7 +1,7 @@
 package leepans.mapper;
 
-import leepans.dto.FornecedorRequestDTO;
-import leepans.dto.FornecedorResponseDTO;
+import leepans.dto.fornecedor.FornecedorRequestDTO;
+import leepans.dto.fornecedor.FornecedorResponseDTO;
 import leepans.model.Fornecedor;
 
 public class FornecedorMapper {

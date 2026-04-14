@@ -2,7 +2,7 @@ package leepans.service;
 
 import java.util.List;
 
-import leepans.dto.FundoRequestDTO;
+import leepans.dto.fundo.FundoRequestDTO;
 import leepans.model.Fundo;
 
 public interface FundoServiceInter {

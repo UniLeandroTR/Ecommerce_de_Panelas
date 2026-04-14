@@ -13,18 +13,18 @@ import leepans.model.Tampa;
 public record PanelaResponseDTO(
     Long id,
     String modelo,
-    Colecao Colecao,
-    Categoria Categoria,
+    String Colecao,
+    String Categoria,
     Tamanho tamanho,
     Long preco,
     Double peso,
     Double capacidadeLitros,
     List<String> funcionalidades,
     boolean isInducao,
-    Fornecedor Fornecedor,
-    Tampa Tampa,
-    Fundo Fundo,
-    Sustentacao Sustentacao
+    String Fornecedor,
+    Long idTampa,
+    Long idFundo,
+    Long idSustentacao
 ) {
     
 }

@@ -55,6 +55,7 @@ public class PanelaResource {
 
     @PUT
     @Path("/{id}")
+    @Transactional
     public Response update(@PathParam("id") Long id, PanelaRequestDTO dto){
         service.update(id, dto);
         return Response.noContent().build();
@@ -62,6 +63,7 @@ public class PanelaResource {
 
     @DELETE
     @Path("/{id}")
+    @Transactional
     public Response delete(@PathParam("id") Long id){
         service.delete(id);
         return Response.noContent().build();

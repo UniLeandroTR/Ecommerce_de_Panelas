@@ -10,7 +10,7 @@ public class PanelaRepository implements PanacheRepository<Panela>{
     
     @Override
     public PanacheQuery<Panela> findAll(){
-        return find("SELECT p FROM Panela "+
+        return find("SELECT p FROM Panela p "+
             "LEFT JOIN FETCH p.categoria "+
             "LEFT JOIN FETCH p.fornecedor "+
             "LEFT JOIN FETCH p.tampa "+

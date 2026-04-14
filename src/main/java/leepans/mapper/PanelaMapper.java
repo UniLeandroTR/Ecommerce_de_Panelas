@@ -60,18 +60,18 @@ public class PanelaMapper {
         return new PanelaResponseDTO(
                 panela.getId(),
                 panela.getModelo(),
-                panela.getColecao(),
-                panela.getCategoria(),
+                panela.getColecao().getNome(),
+                panela.getCategoria().getTipo(),
                 panela.getTamanho(),
                 panela.getPreco(),
                 panela.getPeso(),
                 panela.getCapacidadeLitros(),
                 panela.getFuncionalidade(),
                 panela.getIsInducao(),
-                panela.getFornecedor(),
-                panela.getTampa(),
-                panela.getFundo(),
-                panela.getSustentacao()
+                panela.getFornecedor().getNome(),
+                panela.getTampa().getId(),
+                panela.getFundo().getId(),
+                panela.getSustentacao().getId()
         );
     }
 }

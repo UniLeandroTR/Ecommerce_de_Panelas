@@ -36,8 +36,8 @@ public class FundoMapper {
         return new FundoResponseDTO(
             fundo.getId(),
             fundo.getPeso(),
-            fundo.getMaterial(),
-            fundo.getCor(),
+            fundo.getMaterial().getNome(),
+            fundo.getCor().getNome(),
             fundo.getEspessura(),
             fundo.getIsAntiaderente()
         );

@@ -4,6 +4,6 @@ import leepans.model.Cor;
 import leepans.model.Material;
 import leepans.model.TipoSustentacao;
 
-public record SustentacaoResponseDTO(Long id, Double peso, Material material, Cor cor, Integer tamanhoEmCm, Integer quantidade, TipoSustentacao tipoSustentacao) {
+public record SustentacaoResponseDTO(Long id, Double peso, String material, String cor, Integer tamanhoEmCm, Integer quantidade, TipoSustentacao tipoSustentacao) {
     
 }

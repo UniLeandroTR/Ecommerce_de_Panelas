@@ -35,8 +35,8 @@ public class TampaMapper {
         return new TampaResponseDTO(
             tampa.getId(),
             tampa.getPeso(),
-            tampa.getMaterial(),
-            tampa.getCor(),
+            tampa.getMaterial().getNome(),
+            tampa.getCor().getNome(),
             tampa.getIsDePressao()
         );
     }

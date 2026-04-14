@@ -1,7 +1,6 @@
 package leepans.model;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 public class Categoria {

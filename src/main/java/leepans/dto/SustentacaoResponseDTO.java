@@ -1,7 +1,5 @@
 package leepans.dto;
 
-import leepans.model.Cor;
-import leepans.model.Material;
 import leepans.model.TipoSustentacao;
 
 public record SustentacaoResponseDTO(Long id, Double peso, String material, String cor, Integer tamanhoEmCm, Integer quantidade, TipoSustentacao tipoSustentacao) {

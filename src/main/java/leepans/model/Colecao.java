@@ -1,7 +1,9 @@
 package leepans.model;
 
-import jakarta.persistence.*;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
 public class Colecao {
@@ -10,9 +12,6 @@ public class Colecao {
     private Long id;
 
     private String nome;
-
-    @OneToMany(mappedBy = "colecao")
-    private List<Panela> panelas;
 
     public Long getId() {
         return id;
@@ -28,13 +27,5 @@ public class Colecao {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public List<Panela> getPanelas() {
-        return panelas;
-    }
-
-    public void setPanelas(List<Panela> panelas) {
-        this.panelas = panelas;
     }
 }

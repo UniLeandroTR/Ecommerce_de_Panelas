@@ -7,12 +7,16 @@ import jakarta.inject.Inject;
 import leepans.dto.ColecaoRequestDTO;
 import leepans.model.Colecao;
 import leepans.repository.ColecaoRepository;
+import leepans.repository.PanelaRepository;
 
 @ApplicationScoped
 public class ColecaoService implements ColecaoServiceInter{
 
     @Inject
     ColecaoRepository repository;
+
+    @Inject
+    PanelaRepository panelaRepository;
 
     @Override
     public List<Colecao> findAll() {
@@ -35,7 +39,6 @@ public class ColecaoService implements ColecaoServiceInter{
         Colecao colecao = repository.findById(id);
 
         colecao.setNome(dto.nome());
-        colecao.setPanelas(dto.panelas());
 
         repository.persist(colecao);
     }

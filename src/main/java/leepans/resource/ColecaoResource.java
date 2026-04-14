@@ -28,18 +28,21 @@ public class ColecaoResource {
     @Inject
     ColecaoService service;
 
+    @Inject
+    ColecaoMapper mapper;
+
     @POST
     @Transactional
     public Response create(ColecaoRequestDTO dto){
-        Colecao colecao = service.create(ColecaoMapper.toEntity(dto));
-        return Response.status(201).entity(ColecaoMapper.toResponseDTO(colecao)).build();
+        Colecao colecao = service.create(mapper.toEntity(dto));
+        return Response.status(201).entity(mapper.toResponseDTO(colecao)).build();
     }
 
     @GET
     public Response findAll(){
         List<ColecaoResponseDTO> lista = service.findAll()
         .stream()
-        .map(ColecaoMapper::toResponseDTO)
+        .map(mapper::toResponseDTO)
         .toList();
         return Response.ok(lista).build();
     }

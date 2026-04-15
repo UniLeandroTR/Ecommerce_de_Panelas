@@ -2,7 +2,8 @@ package leepans.model;
 
 import jakarta.persistence.*;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Componente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,8 +8,5 @@ import leepans.model.Material;
 @ApplicationScoped
 public class MaterialRepository implements PanacheRepository<Material>{
     
-    @Override
-    public PanacheQuery<Material> findAll(){
-        return find("SELECT m FROM Material LEFT JOIN FETCH m.qualidades");
-    }
+
 }

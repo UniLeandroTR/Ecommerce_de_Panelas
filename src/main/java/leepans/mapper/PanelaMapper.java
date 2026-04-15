@@ -33,6 +33,18 @@ public class PanelaMapper {
     @Inject
     SustentacaoRepository sustentacaoRepository;
 
+    @Inject
+    ColecaoMapper colecaoMapper;
+
+    @Inject
+    SustentacaoMapper sustentacaoMapper;
+
+    @Inject
+    TampaMapper tampaMapper;
+
+    @Inject
+    FundoMapper fundoMapper;
+
     
     public Panela toEntity(PanelaRequestDTO dto){
         if(dto==null) return null;
@@ -42,7 +54,7 @@ public class PanelaMapper {
         panela.setPreco(dto.preco());
         panela.setPeso(dto.peso());
         panela.setCapacidadeLitros(dto.capacidadeLitros());
-        panela.setFuncionalidade(dto.funcionalidades());
+        panela.setDescricaco(dto.descricao());
         panela.setIsInducao(dto.isInducao());
         panela.setTamanho(dto.tamanho());
         panela.setColecao(colecaoRepository.findById(dto.idColecao()));
@@ -60,18 +72,18 @@ public class PanelaMapper {
         return new PanelaResponseDTO(
                 panela.getId(),
                 panela.getModelo(),
-                panela.getColecao().getNome(),
-                panela.getCategoria().getTipo(),
+                CategoriaMapper.toResponse(panela.getCategoria()),
+                colecaoMapper.toResponseDTO(panela.getColecao()),
                 panela.getTamanho(),
                 panela.getPreco(),
                 panela.getPeso(),
                 panela.getCapacidadeLitros(),
-                panela.getFuncionalidade(),
+                panela.getDescricaco(),
                 panela.getIsInducao(),
-                panela.getFornecedor().getNome(),
-                panela.getTampa().getId(),
-                panela.getFundo().getId(),
-                panela.getSustentacao().getId()
+                FornecedorMapper.toResponse(panela.getFornecedor()),
+                tampaMapper.toResponseDTO(panela.getTampa()),
+                fundoMapper.toResponseDTO(panela.getFundo()),
+                sustentacaoMapper.toResponseDTO(panela.getSustentacao())
         );
     }
 }

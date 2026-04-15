@@ -14,10 +14,7 @@ public class Panela {
     private Long preco;
     private Double peso;
     private Double capacidadeLitros;
-
-    @ElementCollection
-    private List<String> funcionalidade;
-
+    private String descricaco;
     private Boolean isInducao;
 
     @ManyToOne
@@ -87,12 +84,12 @@ public class Panela {
         this.capacidadeLitros = capacidadeLitros;
     }
 
-    public List<String> getFuncionalidade() {
-        return funcionalidade;
+    public String getDescricaco() {
+        return descricaco;
     }
 
-    public void setFuncionalidade(List<String> funcionalidade) {
-        this.funcionalidade = funcionalidade;
+    public void setDescricaco(String descricaco) {
+        this.descricaco = descricaco;
     }
 
     public Boolean getIsInducao() {

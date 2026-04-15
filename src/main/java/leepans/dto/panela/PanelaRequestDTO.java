@@ -28,7 +28,7 @@ public record PanelaRequestDTO(
     
     Double capacidadeLitros,
     
-    List<String> funcionalidades,
+    String descricao,
     
     boolean isInducao,
     

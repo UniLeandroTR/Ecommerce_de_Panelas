@@ -30,15 +30,15 @@ abstract Componente{
 }
 
 enum Tamanho{
-+ PEQUENA : int
-+ MEDIA : int
-+ GRANDE : int
-+ GIGANTE : int
++ PEQUENA
++ MEDIA
++ GRANDE
++ GIGANTE
 }
 
 enum TipoSustentacao{
-+ CABO : int
-+ ALCA : int
++ CABO
++ ALCA
 }
 class Fornecedor{
 - id : long

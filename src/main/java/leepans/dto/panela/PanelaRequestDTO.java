@@ -13,29 +13,28 @@ public record PanelaRequestDTO(
     @NotBlank
     @Size(min = 3, max = 100, message = "O nome deve ter entre 3 a 100 caracteres")
     String modelo,
-   
-    Long idColecao,
-    
-    @NotNull(message = "É necessário escolher uma categoria")
-    Long idCategoria,
-    
-    Tamanho tamanho,
-    
+
     @Min(value = 0, message = "O preço não pode ser negativo ou menor que zero")
     Long preco,
-    
+
     Double peso,
-    
+
     Double capacidadeLitros,
-    
+
     String descricao,
-    
+
     boolean isInducao,
-    
+
+    Tamanho tamanho,
+
+    Long idColecao,
+
+    @NotNull(message = "É necessário escolher uma categoria")
+    Long idCategoria,
+
     @NotNull(message = "É necessário escolher um fornecedor")
     Long idFornecedor,
-    
-    @NotNull(message = "É necessário escolher uma tampa")
+
     Long idTampa,
     
     @NotNull(message = "É necessário escolher um fundo")

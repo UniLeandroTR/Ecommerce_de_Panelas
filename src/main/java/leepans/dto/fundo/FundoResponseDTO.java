@@ -1,5 +1,8 @@
 package leepans.dto.fundo;
 
-public record FundoResponseDTO(Long id, Double peso, String material, String cor, Double espessura, Boolean isAntiaderente) {
+import leepans.dto.cor.CorResponseDTO;
+import leepans.dto.material.MaterialResponseDTO;
+
+public record FundoResponseDTO(Long id, Double peso, MaterialResponseDTO material, CorResponseDTO cor, Double espessura, Boolean isAntiaderente) {
     
 }

@@ -37,8 +37,8 @@ public class SustentacaoMapper {
         return new SustentacaoResponseDTO(
             sustentacao.getId(),
             sustentacao.getPeso(),
-            sustentacao.getMaterial().getNome(),
-            sustentacao.getCor().getNome(),
+            MaterialMapper.toResponseDTO(sustentacao.getMaterial()),
+            CorMapper.toResponseDTO(sustentacao.getCor()),
             sustentacao.getTamanhoEmCm(),
             sustentacao.getQuantidade(),
             sustentacao.getTipoSustentacao()

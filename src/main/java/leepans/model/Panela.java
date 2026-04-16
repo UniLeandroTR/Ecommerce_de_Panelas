@@ -8,6 +8,7 @@ public class Panela {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_panela")
     private Long id;
 
     private String modelo;
@@ -100,6 +101,22 @@ public class Panela {
         this.isInducao = isInducao;
     }
 
+    public Tamanho getTamanho() {
+        return tamanho;
+    }
+
+    public void setTamanho(Tamanho tamanho) {
+        this.tamanho = tamanho;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     public Colecao getColecao() {
         return colecao;
     }
@@ -140,19 +157,4 @@ public class Panela {
         this.fornecedor = fornecedor;
     }
 
-    public Tamanho getTamanho() {
-        return tamanho;
-    }
-
-    public void setTamanho(Tamanho tamanho) {
-        this.tamanho = tamanho;
-    }
-
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-    }
 }

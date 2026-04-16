@@ -6,12 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import leepans.dto.panela.PanelaRequestDTO;
 import leepans.model.Panela;
-import leepans.repository.CategoriaRepository;
-import leepans.repository.FornecedorRepository;
-import leepans.repository.FundoRepository;
-import leepans.repository.PanelaRepository;
-import leepans.repository.SustentacaoRepository;
-import leepans.repository.TampaRepository;
+import leepans.repository.*;
 
 @ApplicationScoped
 public class PanelaService implements PanelaServiceInter{
@@ -33,6 +28,9 @@ public class PanelaService implements PanelaServiceInter{
 
     @Inject
     SustentacaoRepository sustentacaoRepository;
+
+    @Inject
+    ColecaoRepository colecaoRepository;
 
     @Override
     public List<Panela> findAll() {
@@ -58,9 +56,10 @@ public class PanelaService implements PanelaServiceInter{
         panela.setPreco(dto.preco());
         panela.setPeso(dto.peso());
         panela.setCapacidadeLitros(dto.capacidadeLitros());
-        panela.setFuncionalidade(dto.funcionalidades());
+        panela.setDescricaco(dto.descricao());
         panela.setIsInducao(dto.isInducao());
         panela.setTamanho(dto.tamanho());
+        panela.setColecao(colecaoRepository.findById(dto.idColecao()));
         panela.setCategoria(categoriaRepository.findById(dto.idCategoria()));
         panela.setFornecedor(fornecedorRepository.findById(dto.idFornecedor()));
         panela.setTampa(tampaRepository.findById(dto.idTampa()));

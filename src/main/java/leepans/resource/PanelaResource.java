@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -33,7 +34,7 @@ public class PanelaResource {
 
     @POST
     @Transactional
-    public Response create (PanelaRequestDTO dto){
+    public Response create (@Valid PanelaRequestDTO dto){
         Panela panela = service.create(mapper.toEntity(dto));
         return Response.status(201).entity(mapper.toResponseDTO(panela)).build();
     }

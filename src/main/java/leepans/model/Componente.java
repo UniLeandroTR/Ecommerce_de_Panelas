@@ -1,6 +1,8 @@
 package leepans.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -11,8 +13,13 @@ public abstract class Componente {
 
     private Double peso;
 
-    @ManyToOne
-    private Material material;
+    @ManyToMany
+    @JoinTable(
+        name = "componente_material",
+        joinColumns = @JoinColumn(name = "componente_id"),
+        inverseJoinColumns = @JoinColumn(name = "material_id")
+    )
+    private List<Material> materiais = new ArrayList<>();
 
     @ManyToOne
     private Cor cor;
@@ -33,12 +40,12 @@ public abstract class Componente {
         this.peso = peso;
     }
 
-    public Material getMaterial() {
-        return material;
+    public List<Material> getMateriais() {
+        return materiais;
     }
 
-    public void setMaterial(Material material) {
-        this.material = material;
+    public void setMateriais(List<Material> materiais) {
+        this.materiais = materiais;
     }
 
     public Cor getCor() {

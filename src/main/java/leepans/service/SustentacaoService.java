@@ -1,6 +1,8 @@
 package leepans.service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.hibernate.Hibernate;
 
@@ -37,8 +39,8 @@ public class SustentacaoService implements SustentacaoServiceInter{
     @Override
     public Sustentacao create(Sustentacao sustentacao) {
         repository.persist(sustentacao);
-        if(sustentacao.getMaterial() != null) {
-            Hibernate.initialize(sustentacao.getMaterial().getQualidades());
+        if(sustentacao.getMateriais() != null) {
+            sustentacao.getMateriais().forEach(material -> Hibernate.initialize(material.getQualidades()));
         }
         return sustentacao;
     }
@@ -48,7 +50,10 @@ public class SustentacaoService implements SustentacaoServiceInter{
         Sustentacao sustentacao = repository.findById(id);
         if (sustentacao != null) {
             sustentacao.setPeso(dto.peso());
-            sustentacao.setMaterial(materialRepository.findById(dto.idMaterial()));
+            sustentacao.setMateriais(dto.idsMateriais() == null ? null : dto.idsMateriais().stream()
+                    .map(materialRepository::findById)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()));
             sustentacao.setCor(corRepository.findById(dto.idCor()));
             sustentacao.setQuantidade(dto.quantidade());
             sustentacao.setTamanhoEmCm(dto.tamanhoEmCm());

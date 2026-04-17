@@ -1,6 +1,9 @@
 package leepans.service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import org.hibernate.Hibernate;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -35,6 +38,9 @@ public class TampaService implements TampaServiceInter {
     @Override
     public Tampa create(Tampa tampa) {
         repository.persist(tampa);
+        if (tampa.getMateriais() != null) {
+            tampa.getMateriais().forEach(material -> Hibernate.initialize(material.getQualidades()));
+        }
         return tampa;
     }
 
@@ -43,8 +49,11 @@ public class TampaService implements TampaServiceInter {
         Tampa tampa = findById(id);
 
         if(tampa!= null){
-            tampa.setCor(corRepository.findById(id));
-            tampa.setMaterial(materialRepository.findById(id));
+            tampa.setCor(corRepository.findById(dto.idCor()));
+            tampa.setMateriais(dto.idsMateriais() == null ? null : dto.idsMateriais().stream()
+                    .map(materialRepository::findById)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()));
             tampa.setIsDePressao(dto.isDePressao());
             tampa.setPeso(dto.peso());
             repository.persist(tampa);

@@ -1,5 +1,7 @@
 package leepans.mapper;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import leepans.dto.material.MaterialRequestDTO;
 import leepans.dto.material.MaterialResponseDTO;
 import leepans.model.Material;
@@ -22,5 +24,12 @@ public class MaterialMapper {
             material.getId(), 
             material.getNome(), 
             material.getQualidades());
+    }
+
+    public static List<MaterialResponseDTO> toResponseDTO(List<Material> materiais) {
+        if (materiais == null) return null;
+        return materiais.stream()
+                .map(MaterialMapper::toResponseDTO)
+                .collect(Collectors.toList());
     }
 }

@@ -10,11 +10,15 @@ public class PanelaRepository implements PanacheRepository<Panela>{
     
     @Override
     public PanacheQuery<Panela> findAll(){
-        return find("SELECT p FROM Panela p "+
+        return find("SELECT DISTINCT p FROM Panela p "+
             "LEFT JOIN FETCH p.categoria "+
             "LEFT JOIN FETCH p.fornecedor "+
-            "LEFT JOIN FETCH p.tampa "+
-            "LEFT JOIN FETCH p.fundo "+
-            "LEFT JOIN FETCH p.sustentacao");
+            "LEFT JOIN FETCH p.tampa t "+
+            "LEFT JOIN FETCH t.cor "+
+            "LEFT JOIN FETCH p.fundo f "+
+            "LEFT JOIN FETCH f.cor "+
+            "LEFT JOIN FETCH p.sustentacao s "+
+            "LEFT JOIN FETCH s.cor");
     }
+
 }

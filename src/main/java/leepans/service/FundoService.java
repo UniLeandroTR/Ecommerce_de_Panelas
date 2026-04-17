@@ -2,6 +2,9 @@ package leepans.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import org.hibernate.Hibernate;
 import leepans.dto.fundo.FundoRequestDTO;
 import leepans.model.Fundo;
 import leepans.repository.CorRepository;
@@ -35,6 +38,9 @@ public class FundoService implements FundoServiceInter{
     @Override
     public Fundo create(Fundo fundo) {
         repository.persist(fundo);
+        if (fundo.getMateriais() != null) {
+            fundo.getMateriais().forEach(material -> Hibernate.initialize(material.getQualidades()));
+        }
         return fundo;
     }
 
@@ -44,7 +50,10 @@ public class FundoService implements FundoServiceInter{
 
         if(fundo != null){
             fundo.setCor(corRepository.findById(dto.idCor()));
-            fundo.setMaterial(materialRepository.findById(dto.idMaterial()));
+            fundo.setMateriais(dto.idsMateriais() == null ? null : dto.idsMateriais().stream()
+                    .map(materialRepository::findById)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()));
             fundo.setEspessura(dto.espessura());
             fundo.setPeso(dto.peso());
             fundo.setIsAntiaderente(dto.isAntiaderente());

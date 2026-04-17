@@ -2,11 +2,19 @@ package leepans.service;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import leepans.dto.panela.PanelaRequestDTO;
 import leepans.model.Panela;
-import leepans.repository.*;
+import leepans.repository.CategoriaRepository;
+import leepans.repository.ColecaoRepository;
+import leepans.repository.FornecedorRepository;
+import leepans.repository.FundoRepository;
+import leepans.repository.PanelaRepository;
+import leepans.repository.SustentacaoRepository;
+import leepans.repository.TampaRepository;
 
 @ApplicationScoped
 public class PanelaService implements PanelaServiceInter{
@@ -34,7 +42,20 @@ public class PanelaService implements PanelaServiceInter{
 
     @Override
     public List<Panela> findAll() {
-        return repository.findAll().list();
+        List<Panela> panelas = repository.findAll().list();
+        panelas.forEach(panela ->{
+            Hibernate.initialize(panela.getTampa().getMateriais());
+            Hibernate.initialize(panela.getFundo().getMateriais());
+            Hibernate.initialize(panela.getSustentacao().getMateriais());
+
+            panela.getTampa().getMateriais()
+                .forEach(material -> Hibernate.initialize(material.getQualidades()));
+            panela.getFundo().getMateriais()
+                .forEach(material -> Hibernate.initialize(material.getQualidades()));
+            panela.getSustentacao().getMateriais()
+                .forEach(material -> Hibernate.initialize(material.getQualidades()));
+        });
+        return panelas;
     }
 
     @Override
@@ -45,6 +66,9 @@ public class PanelaService implements PanelaServiceInter{
     @Override
     public Panela create(Panela panela) {
         repository.persist(panela);
+        panela.getFundo().getMateriais().forEach(material -> Hibernate.initialize(material.getQualidades()));
+        panela.getTampa().getMateriais().forEach(material -> Hibernate.initialize(material.getQualidades()));
+        panela.getSustentacao().getMateriais().forEach(material -> Hibernate.initialize(material.getQualidades()));
         return panela;
     }
 

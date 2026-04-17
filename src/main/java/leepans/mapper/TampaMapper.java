@@ -2,8 +2,12 @@ package leepans.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import leepans.dto.tampa.TampaRequestDTO;
 import leepans.dto.tampa.TampaResponseDTO;
+import leepans.model.Material;
 import leepans.model.Tampa;
 import leepans.repository.CorRepository;
 import leepans.repository.MaterialRepository;
@@ -22,7 +26,11 @@ public class TampaMapper {
 
         Tampa tampa = new Tampa();
         tampa.setPeso(dto.peso());
-        tampa.setMaterial(materialRepository.findById(dto.idMaterial()));
+        List<Material> materiais = dto.idsMateriais() == null ? null : dto.idsMateriais().stream()
+                .map(materialRepository::findById)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        tampa.setMateriais(materiais);
         tampa.setCor(corRepository.findById(dto.idCor()));
         tampa.setIsDePressao(dto.isDePressao());
 
@@ -35,7 +43,7 @@ public class TampaMapper {
         return new TampaResponseDTO(
             tampa.getId(),
             tampa.getPeso(),
-            MaterialMapper.toResponseDTO(tampa.getMaterial()),
+            MaterialMapper.toResponseDTO(tampa.getMateriais()),
             CorMapper.toResponseDTO(tampa.getCor()),
             tampa.getIsDePressao()
         );

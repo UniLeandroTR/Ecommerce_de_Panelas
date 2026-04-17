@@ -2,9 +2,13 @@ package leepans.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import leepans.dto.sustentacao.SustentacaoRequestDTO;
 import leepans.dto.sustentacao.SustentacaoResponseDTO;
 import leepans.model.Sustentacao;
+import leepans.model.Material;
 import leepans.repository.CorRepository;
 import leepans.repository.MaterialRepository;
 
@@ -22,7 +26,11 @@ public class SustentacaoMapper {
 
         Sustentacao sustentacao = new Sustentacao();
         sustentacao.setPeso(dto.peso());
-        sustentacao.setMaterial(materialRepository.findById(dto.idMaterial()));
+        List<Material> materiais = dto.idsMateriais() == null ? null : dto.idsMateriais().stream()
+                .map(materialRepository::findById)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        sustentacao.setMateriais(materiais);
         sustentacao.setCor(corRepository.findById(dto.idCor()));
         sustentacao.setTamanhoEmCm(dto.tamanhoEmCm());
         sustentacao.setQuantidade(dto.quantidade());
@@ -37,7 +45,7 @@ public class SustentacaoMapper {
         return new SustentacaoResponseDTO(
             sustentacao.getId(),
             sustentacao.getPeso(),
-            MaterialMapper.toResponseDTO(sustentacao.getMaterial()),
+            MaterialMapper.toResponseDTO(sustentacao.getMateriais()),
             CorMapper.toResponseDTO(sustentacao.getCor()),
             sustentacao.getTamanhoEmCm(),
             sustentacao.getQuantidade(),

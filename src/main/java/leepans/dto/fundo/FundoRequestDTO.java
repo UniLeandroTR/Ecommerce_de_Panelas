@@ -2,11 +2,13 @@ package leepans.dto.fundo;
 
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 public record FundoRequestDTO(
         Double peso,
 
         @NotNull
-        Long idMaterial,
+        List<Long> idsMateriais,
 
         @NotNull
         Long idCor,

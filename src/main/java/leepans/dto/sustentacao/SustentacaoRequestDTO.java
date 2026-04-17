@@ -1,13 +1,14 @@
 package leepans.dto.sustentacao;
 
 import jakarta.validation.constraints.NotNull;
+import java.util.List;
 import leepans.model.TipoSustentacao;
 
 public record SustentacaoRequestDTO(
         Double peso,
 
         @NotNull
-        Long idMaterial,
+        List<Long> idsMateriais,
 
         @NotNull
         Long idCor,

@@ -1,7 +1,5 @@
 package leepans.dto.panela;
 
-import java.util.List;
-
 import leepans.dto.categoria.CategoriaResponseDTO;
 import leepans.dto.colecao.ColecaoResponseDTO;
 import leepans.dto.fornecedor.FornecedorResponseDTO;

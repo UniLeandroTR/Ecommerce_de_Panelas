@@ -5,7 +5,7 @@ class Panela{
 - preco : long
 - peso : double
 - capacidadeLitros : double
-- funcionalidade[] : String
+- descricao : String
 - isInducao : boolean
 }
 
@@ -78,6 +78,6 @@ Fundo --|>  Componente
 Tampa --|>  Componente
 Sustentacao --|> Componente
 Sustentacao "*" --> "1" TipoSustentacao
-Componente "*" o--> "1" Material
+Componente "*" o-- "*" Material
 Componente "*" o--> "1" Cor
 @enduml

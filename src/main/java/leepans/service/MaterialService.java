@@ -25,6 +25,11 @@ public class MaterialService implements MaterialServiceInter{
     }
 
     @Override
+    public List<Material> findByNome(String nome) {
+        return repository.findByNome(nome).list();
+    }
+
+    @Override
     public Material create(Material material) {
         repository.persist(material);
         return material;

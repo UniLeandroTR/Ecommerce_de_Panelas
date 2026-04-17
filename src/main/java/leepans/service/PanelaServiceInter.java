@@ -9,6 +9,8 @@ public interface PanelaServiceInter {
     
     List<Panela> findAll();
     Panela findById(Long id);
+    List<Panela> findByCategoria(Long idcategoria);
+    List<Panela> findByColecao(Long idcolecao);
     Panela create(Panela panela);
     void update(Long id, PanelaRequestDTO dto);
     void delete(Long id);

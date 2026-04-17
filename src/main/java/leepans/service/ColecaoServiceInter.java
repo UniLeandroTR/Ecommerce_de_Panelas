@@ -9,6 +9,7 @@ public interface ColecaoServiceInter {
     
     List<Colecao> findAll();
     Colecao findById(Long id);
+    List<Colecao> findByNome(String nome);
     Colecao create(Colecao colecao);
     void update(Long id, ColecaoRequestDTO dto);
     void delete(Long id);

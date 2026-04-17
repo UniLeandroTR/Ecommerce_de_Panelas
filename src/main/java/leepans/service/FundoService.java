@@ -1,17 +1,18 @@
 package leepans.service;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import org.hibernate.Hibernate;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import leepans.dto.fundo.FundoRequestDTO;
 import leepans.model.Fundo;
 import leepans.repository.CorRepository;
 import leepans.repository.FundoRepository;
 import leepans.repository.MaterialRepository;
-
-import java.util.List;
 
 @ApplicationScoped
 public class FundoService implements FundoServiceInter{
@@ -33,6 +34,11 @@ public class FundoService implements FundoServiceInter{
     @Override
     public Fundo findById(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public List<Fundo> findByCor(Long idCor) {
+        return repository.findByCor(idCor).list();
     }
 
     @Override

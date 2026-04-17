@@ -21,4 +21,12 @@ public class PanelaRepository implements PanacheRepository<Panela>{
             "LEFT JOIN FETCH s.cor");
     }
 
+    public PanacheQuery<Panela> findByCategoria(Long idcategoria) {
+        return find("categoria.id", idcategoria);
+    }
+
+    public PanacheQuery<Panela> findByColecao(Long idcolecao) {
+        return find("colecao.id", idcolecao);
+    }
+
 }

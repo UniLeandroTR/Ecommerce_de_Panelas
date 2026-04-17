@@ -1,9 +1,18 @@
 package leepans.resource;
 
+import java.util.List;
+
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import leepans.dto.fornecedor.FornecedorRequestDTO;
@@ -11,8 +20,6 @@ import leepans.dto.fornecedor.FornecedorResponseDTO;
 import leepans.mapper.FornecedorMapper;
 import leepans.model.Fornecedor;
 import leepans.service.FornecedorService;
-
-import java.util.List;
 
 @Path("/fornecedores")
 @Produces(MediaType.APPLICATION_JSON)
@@ -45,6 +52,15 @@ public class FornecedorResource {
         return Response.ok(fornecedor).build();
     }
 
+    @GET
+    @Path("/nome/{nome}")
+    public Response findByNome(@PathParam("nome") String nome){
+        List<FornecedorResponseDTO> lista = service.findByNome(nome)
+        .stream()
+        .map(FornecedorMapper::toResponse)
+        .toList();
+        return Response.ok(lista).build();
+    }
 
     @PUT
     @Transactional

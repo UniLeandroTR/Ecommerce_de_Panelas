@@ -64,6 +64,16 @@ public class PanelaService implements PanelaServiceInter{
     }
 
     @Override
+    public List<Panela> findByCategoria(Long idcategoria) {
+        return repository.findByCategoria(idcategoria).list();
+    }
+
+    @Override
+    public List<Panela> findByColecao(Long idcolecao) {
+        return repository.findByColecao(idcolecao).list();
+    }
+
+    @Override
     public Panela create(Panela panela) {
         repository.persist(panela);
         panela.getFundo().getMateriais().forEach(material -> Hibernate.initialize(material.getQualidades()));

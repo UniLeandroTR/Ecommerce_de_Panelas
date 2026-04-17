@@ -59,6 +59,16 @@ public class TampaResource {
         return Response.ok(tampa).build();
     }
 
+    @GET
+    @Path("/material/{id}")
+    public Response findByMaterial(@PathParam("id") Long id){
+        List<TampaResponseDTO> lista = service.findByMaterial(id)
+        .stream()
+        .map(tampaMapper::toResponseDTO)
+        .toList();
+        return Response.ok(lista).build();
+    }
+
     @PUT
     @Transactional
     @Path("/{id}")

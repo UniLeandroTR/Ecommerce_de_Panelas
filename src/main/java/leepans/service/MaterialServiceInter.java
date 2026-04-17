@@ -9,6 +9,7 @@ public interface MaterialServiceInter {
     
     List<Material> findAll();
     Material findById(Long id);
+    List<Material> findByNome(String nome);
     Material create(Material material);
     void update(Long id, MaterialRequestDTO dto);
     void delete(Long id);

@@ -53,6 +53,26 @@ public class PanelaResource {
         return Response.ok(mapper.toResponseDTO(service.findById(id))).build();
     }
 
+    @GET
+    @Path("/categoria/{id}")
+    public Response findByCategoria(@PathParam("id") Long id){
+        List<PanelaResponseDTO> lista = service.findByCategoria(id)
+        .stream()
+        .map(mapper::toResponseDTO)
+        .toList();
+        return Response.ok(lista).build();
+    }
+
+    @GET
+    @Path("/colecao/{id}")
+    public Response findByColecao(@PathParam("id") Long id){
+        List<PanelaResponseDTO> lista = service.findByColecao(id)
+        .stream()
+        .map(mapper::toResponseDTO)
+        .toList();
+        return Response.ok(lista).build();
+    }
+
     @PUT
     @Path("/{id}")
     @Transactional

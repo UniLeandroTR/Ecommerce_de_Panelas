@@ -25,6 +25,11 @@ public class CorService implements CorServiceInter{
     }
 
     @Override
+    public List<Cor> findByNome(String nome) {
+        return repository.findByNome(nome).list();
+    }
+
+    @Override
     public Cor create(Cor cor) {
         repository.persist(cor);
         return cor;

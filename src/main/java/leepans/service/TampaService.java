@@ -3,6 +3,7 @@ package leepans.service;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
 import org.hibernate.Hibernate;
 
 import jakarta.enterprise.context.ApplicationScoped;
@@ -33,6 +34,11 @@ public class TampaService implements TampaServiceInter {
     @Override
     public Tampa findById(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public List<Tampa> findByMaterial(Long idmaterial) {
+        return repository.findByMaterial(idmaterial).list();
     }
 
     @Override

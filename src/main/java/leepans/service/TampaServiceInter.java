@@ -9,6 +9,7 @@ public interface TampaServiceInter {
     
     List<Tampa> findAll();
     Tampa findById(Long id);
+    List<Tampa> findByMaterial(Long idmaterial);
     Tampa create(Tampa tampa);
     void update(Long id, TampaRequestDTO dto);
     void delete(Long id);

@@ -25,6 +25,11 @@ public class CategoriaService implements CategoriaServiceInter {
     }
 
     @Override
+    public List<Categoria> findByNome(String nome) {
+        return repository.findByNome(nome).list();
+    }
+    
+    @Override
     public Categoria create(Categoria categoria) {
         repository.persist(categoria);
         return categoria;
@@ -41,4 +46,5 @@ public class CategoriaService implements CategoriaServiceInter {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
 }

@@ -59,6 +59,16 @@ public class FundoResource {
         return Response.ok(fundo).build();
     }
 
+    @GET
+    @Path("/cor/{id}")
+    public Response findByCor(@PathParam("id") Long idCor){
+        List<FundoResponseDTO> lista = service.findByCor(idCor)
+        .stream()
+        .map(fundoMapper::toResponseDTO)
+        .toList();
+        return Response.ok(lista).build();
+    }
+
     @PUT
     @Transactional
     @Path("/{id}")

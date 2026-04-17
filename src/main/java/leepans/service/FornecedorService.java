@@ -1,12 +1,12 @@
 package leepans.service;
 
+import java.util.List;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import leepans.dto.fornecedor.FornecedorRequestDTO;
 import leepans.model.Fornecedor;
 import leepans.repository.FornecedorRepository;
-
-import java.util.List;
 
 @ApplicationScoped
 public class FornecedorService implements FornecedorServiceInter {
@@ -22,6 +22,11 @@ public class FornecedorService implements FornecedorServiceInter {
     @Override
     public Fornecedor findById(Long id) {
         return repository.findById(id);
+    }
+
+    @Override
+    public List<Fornecedor> findByNome(String nome) {
+        return repository.findByNome(nome).list();
     }
 
     @Override

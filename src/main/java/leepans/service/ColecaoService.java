@@ -25,6 +25,11 @@ public class ColecaoService implements ColecaoServiceInter{
     }
 
     @Override
+    public List<Colecao> findByNome(String nome) {
+        return repository.findByNome(nome).list();
+    }
+
+    @Override
     public Colecao create(Colecao colecao) {
         repository.persist(colecao);
         return colecao;

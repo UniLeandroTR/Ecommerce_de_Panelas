@@ -59,6 +59,16 @@ public class SustentacaoResource {
         return Response.ok(sustentacao).build();
     }
 
+    @GET
+    @Path("/material/{id}")
+    public Response findByMaterial(@PathParam("id") Long id){
+        List<SustentacaoResponseDTO> lista = service.findByMaterial(id)
+        .stream()
+        .map(sustentacaoMapper::toResponseDTO)
+        .toList();
+        return Response.ok(lista).build();
+    }
+
     @PUT
     @Transactional
     @Path("/{id}")

@@ -56,6 +56,16 @@ public class MaterialResource {
         return Response.ok(material).build();
     }
 
+    @GET
+    @Path("/nome/{nome}")
+    public Response findByNome(@PathParam("nome") String nome){
+        List<MaterialResponseDTO> lista = service.findByNome(nome)
+        .stream()
+        .map(MaterialMapper::toResponseDTO)
+        .toList();
+        return Response.ok(lista).build();
+    }
+
     @PUT
     @Transactional
     @Path("/{id}")

@@ -39,6 +39,16 @@ public class CategoriaResource {
     }
 
     @GET
+    @Path("/nome/{nome}")
+    public Response findByNome(@PathParam("nome") String nome){
+        List<CategoriaResponseDTO> lista = service.findByNome(nome)
+            .stream()
+            .map(CategoriaMapper::toResponse)
+            .toList();
+        return Response.ok(lista).build();
+    }
+
+    @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id){
         CategoriaResponseDTO categoria = CategoriaMapper.toResponse(service.findById(id));

@@ -37,6 +37,11 @@ public class SustentacaoService implements SustentacaoServiceInter{
     }
 
     @Override
+    public List<Sustentacao> findByMaterial(Long idmaterial) {
+        return repository.findByMaterial(idmaterial).list();
+    }
+
+    @Override
     public Sustentacao create(Sustentacao sustentacao) {
         repository.persist(sustentacao);
         if(sustentacao.getMateriais() != null) {

@@ -56,6 +56,16 @@ public class CorResource {
         return Response.ok(cor).build();
     }
 
+    @GET
+    @Path("/nome/{nome}")
+    public Response findByNome(@PathParam("nome") String nome){
+        List<CorResponseDTO> lista = service.findByNome(nome)
+        .stream()
+        .map(CorMapper::toResponseDTO)
+        .toList();
+        return Response.ok(lista).build();
+    }
+
     @PUT
     @Transactional
     @Path("/{id}")

@@ -48,6 +48,16 @@ public class ColecaoResource {
     }
 
     @GET
+    @Path("/nome/{nome}")
+    public Response findByNome(@PathParam("nome") String nome){
+        List<ColecaoResponseDTO> lista = service.findByNome(nome)
+        .stream()
+        .map(mapper::toResponseDTO)
+        .toList();
+        return Response.ok(lista).build();
+    }
+
+    @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id){
         return Response.ok(service.findById(id)).build();

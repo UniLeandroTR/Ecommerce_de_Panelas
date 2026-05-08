@@ -1,5 +1,6 @@
 package leepans.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -24,13 +25,14 @@ public class CategoriaResource {
 
     @POST
     @Transactional
-    public Response create(@Valid CategoriaRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response create(@Valid CategoriaRequestDTO dto) {
         Categoria categoria = service.create(CategoriaMapper.toEntity(dto));
         return Response.status(Response.Status.CREATED).entity(CategoriaMapper.toResponse(categoria)).build();
     }
 
     @GET
-    public Response findAll(){
+    public Response findAll() {
         List<CategoriaResponseDTO> lista = service.findAll()
                 .stream()
                 .map(CategoriaMapper::toResponse)
@@ -40,17 +42,17 @@ public class CategoriaResource {
 
     @GET
     @Path("/nome/{nome}")
-    public Response findByNome(@PathParam("nome") String nome){
+    public Response findByNome(@PathParam("nome") String nome) {
         List<CategoriaResponseDTO> lista = service.findByNome(nome)
-            .stream()
-            .map(CategoriaMapper::toResponse)
-            .toList();
+                .stream()
+                .map(CategoriaMapper::toResponse)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") Long id){
+    public Response findById(@PathParam("id") Long id) {
         CategoriaResponseDTO categoria = CategoriaMapper.toResponse(service.findById(id));
         return Response.ok(categoria).build();
     }
@@ -58,7 +60,8 @@ public class CategoriaResource {
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, CategoriaRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response update(@PathParam("id") Long id, CategoriaRequestDTO dto) {
         service.update(id, dto);
         return Response.noContent().build();
     }
@@ -66,7 +69,8 @@ public class CategoriaResource {
     @DELETE
     @Transactional
     @Path("/{id}")
-    public Response delete(@PathParam("id") Long id){
+    @RolesAllowed({ "ADMIN" })
+    public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }

@@ -2,6 +2,7 @@ package leepans.resource;
 
 import java.util.List;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -22,10 +23,10 @@ import leepans.model.Panela;
 import leepans.service.ecommerce.PanelaService;
 
 @Path("/panelas")
-@Produces(MediaType.APPLICATION_JSON )
-@Consumes(MediaType.APPLICATION_JSON )
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class PanelaResource {
-    
+
     @Inject
     PanelaService service;
 
@@ -34,50 +35,52 @@ public class PanelaResource {
 
     @POST
     @Transactional
-    public Response create (@Valid PanelaRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response create(@Valid PanelaRequestDTO dto) {
         Panela panela = service.create(mapper.toEntity(dto));
         return Response.status(201).entity(mapper.toResponseDTO(panela)).build();
     }
 
     @GET
-    public Response findAll(){
+    public Response findAll() {
         List<PanelaResponseDTO> lista = service.findAll()
-            .stream()
-            .map(mapper::toResponseDTO)
-            .toList();
+                .stream()
+                .map(mapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") Long id){
+    public Response findById(@PathParam("id") Long id) {
         return Response.ok(mapper.toResponseDTO(service.findById(id))).build();
     }
 
     @GET
     @Path("/categoria/{id}")
-    public Response findByCategoria(@PathParam("id") Long id){
+    public Response findByCategoria(@PathParam("id") Long id) {
         List<PanelaResponseDTO> lista = service.findByCategoria(id)
-        .stream()
-        .map(mapper::toResponseDTO)
-        .toList();
+                .stream()
+                .map(mapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @GET
     @Path("/colecao/{id}")
-    public Response findByColecao(@PathParam("id") Long id){
+    public Response findByColecao(@PathParam("id") Long id) {
         List<PanelaResponseDTO> lista = service.findByColecao(id)
-        .stream()
-        .map(mapper::toResponseDTO)
-        .toList();
+                .stream()
+                .map(mapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(@PathParam("id") Long id, PanelaRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response update(@PathParam("id") Long id, PanelaRequestDTO dto) {
         service.update(id, dto);
         return Response.noContent().build();
     }
@@ -85,7 +88,8 @@ public class PanelaResource {
     @DELETE
     @Path("/{id}")
     @Transactional
-    public Response delete(@PathParam("id") Long id){
+    @RolesAllowed({ "ADMIN" })
+    public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }

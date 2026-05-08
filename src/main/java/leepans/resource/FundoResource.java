@@ -2,6 +2,7 @@ package leepans.resource;
 
 import java.util.List;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -26,7 +27,7 @@ import leepans.service.ecommerce.FundoService;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class FundoResource {
-    
+
     @Inject
     FundoService service;
 
@@ -35,23 +36,24 @@ public class FundoResource {
 
     @POST
     @Transactional
-    public Response create(@Valid FundoRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response create(@Valid FundoRequestDTO dto) {
         Fundo fundo = service.create(fundoMapper.toEntity(dto));
         return Response.status(Status.CREATED).entity(fundoMapper.toResponseDTO(fundo)).build();
     }
 
     @GET
-    public Response findAll(){
+    public Response findAll() {
         List<FundoResponseDTO> lista = service.findAll()
-            .stream()
-            .map(fundoMapper::toResponseDTO)
-            .toList();
+                .stream()
+                .map(fundoMapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") Long id){
+    public Response findById(@PathParam("id") Long id) {
         FundoResponseDTO fundo = fundoMapper.toResponseDTO(service.findById(id));
         if (fundo == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -61,18 +63,19 @@ public class FundoResource {
 
     @GET
     @Path("/cor/{id}")
-    public Response findByCor(@PathParam("id") Long idCor){
+    public Response findByCor(@PathParam("id") Long idCor) {
         List<FundoResponseDTO> lista = service.findByCor(idCor)
-        .stream()
-        .map(fundoMapper::toResponseDTO)
-        .toList();
+                .stream()
+                .map(fundoMapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, FundoRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response update(@PathParam("id") Long id, FundoRequestDTO dto) {
         service.update(id, dto);
         return Response.noContent().build();
     }
@@ -80,7 +83,8 @@ public class FundoResource {
     @DELETE
     @Transactional
     @Path("/{id}")
-    public Response delete(@PathParam("id") Long id){
+    @RolesAllowed({ "ADMIN" })
+    public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }

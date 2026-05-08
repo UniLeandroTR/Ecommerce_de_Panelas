@@ -2,6 +2,7 @@ package leepans.resource;
 
 import java.util.List;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -26,7 +27,7 @@ import leepans.service.ecommerce.SustentacaoService;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class SustentacaoResource {
-    
+
     @Inject
     SustentacaoService service;
 
@@ -35,23 +36,24 @@ public class SustentacaoResource {
 
     @POST
     @Transactional
-    public Response create(@Valid SustentacaoRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response create(@Valid SustentacaoRequestDTO dto) {
         Sustentacao sustentacao = service.create(sustentacaoMapper.toEntity(dto));
         return Response.status(Status.CREATED).entity(sustentacaoMapper.toResponseDTO(sustentacao)).build();
     }
 
     @GET
-    public Response findAll(){
+    public Response findAll() {
         List<SustentacaoResponseDTO> lista = service.findAll()
-            .stream()
-            .map(sustentacaoMapper::toResponseDTO)
-            .toList();
+                .stream()
+                .map(sustentacaoMapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") Long id){
+    public Response findById(@PathParam("id") Long id) {
         SustentacaoResponseDTO sustentacao = sustentacaoMapper.toResponseDTO(service.findById(id));
         if (sustentacao == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -61,18 +63,19 @@ public class SustentacaoResource {
 
     @GET
     @Path("/material/{id}")
-    public Response findByMaterial(@PathParam("id") Long id){
+    public Response findByMaterial(@PathParam("id") Long id) {
         List<SustentacaoResponseDTO> lista = service.findByMaterial(id)
-        .stream()
-        .map(sustentacaoMapper::toResponseDTO)
-        .toList();
+                .stream()
+                .map(sustentacaoMapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, SustentacaoRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response update(@PathParam("id") Long id, SustentacaoRequestDTO dto) {
         service.update(id, dto);
         Sustentacao sustentacao = service.findById(id);
         if (sustentacao == null) {
@@ -84,7 +87,8 @@ public class SustentacaoResource {
     @DELETE
     @Transactional
     @Path("/{id}")
-    public Response delete(@PathParam("id") Long id){
+    @RolesAllowed({ "ADMIN" })
+    public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }

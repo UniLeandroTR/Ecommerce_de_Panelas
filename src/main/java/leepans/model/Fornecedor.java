@@ -13,7 +13,7 @@ public class Fornecedor {
     private String telefone;
     private String cnpj;
 
-    @OneToMany(mappedBy = "fornecedor")
+    @OneToMany(mappedBy = "fornecedor", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Panela> panelas;
 
     public Long getId() {

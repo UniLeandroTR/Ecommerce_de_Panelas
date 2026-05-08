@@ -2,6 +2,7 @@ package leepans.resource;
 
 import java.util.List;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -31,13 +32,14 @@ public class FornecedorResource {
 
     @POST
     @Transactional
-    public Response create(@Valid FornecedorRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response create(@Valid FornecedorRequestDTO dto) {
         Fornecedor fornecedor = service.create(FornecedorMapper.toEntity(dto));
         return Response.status(Response.Status.CREATED).entity(FornecedorMapper.toResponse(fornecedor)).build();
     }
 
     @GET
-    public Response findAll(){
+    public Response findAll() {
         List<FornecedorResponseDTO> lista = service.findAll()
                 .stream()
                 .map(FornecedorMapper::toResponse)
@@ -47,25 +49,26 @@ public class FornecedorResource {
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") Long id){
+    public Response findById(@PathParam("id") Long id) {
         FornecedorResponseDTO fornecedor = FornecedorMapper.toResponse(service.findById(id));
         return Response.ok(fornecedor).build();
     }
 
     @GET
     @Path("/nome/{nome}")
-    public Response findByNome(@PathParam("nome") String nome){
+    public Response findByNome(@PathParam("nome") String nome) {
         List<FornecedorResponseDTO> lista = service.findByNome(nome)
-        .stream()
-        .map(FornecedorMapper::toResponse)
-        .toList();
+                .stream()
+                .map(FornecedorMapper::toResponse)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, FornecedorRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response update(@PathParam("id") Long id, FornecedorRequestDTO dto) {
         service.update(id, dto);
         return Response.noContent().build();
     }
@@ -73,6 +76,7 @@ public class FornecedorResource {
     @DELETE
     @Transactional
     @Path("/{id}")
+    @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id){
         service.delete(id);
         return Response.noContent().build();

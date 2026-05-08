@@ -2,6 +2,7 @@ package leepans.resource;
 
 import java.util.List;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -25,7 +26,7 @@ import leepans.service.ecommerce.ColecaoService;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ColecaoResource {
-    
+
     @Inject
     ColecaoService service;
 
@@ -34,40 +35,42 @@ public class ColecaoResource {
 
     @POST
     @Transactional
-    public Response create(@Valid ColecaoRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response create(@Valid ColecaoRequestDTO dto) {
         Colecao colecao = service.create(mapper.toEntity(dto));
         return Response.status(201).entity(mapper.toResponseDTO(colecao)).build();
     }
 
     @GET
-    public Response findAll(){
+    public Response findAll() {
         List<ColecaoResponseDTO> lista = service.findAll()
-        .stream()
-        .map(mapper::toResponseDTO)
-        .toList();
+                .stream()
+                .map(mapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @GET
     @Path("/nome/{nome}")
-    public Response findByNome(@PathParam("nome") String nome){
+    public Response findByNome(@PathParam("nome") String nome) {
         List<ColecaoResponseDTO> lista = service.findByNome(nome)
-        .stream()
-        .map(mapper::toResponseDTO)
-        .toList();
+                .stream()
+                .map(mapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") Long id){
+    public Response findById(@PathParam("id") Long id) {
         return Response.ok(service.findById(id)).build();
     }
 
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(@PathParam("id") Long id, ColecaoRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response update(@PathParam("id") Long id, ColecaoRequestDTO dto) {
         service.update(id, dto);
         return Response.noContent().build();
     }
@@ -75,7 +78,8 @@ public class ColecaoResource {
     @DELETE
     @Path("/{id}")
     @Transactional
-    public Response delete (@PathParam("id") Long id){
+    @RolesAllowed({ "ADMIN" })
+    public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }

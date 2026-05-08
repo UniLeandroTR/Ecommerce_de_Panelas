@@ -2,6 +2,7 @@ package leepans.resource;
 
 import java.util.List;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -26,29 +27,30 @@ import leepans.service.ecommerce.CorService;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class CorResource {
-    
+
     @Inject
     CorService service;
 
     @POST
     @Transactional
-    public Response create(@Valid CorRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response create(@Valid CorRequestDTO dto) {
         Cor cor = service.create(CorMapper.toEntity(dto));
         return Response.status(Status.CREATED).entity(CorMapper.toResponseDTO(cor)).build();
     }
 
     @GET
-    public Response findAll(){
+    public Response findAll() {
         List<CorResponseDTO> lista = service.findAll()
-        .stream()
-        .map(CorMapper::toResponseDTO)
-        .toList();
+                .stream()
+                .map(CorMapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @GET
     @Path("/{id}")
-    public Response findById(@PathParam("id") Long id){
+    public Response findById(@PathParam("id") Long id) {
         CorResponseDTO cor = CorMapper.toResponseDTO(service.findById(id));
         if (cor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -58,18 +60,19 @@ public class CorResource {
 
     @GET
     @Path("/nome/{nome}")
-    public Response findByNome(@PathParam("nome") String nome){
+    public Response findByNome(@PathParam("nome") String nome) {
         List<CorResponseDTO> lista = service.findByNome(nome)
-        .stream()
-        .map(CorMapper::toResponseDTO)
-        .toList();
+                .stream()
+                .map(CorMapper::toResponseDTO)
+                .toList();
         return Response.ok(lista).build();
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, CorRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response update(@PathParam("id") Long id, CorRequestDTO dto) {
         Cor cor = service.findById(id);
         if (cor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -81,7 +84,8 @@ public class CorResource {
     @DELETE
     @Transactional
     @Path("/{id}")
-    public Response delete(@PathParam("id") Long id){
+    @RolesAllowed({ "ADMIN" })
+    public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }

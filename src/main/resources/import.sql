@@ -78,3 +78,8 @@ insert into Panela (modelo, preco, peso, capacidadelitros, descricaco, isinducao
   ('Classic 24', 24990, 1.8, 3.5, 'Panela clássica com fundo triplo.', true, 1, 1, 4, 7, 1, 1, 1),
   ('PressurePro', 49990, 2.4, 5.0, 'Panela de pressão com tampa de segurança.', false, 2, 2, 5, 8, 2, 2, 2),
   ('CookPlus', 32990, 2.0, 4.2, 'Panela multiuso com acabamento inox.', true, 3, 3, 6, 9, 3, 3, 3);
+
+-- Usuários
+insert into Usuario (login, senha_hash, perfil) values ('Leandro', '$2a$10$nycXt13354pHn507PMJNlerq2mYe8kE/zCl7K.Y5xFbaWwv9DRoxe', 'ADMIN');
+insert into Usuario (login, senha_hash, perfil) values ('Gustavo', '$2a$10$cHmSVT9OZtbbtmkfhANSjumNlcDZZptLjRcpt17G9bKcDxLZ4GW6a', 'FUNCIONARIO');
+insert into Usuario (login, senha_hash, perfil) values ('Pedro', '$2a$10$UrqbJxikJp46JzELXAeaBeCeOM9ssfGhD92rjStksf2Qfw4dCqdRG', 'CLIENTE');

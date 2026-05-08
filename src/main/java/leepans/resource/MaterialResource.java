@@ -20,7 +20,7 @@ import leepans.dto.material.MaterialRequestDTO;
 import leepans.dto.material.MaterialResponseDTO;
 import leepans.mapper.MaterialMapper;
 import leepans.model.Material;
-import leepans.service.MaterialService;
+import leepans.service.ecommerce.MaterialService;
 
 @Path("/materiais")
 @Produces(MediaType.APPLICATION_JSON)

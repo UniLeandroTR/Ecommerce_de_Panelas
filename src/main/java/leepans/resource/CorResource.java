@@ -20,7 +20,7 @@ import leepans.dto.cor.CorRequestDTO;
 import leepans.dto.cor.CorResponseDTO;
 import leepans.mapper.CorMapper;
 import leepans.model.Cor;
-import leepans.service.CorService;
+import leepans.service.ecommerce.CorService;
 
 @Path("/cores")
 @Produces(MediaType.APPLICATION_JSON)

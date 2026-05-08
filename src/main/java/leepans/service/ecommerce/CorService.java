@@ -1,4 +1,4 @@
-package leepans.service;
+package leepans.service.ecommerce;
 
 import java.util.List;
 

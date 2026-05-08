@@ -19,7 +19,7 @@ import leepans.dto.panela.PanelaRequestDTO;
 import leepans.dto.panela.PanelaResponseDTO;
 import leepans.mapper.PanelaMapper;
 import leepans.model.Panela;
-import leepans.service.PanelaService;
+import leepans.service.ecommerce.PanelaService;
 
 @Path("/panelas")
 @Produces(MediaType.APPLICATION_JSON )

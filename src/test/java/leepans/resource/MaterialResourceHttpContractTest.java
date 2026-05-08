@@ -27,7 +27,7 @@ import io.restassured.http.ContentType;
 import jakarta.ws.rs.NotFoundException;
 import leepans.exception.ValidationException;
 import leepans.model.Material;
-import leepans.service.MaterialService;
+import leepans.service.ecommerce.MaterialService;
 
 @QuarkusTest
 class MaterialResourceHttpContractTest {

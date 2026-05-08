@@ -21,6 +21,8 @@ import java.util.List;
 import leepans.model.Cor;
 import leepans.model.Material;
 import leepans.model.TipoSustentacao;
+import leepans.service.ecommerce.SustentacaoService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +33,6 @@ import jakarta.ws.rs.NotFoundException;
 
 import leepans.exception.ValidationException;
 import leepans.model.Sustentacao;
-import leepans.service.SustentacaoService;
 
 @QuarkusTest
 public class SustentacaoResourceHttpContractTest {

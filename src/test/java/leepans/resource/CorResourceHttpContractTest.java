@@ -18,7 +18,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.ws.rs.NotFoundException;
 import leepans.model.Cor;
-import leepans.service.CorService;
+import leepans.service.ecommerce.CorService;
 
 @QuarkusTest
 public class CorResourceHttpContractTest {

@@ -29,7 +29,7 @@ import leepans.exception.ValidationException;
 import leepans.model.Cor;
 import leepans.model.Fundo;
 import leepans.model.Material;
-import leepans.service.FundoService;
+import leepans.service.ecommerce.FundoService;
 
 @QuarkusTest
 class FundoResourceHttpContractTest {

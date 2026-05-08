@@ -19,7 +19,7 @@ import leepans.dto.fornecedor.FornecedorRequestDTO;
 import leepans.dto.fornecedor.FornecedorResponseDTO;
 import leepans.mapper.FornecedorMapper;
 import leepans.model.Fornecedor;
-import leepans.service.FornecedorService;
+import leepans.service.ecommerce.FornecedorService;
 
 @Path("/fornecedores")
 @Produces(MediaType.APPLICATION_JSON)

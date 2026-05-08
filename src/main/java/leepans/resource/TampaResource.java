@@ -20,7 +20,7 @@ import leepans.dto.tampa.TampaRequestDTO;
 import leepans.dto.tampa.TampaResponseDTO;
 import leepans.mapper.TampaMapper;
 import leepans.model.Tampa;
-import leepans.service.TampaService;
+import leepans.service.ecommerce.TampaService;
 
 @Path("/tampas")
 @Produces(MediaType.APPLICATION_JSON)

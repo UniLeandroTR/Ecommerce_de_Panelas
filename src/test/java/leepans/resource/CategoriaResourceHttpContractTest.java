@@ -28,7 +28,7 @@ import jakarta.ws.rs.NotFoundException;
 
 import leepans.exception.ValidationException;
 import leepans.model.Categoria;
-import leepans.service.CategoriaService;
+import leepans.service.ecommerce.CategoriaService;
 
 @QuarkusTest
 public class CategoriaResourceHttpContractTest {

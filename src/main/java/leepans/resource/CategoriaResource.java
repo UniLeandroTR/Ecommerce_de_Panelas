@@ -10,7 +10,7 @@ import leepans.dto.categoria.CategoriaRequestDTO;
 import leepans.dto.categoria.CategoriaResponseDTO;
 import leepans.mapper.CategoriaMapper;
 import leepans.model.Categoria;
-import leepans.service.CategoriaService;
+import leepans.service.ecommerce.CategoriaService;
 
 import java.util.List;
 

@@ -18,7 +18,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.ws.rs.NotFoundException;
 import leepans.model.Colecao;
-import leepans.service.ColecaoService;
+import leepans.service.ecommerce.ColecaoService;
 
 @QuarkusTest
 public class ColecaoResourceHttpContractTest {

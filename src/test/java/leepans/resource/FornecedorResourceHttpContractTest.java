@@ -18,7 +18,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.ws.rs.NotFoundException;
 import leepans.model.Fornecedor;
-import leepans.service.FornecedorService;
+import leepans.service.ecommerce.FornecedorService;
 
 @QuarkusTest
 public class FornecedorResourceHttpContractTest {

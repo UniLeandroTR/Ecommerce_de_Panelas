@@ -19,6 +19,8 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 
 import leepans.model.*;
+import leepans.service.ecommerce.PanelaService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +30,6 @@ import io.restassured.http.ContentType;
 import jakarta.ws.rs.NotFoundException;
 
 import leepans.exception.ValidationException;
-import leepans.service.PanelaService;
 
 @QuarkusTest
 class PanelaResourceHttpContractTest {

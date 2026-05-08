@@ -20,7 +20,7 @@ import leepans.dto.sustentacao.SustentacaoRequestDTO;
 import leepans.dto.sustentacao.SustentacaoResponseDTO;
 import leepans.mapper.SustentacaoMapper;
 import leepans.model.Sustentacao;
-import leepans.service.SustentacaoService;
+import leepans.service.ecommerce.SustentacaoService;
 
 @Path("/sustentacoes")
 @Produces(MediaType.APPLICATION_JSON)

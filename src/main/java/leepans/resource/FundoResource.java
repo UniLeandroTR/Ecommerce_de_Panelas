@@ -20,7 +20,7 @@ import leepans.dto.fundo.FundoRequestDTO;
 import leepans.dto.fundo.FundoResponseDTO;
 import leepans.mapper.FundoMapper;
 import leepans.model.Fundo;
-import leepans.service.FundoService;
+import leepans.service.ecommerce.FundoService;
 
 @Path("/fundos")
 @Produces(MediaType.APPLICATION_JSON)

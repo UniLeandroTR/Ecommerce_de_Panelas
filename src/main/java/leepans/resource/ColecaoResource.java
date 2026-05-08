@@ -19,7 +19,7 @@ import leepans.dto.colecao.ColecaoRequestDTO;
 import leepans.dto.colecao.ColecaoResponseDTO;
 import leepans.mapper.ColecaoMapper;
 import leepans.model.Colecao;
-import leepans.service.ColecaoService;
+import leepans.service.ecommerce.ColecaoService;
 
 @Path("/colecoes")
 @Produces(MediaType.APPLICATION_JSON)

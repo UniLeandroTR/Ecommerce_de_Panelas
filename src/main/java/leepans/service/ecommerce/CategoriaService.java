@@ -1,4 +1,4 @@
-package leepans.service;
+package leepans.service.ecommerce;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

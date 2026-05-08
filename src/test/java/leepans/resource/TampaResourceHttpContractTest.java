@@ -29,7 +29,7 @@ import leepans.exception.ValidationException;
 import leepans.model.Cor;
 import leepans.model.Material;
 import leepans.model.Tampa;
-import leepans.service.TampaService;
+import leepans.service.ecommerce.TampaService;
 
 @QuarkusTest
 class TampaResourceHttpContractTest {

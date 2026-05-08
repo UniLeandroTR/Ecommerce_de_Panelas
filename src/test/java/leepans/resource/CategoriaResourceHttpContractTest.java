@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.ws.rs.NotFoundException;
 
@@ -90,6 +91,7 @@ public class CategoriaResourceHttpContractTest {
     }
 
     @Test
+    @TestSecurity(user = "funcionario", roles = { "FUNCIONARIO" })
     void deveCriarCategoriaComStatus201() {
         when(service.create(any(Categoria.class)))
             .thenReturn(categoria(10L, "Panelas"));
@@ -108,6 +110,7 @@ public class CategoriaResourceHttpContractTest {
     }
 
     @Test
+    @TestSecurity(user = "funcionario", roles = { "FUNCIONARIO" })
     void deveAtualizarCategoriaComStatus204() {
         doNothing().when(service).update(any(Long.class), any());
 
@@ -122,6 +125,7 @@ public class CategoriaResourceHttpContractTest {
     }
 
     @Test
+    @TestSecurity(user = "admin", roles = { "ADMIN" })
     void deveRemoverCategoriaComStatus204() {
         doNothing().when(service).delete(1L);
 
@@ -134,6 +138,7 @@ public class CategoriaResourceHttpContractTest {
     }
 
     @Test
+    @TestSecurity(user = "funcionario", roles = { "FUNCIONARIO" })
     void deveRetornar422QuandoPayloadForInvalido() {
         given()
             .contentType(ContentType.JSON)
@@ -154,6 +159,7 @@ public class CategoriaResourceHttpContractTest {
     }
 
     @Test
+    @TestSecurity(user = "funcionario", roles = { "FUNCIONARIO" })
     void deveRetornar400QuandoJsonForMalformado() {
         given()
             .contentType(ContentType.JSON)
@@ -216,6 +222,7 @@ public class CategoriaResourceHttpContractTest {
     }
 
     @Test
+    @TestSecurity(user = "funcionario", roles = { "FUNCIONARIO" })
     void deveMapearValidationExceptionCorretamente() {
         doThrow(new ValidationException("Já existe uma categoria cadastrada com o tipo: Panelas", "tipo"))
             .when(service)
@@ -238,6 +245,51 @@ public class CategoriaResourceHttpContractTest {
             .body("errors[0].field", equalTo("tipo"))
             .body("errors[0].message", containsString("Já existe uma categoria cadastrada com o tipo: Panelas"))
             .body("timestamp", notNullValue());
+    }
+
+    @Test
+    void deveRetornar401QuandoTentarCriarSemAutenticacao() {
+        given()
+            .contentType(ContentType.JSON)
+            .accept(ContentType.JSON)
+            .body("{\"tipo\":\"Panelas\"}") 
+        .when()
+            .post(BASE_URL)
+        .then()
+            .statusCode(401);
+    }
+
+    @Test
+    void deveRetornar401QuandoTentarAtualizarSemAutenticacao() {
+        given()
+            .contentType(ContentType.JSON)
+            .accept(ContentType.JSON)
+            .body("{\"tipo\":\"Panelas\"}") 
+        .when()
+            .put(BASE_URL + "/1")
+        .then()
+            .statusCode(401);
+    }
+
+    @Test
+    void deveRetornar401QuandoTentarDeletarSemAutenticacao() {
+        given()
+            .accept(ContentType.JSON)
+        .when()
+            .delete(BASE_URL + "/1")
+        .then()
+            .statusCode(401);
+    }
+
+    @Test
+    @TestSecurity(user = "cliente", roles = { "CLIENTE" })
+    void deveRetornar403QuandoTentarDeletarComRoleInsuficiente() {
+        given()
+            .accept(ContentType.JSON)
+        .when()
+            .delete(BASE_URL + "/1")
+        .then()
+            .statusCode(403);
     }
 
     private Categoria categoria(Long id, String tipo) {

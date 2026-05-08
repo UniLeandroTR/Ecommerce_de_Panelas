@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.ws.rs.NotFoundException;
 import leepans.model.Colecao;
@@ -80,6 +81,7 @@ public class ColecaoResourceHttpContractTest {
     }
 
     @Test
+    @TestSecurity(user = "funcionario", roles = { "FUNCIONARIO" })
     void deveCriarColecaoComStatus201() {
         when(service.create(any(Colecao.class)))
                 .thenReturn(colecao(10L, "Verão"));

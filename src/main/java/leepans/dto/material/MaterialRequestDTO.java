@@ -10,6 +10,8 @@ public record MaterialRequestDTO(
         @Size(min = 3, max = 100, message = "O nome deve ter entre 3 a 100 caracteres")
         String nome,
 
-        List<String> qualidades) {
+        List<String> qualidades,
+
+        Integer version) {
     
 }

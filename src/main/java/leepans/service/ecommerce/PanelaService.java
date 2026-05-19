@@ -6,6 +6,7 @@ import org.hibernate.Hibernate;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.OptimisticLockException;
 import leepans.dto.panela.PanelaRequestDTO;
 import leepans.model.Panela;
 import leepans.repository.CategoriaRepository;
@@ -85,7 +86,11 @@ public class PanelaService implements PanelaServiceInter{
     @Override
     public void update(Long id, PanelaRequestDTO dto) {
         Panela panela = repository.findById(id);
-
+        if (panela.getVersion() != dto.version()) {
+            throw new OptimisticLockException(
+                "Conflito de concorrência: a panela foi alterada por outra transação."
+            );
+        }
         panela.setModelo(dto.modelo());
         panela.setPreco(dto.preco());
         panela.setPeso(dto.peso());

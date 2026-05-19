@@ -251,7 +251,6 @@ class FundoResourceHttpContractTest {
         Fundo fundo = new Fundo();
         fundo.setId(id);
         fundo.setPeso(peso);
-        fundo.setCor(cor);
         fundo.setMateriais(materiais);
         fundo.setEspessura(espessura);
         fundo.setIsAntiaderente(isAntiaderente);

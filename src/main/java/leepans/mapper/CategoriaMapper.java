@@ -11,6 +11,9 @@ public class CategoriaMapper {
 
         Categoria categoria = new Categoria();
         categoria.setTipo(dto.tipo());
+        if(dto.version() != null){
+            categoria.setVersion(dto.version());
+        }
         return categoria;
     }
 
@@ -19,7 +22,9 @@ public class CategoriaMapper {
 
         return new CategoriaResponseDTO(
           categoria.getId(),
-          categoria.getTipo()
+          categoria.getTipo(),
+          categoria.getDataCadastro(),
+          categoria.getVersion()
         );
     }
 }

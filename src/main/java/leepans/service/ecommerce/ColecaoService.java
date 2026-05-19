@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.OptimisticLockException;
 import leepans.dto.colecao.ColecaoRequestDTO;
 import leepans.model.Colecao;
 import leepans.repository.ColecaoRepository;
@@ -38,6 +39,12 @@ public class ColecaoService implements ColecaoServiceInter{
     @Override
     public void update(Long id, ColecaoRequestDTO dto) {
         Colecao colecao = repository.findById(id);
+
+        if (colecao.getVersion() != dto.version()) {
+            throw new OptimisticLockException(
+                "Conflito de concorrência: a colecao foi alterado por outra transação."
+            );
+        }
 
         colecao.setNome(dto.nome());
 

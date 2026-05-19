@@ -1,15 +1,15 @@
 package leepans.mapper;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import leepans.dto.sustentacao.SustentacaoRequestDTO;
 import leepans.dto.sustentacao.SustentacaoResponseDTO;
-import leepans.model.Sustentacao;
 import leepans.model.Material;
-import leepans.repository.CorRepository;
+import leepans.model.Sustentacao;
 import leepans.repository.MaterialRepository;
 
 @ApplicationScoped
@@ -17,9 +17,6 @@ public class SustentacaoMapper {
     
     @Inject
     MaterialRepository materialRepository;
-
-    @Inject
-    CorRepository corRepository;
 
     public Sustentacao toEntity (SustentacaoRequestDTO dto){
         if(dto == null) return null;
@@ -31,10 +28,12 @@ public class SustentacaoMapper {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         sustentacao.setMateriais(materiais);
-        sustentacao.setCor(corRepository.findById(dto.idCor()));
         sustentacao.setTamanhoEmCm(dto.tamanhoEmCm());
         sustentacao.setQuantidade(dto.quantidade());
         sustentacao.setTipoSustentacao(dto.tipoSustentacao());
+        if(dto.version() != null){
+            sustentacao.setVersion(dto.version());
+        }
 
         return sustentacao;
     }
@@ -46,10 +45,11 @@ public class SustentacaoMapper {
             sustentacao.getId(),
             sustentacao.getPeso(),
             MaterialMapper.toResponseDTO(sustentacao.getMateriais()),
-            CorMapper.toResponseDTO(sustentacao.getCor()),
             sustentacao.getTamanhoEmCm(),
             sustentacao.getQuantidade(),
-            sustentacao.getTipoSustentacao()
+            sustentacao.getTipoSustentacao(),
+            sustentacao.getDataCadastro(),
+            sustentacao.getVersion()
         );
     }
 }

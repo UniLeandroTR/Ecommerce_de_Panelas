@@ -13,6 +13,8 @@ public record FornecedorRequestDTO(
 
         @NotBlank(message = "O CNPJ deve ser preenchido!")
         @Size(min = 14, max = 18, message = "O CNPJ deve ter entre 14 a 18 caracteres")
-        String cnpj
+        String cnpj,
+
+        Integer version
 ) {
 }

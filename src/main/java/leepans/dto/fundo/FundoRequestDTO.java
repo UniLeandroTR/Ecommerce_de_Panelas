@@ -1,20 +1,17 @@
 package leepans.dto.fundo;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.util.List;
+
+import jakarta.validation.constraints.NotNull;
 
 public record FundoRequestDTO(
         Double peso,
 
-        @NotNull
-        List<Long> idsMateriais,
-
-        @NotNull
-        Long idCor,
-
+        @NotNull List<Long> idsMateriais,
         Double espessura,
 
-        Boolean isAntiaderente) {
-    
+        Boolean isAntiaderente,
+
+        Integer version) {
+
 }

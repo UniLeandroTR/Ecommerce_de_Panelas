@@ -2,6 +2,7 @@ package leepans.service.ecommerce;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.OptimisticLockException;
 import leepans.dto.categoria.CategoriaRequestDTO;
 import leepans.model.Categoria;
 import leepans.repository.CategoriaRepository;
@@ -38,6 +39,13 @@ public class CategoriaService implements CategoriaServiceInter {
     @Override
     public void update(Long id, CategoriaRequestDTO dto) {
         Categoria categoria = repository.findById(id);
+
+        if (categoria.getVersion() != dto.version()) {
+            throw new OptimisticLockException(
+                "Conflito de concorrência: a categoria foi alterado por outra transação."
+            );
+        }
+
         categoria.setTipo(dto.tipo());
         repository.persist(categoria);
     }

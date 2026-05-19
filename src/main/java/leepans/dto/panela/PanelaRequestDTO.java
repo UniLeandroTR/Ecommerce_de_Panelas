@@ -27,6 +27,12 @@ public record PanelaRequestDTO(
 
     Long idColecao,
 
+    @NotNull(message = "É necessário escolher uma cor")
+    Long idCor,
+
+    @NotNull(message = "É necessário escolher um material principal")
+    Long idMaterialPrincipal,
+    
     @NotNull(message = "É necessário escolher uma categoria")
     Long idCategoria,
 
@@ -39,7 +45,9 @@ public record PanelaRequestDTO(
     Long idFundo,
 
     @NotNull(message = "É necessário escolher uma sustentação")
-    Long idSustentacao
+    Long idSustentacao,
+    
+    Integer version
 ) {
     
 }

@@ -4,25 +4,25 @@ import java.time.LocalDateTime;
 
 import leepans.dto.categoria.CategoriaResponseDTO;
 import leepans.dto.colecao.ColecaoResponseDTO;
-import leepans.dto.fornecedor.FornecedorResponseDTO;
+import leepans.dto.cor.CorResponseDTO;
 import leepans.dto.fundo.FundoResponseDTO;
+import leepans.dto.material.MaterialResponseDTO;
 import leepans.dto.sustentacao.SustentacaoResponseDTO;
 import leepans.dto.tampa.TampaResponseDTO;
 import leepans.model.Tamanho;
 
-public record PanelaResponseDTO(
+public record PanelaEcommerceDTO(
     Long id,
     String modelo,
     LocalDateTime dataCadastro,
     Long preco,
-    Double peso,
     Double capacidadeLitros,
-    String descricao,
     boolean isInducao,
     Tamanho tamanho,
+    MaterialResponseDTO material,
+    CorResponseDTO cor,
     CategoriaResponseDTO categoria,
     ColecaoResponseDTO colecao,
-    FornecedorResponseDTO fornecedor,
     TampaResponseDTO tampa,
     FundoResponseDTO fundo,
     SustentacaoResponseDTO sustentacao,

@@ -248,7 +248,6 @@ class TampaResourceHttpContractTest {
         Tampa t = new Tampa();
         t.setId(id);
         t.setPeso(peso);
-        t.setCor(cor);
         t.setMateriais(materiais);
         t.setIsDePressao(isDePressao);
         return t;

@@ -19,6 +19,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.fundo.FundoRequestDTO;
 import leepans.dto.fundo.FundoResponseDTO;
+import leepans.exception.ValidationException;
 import leepans.mapper.FundoMapper;
 import leepans.model.Fundo;
 import leepans.service.ecommerce.FundoService;
@@ -76,6 +77,9 @@ public class FundoResource {
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, FundoRequestDTO dto) {
+        if (dto.version() == null) {
+            throw new ValidationException("A versão do fundo é obrigatória para atualização.", "version");
+        }
         service.update(id, dto);
         return Response.noContent().build();
     }

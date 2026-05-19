@@ -1,15 +1,15 @@
 package leepans.mapper;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import leepans.dto.fundo.FundoRequestDTO;
 import leepans.dto.fundo.FundoResponseDTO;
 import leepans.model.Fundo;
 import leepans.model.Material;
-import leepans.repository.CorRepository;
 import leepans.repository.MaterialRepository;
 
 @ApplicationScoped
@@ -17,9 +17,6 @@ public class FundoMapper {
     
     @Inject
     MaterialRepository materialRepository;
-
-    @Inject
-    CorRepository corRepository;
 
     public Fundo toEntity (FundoRequestDTO dto){
         if(dto == null) return null;
@@ -31,9 +28,11 @@ public class FundoMapper {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         fundo.setMateriais(materiais);
-        fundo.setCor(corRepository.findById(dto.idCor()));
         fundo.setEspessura(dto.espessura());
         fundo.setIsAntiaderente(dto.isAntiaderente());
+        if(dto.version() != null){
+            fundo.setVersion(dto.version());
+        }
 
         return fundo;
     }
@@ -45,9 +44,10 @@ public class FundoMapper {
             fundo.getId(),
             fundo.getPeso(),
             MaterialMapper.toResponseDTO(fundo.getMateriais()),
-            CorMapper.toResponseDTO(fundo.getCor()),
             fundo.getEspessura(),
-            fundo.getIsAntiaderente()
+            fundo.getIsAntiaderente(),
+            fundo.getDataCadastro(),
+            fundo.getVersion()
         );
     }
 }

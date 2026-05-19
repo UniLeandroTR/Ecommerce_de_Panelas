@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.OptimisticLockException;
 import leepans.dto.material.MaterialRequestDTO;
 import leepans.model.Material;
 import leepans.repository.MaterialRepository;
@@ -38,6 +39,11 @@ public class MaterialService implements MaterialServiceInter{
     @Override
     public void update(Long id, MaterialRequestDTO dto) {
         Material material = repository.findById(id);
+        if (material.getVersion() != dto.version()) {
+            throw new OptimisticLockException(
+                "Conflito de concorrência: o material foi alterado por outra transação."
+            );
+        }
         if (material != null) {
             material.setNome(dto.nome());
             material.setQualidades(dto.qualidades());

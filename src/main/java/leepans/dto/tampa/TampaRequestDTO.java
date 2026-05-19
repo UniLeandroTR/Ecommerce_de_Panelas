@@ -1,7 +1,8 @@
 package leepans.dto.tampa;
 
-import jakarta.validation.constraints.NotNull;
 import java.util.List;
+
+import jakarta.validation.constraints.NotNull;
 
 public record TampaRequestDTO(
         Double peso,
@@ -9,9 +10,8 @@ public record TampaRequestDTO(
         @NotNull
         List<Long> idsMateriais,
 
-        @NotNull
-        Long idCor,
+        Boolean isDePressao,
 
-        Boolean isDePressao) {
+        Integer version) {
     
 }

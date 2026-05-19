@@ -2,6 +2,7 @@ package leepans.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import leepans.dto.panela.PanelaEcommerceDTO;
 import leepans.dto.panela.PanelaRequestDTO;
 import leepans.dto.panela.PanelaResponseDTO;
 import leepans.model.Panela;
@@ -63,6 +64,10 @@ public class PanelaMapper {
         panela.setTampa(tampaRepository.findById(dto.idTampa()));
         panela.setFundo(fundoRepository.findById(dto.idFundo()));
         panela.setSustentacao(sustentacaoRepository.findById(dto.idSustentacao()));
+        if(dto.version() != null){
+            panela.setVersion(dto.version());
+        }
+
         return panela;
     }
     
@@ -72,6 +77,7 @@ public class PanelaMapper {
         return new PanelaResponseDTO(
                 panela.getId(),
                 panela.getModelo(),
+                panela.getDataCadastro(),
                 panela.getPreco(),
                 panela.getPeso(),
                 panela.getCapacidadeLitros(),
@@ -83,7 +89,30 @@ public class PanelaMapper {
                 FornecedorMapper.toResponse(panela.getFornecedor()),
                 tampaMapper.toResponseDTO(panela.getTampa()),
                 fundoMapper.toResponseDTO(panela.getFundo()),
-                sustentacaoMapper.toResponseDTO(panela.getSustentacao())
+                sustentacaoMapper.toResponseDTO(panela.getSustentacao()),
+                panela.getVersion()
+        );
+    }
+
+    public PanelaEcommerceDTO toEcommerceDTO (Panela panela){
+        if(panela==null) return null;
+        
+        return new PanelaEcommerceDTO(
+                panela.getId(),
+                panela.getModelo(),
+                panela.getDataCadastro(),
+                panela.getPreco(),
+                panela.getCapacidadeLitros(),
+                panela.getIsInducao(),
+                panela.getTamanho(),
+                MaterialMapper.toResponseDTO(panela.getMaterialPrincipal()),
+                CorMapper.toResponseDTO(panela.getCor()),
+                CategoriaMapper.toResponse(panela.getCategoria()),
+                colecaoMapper.toResponseDTO(panela.getColecao()),
+                tampaMapper.toResponseDTO(panela.getTampa()),
+                fundoMapper.toResponseDTO(panela.getFundo()),
+                sustentacaoMapper.toResponseDTO(panela.getSustentacao()),
+                panela.getVersion()
         );
     }
 }

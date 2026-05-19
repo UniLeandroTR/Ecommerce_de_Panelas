@@ -19,6 +19,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.tampa.TampaRequestDTO;
 import leepans.dto.tampa.TampaResponseDTO;
+import leepans.exception.ValidationException;
 import leepans.mapper.TampaMapper;
 import leepans.model.Tampa;
 import leepans.service.ecommerce.TampaService;
@@ -76,6 +77,9 @@ public class TampaResource {
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, TampaRequestDTO dto) {
+        if (dto.version() == null) {
+            throw new ValidationException("A versão da tampa é obrigatória para atualização.", "version");
+        }
         service.update(id, dto);
         return Response.noContent().build();
     }

@@ -16,8 +16,10 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import leepans.dto.panela.PanelaEcommerceDTO;
 import leepans.dto.panela.PanelaRequestDTO;
 import leepans.dto.panela.PanelaResponseDTO;
+import leepans.exception.ValidationException;
 import leepans.mapper.PanelaMapper;
 import leepans.model.Panela;
 import leepans.service.ecommerce.PanelaService;
@@ -76,11 +78,32 @@ public class PanelaResource {
         return Response.ok(lista).build();
     }
 
+    @GET
+    @Path("/ecommerce")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
+    public Response findAllEcommerce() {
+        List<PanelaEcommerceDTO> lista = service.findAll()
+                .stream()
+                .map(mapper::toEcommerceDTO)
+                .toList();
+        return Response.ok(lista).build();
+    }
+
+    @GET
+    @Path("/ecommerce/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
+    public Response findByIdEcommerce(@PathParam("id") Long id) {
+        return Response.ok(mapper.toEcommerceDTO(service.findById(id))).build();
+    }
+
     @PUT
     @Path("/{id}")
     @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, PanelaRequestDTO dto) {
+        if (dto.version() == null) {
+            throw new ValidationException("A versão da panela é obrigatória para atualização.", "version");
+        }
         service.update(id, dto);
         return Response.noContent().build();
     }

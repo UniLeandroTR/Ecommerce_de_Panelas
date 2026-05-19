@@ -35,15 +35,15 @@ insert into material_qualidades (material_id, qualidades) values (3, 'Antiaderen
 insert into material_qualidades (material_id, qualidades) values (3, 'Fácil limpeza');
 
 -- Componentes (superclasse Componente)
-insert into Componente (peso, cor_id) values (0.9, 2);
-insert into Componente (peso, cor_id) values (1.2, 3);
-insert into Componente (peso, cor_id) values (1.5, 1);
-insert into Componente (peso, cor_id) values (0.4, 3);
-insert into Componente (peso, cor_id) values (0.5, 1);
-insert into Componente (peso, cor_id) values (0.6, 2);
-insert into Componente (peso, cor_id) values (0.8, 1);
-insert into Componente (peso, cor_id) values (0.7, 2);
-insert into Componente (peso, cor_id) values (0.9, 3);
+insert into Componente (peso) values (0.9);
+insert into Componente (peso) values (1.2);
+insert into Componente (peso) values (1.5);
+insert into Componente (peso) values (0.4);
+insert into Componente (peso) values (0.5);
+insert into Componente (peso) values (0.6);
+insert into Componente (peso) values (0.8);
+insert into Componente (peso) values (0.7);
+insert into Componente (peso) values (0.9);
 
 -- Fundos
 insert into Fundo (id, espessura, isantiaderente) values (1, 2.8, true);
@@ -74,10 +74,10 @@ insert into componente_material (componente_id, material_id) values (8, 3);
 insert into componente_material (componente_id, material_id) values (9, 1);
 
 -- Panelas
-insert into Panela (modelo, preco, peso, capacidadelitros, descricaco, isinducao, id_colecao, id_fundo, id_sustentacao, id_tampa, id_fornecedor, codigo_tamanho, id_categoria) values
-  ('Classic 24', 24990, 1.8, 3.5, 'Panela clássica com fundo triplo.', true, 1, 1, 4, 7, 1, 1, 1),
-  ('PressurePro', 49990, 2.4, 5.0, 'Panela de pressão com tampa de segurança.', false, 2, 2, 5, 8, 2, 2, 2),
-  ('CookPlus', 32990, 2.0, 4.2, 'Panela multiuso com acabamento inox.', true, 3, 3, 6, 9, 3, 3, 3);
+insert into Panela (modelo, preco, peso, capacidadelitros, descricaco, isinducao, id_cor, id_material_principal, id_colecao, id_fundo, id_sustentacao, id_tampa, id_fornecedor, codigo_tamanho, id_categoria) values
+  ('Classic 24', 24990, 1.8, 3.5, 'Panela clássica com fundo triplo.', true, 3, 2, 1, 1, 4, 7, 1, 1, 1),
+  ('PressurePro', 49990, 2.4, 5.0, 'Panela de pressão com tampa de segurança.', false, 1, 1, 2, 2, 5, 8, 2, 2, 2),
+  ('CookPlus', 32990, 2.0, 4.2, 'Panela multiuso com acabamento inox.', true, 2, 2, 3, 3, 6, 9, 3, 3, 3);
 
 -- Usuários
 insert into Usuario (login, senha_hash, perfil) values ('Leandro', '$2a$10$nycXt13354pHn507PMJNlerq2mYe8kE/zCl7K.Y5xFbaWwv9DRoxe', 'ADMIN');

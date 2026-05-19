@@ -8,20 +8,27 @@ import leepans.model.Colecao;
 @ApplicationScoped
 public class ColecaoMapper {
 
-    public Colecao toEntity(ColecaoRequestDTO dto){
-        if(dto==null) return null;
+    public Colecao toEntity(ColecaoRequestDTO dto) {
+        if (dto == null)
+            return null;
 
         Colecao colecao = new Colecao();
         colecao.setNome(dto.nome());
+        if(dto.version() != null){
+            colecao.setVersion(dto.version());
+        }
 
         return colecao;
     }
 
-    public ColecaoResponseDTO toResponseDTO (Colecao colecao){
-        if(colecao==null) return null;
+    public ColecaoResponseDTO toResponseDTO(Colecao colecao) {
+        if (colecao == null)
+            return null;
 
         return new ColecaoResponseDTO(
             colecao.getId(),
-            colecao.getNome());
+            colecao.getNome(),
+            colecao.getDataCadastro(),
+            colecao.getVersion());
     }
 }

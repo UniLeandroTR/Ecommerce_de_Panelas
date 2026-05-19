@@ -1,4 +1,6 @@
 package leepans.dto.fornecedor;
 
-public record FornecedorResponseDTO(Long id, String nome, String telefone, String cnpj) {
+import java.time.LocalDateTime;
+
+public record FornecedorResponseDTO(Long id, String nome, String telefone, String cnpj, LocalDateTime dataCadastro, Integer version) {
 }

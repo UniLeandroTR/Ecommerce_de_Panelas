@@ -19,6 +19,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.sustentacao.SustentacaoRequestDTO;
 import leepans.dto.sustentacao.SustentacaoResponseDTO;
+import leepans.exception.ValidationException;
 import leepans.mapper.SustentacaoMapper;
 import leepans.model.Sustentacao;
 import leepans.service.ecommerce.SustentacaoService;
@@ -76,6 +77,9 @@ public class SustentacaoResource {
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, SustentacaoRequestDTO dto) {
+        if (dto.version() == null) {
+            throw new ValidationException("A versão da sustentação é obrigatória para atualização.", "version");
+        }
         service.update(id, dto);
         Sustentacao sustentacao = service.findById(id);
         if (sustentacao == null) {

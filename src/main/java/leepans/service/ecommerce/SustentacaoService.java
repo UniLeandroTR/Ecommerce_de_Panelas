@@ -8,9 +8,9 @@ import org.hibernate.Hibernate;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.OptimisticLockException;
 import leepans.dto.sustentacao.SustentacaoRequestDTO;
 import leepans.model.Sustentacao;
-import leepans.repository.CorRepository;
 import leepans.repository.MaterialRepository;
 import leepans.repository.SustentacaoRepository;
 
@@ -19,9 +19,6 @@ public class SustentacaoService implements SustentacaoServiceInter{
 
     @Inject
     SustentacaoRepository repository;
-
-    @Inject
-    CorRepository corRepository;
 
     @Inject
     MaterialRepository materialRepository;
@@ -53,13 +50,17 @@ public class SustentacaoService implements SustentacaoServiceInter{
     @Override
     public void update(Long id, SustentacaoRequestDTO dto) {
         Sustentacao sustentacao = repository.findById(id);
+        if (sustentacao.getVersion() != dto.version()) {
+            throw new OptimisticLockException(
+                "Conflito de concorrência: a sustentação foi alterada por outra transação."
+            );
+        }
         if (sustentacao != null) {
             sustentacao.setPeso(dto.peso());
             sustentacao.setMateriais(dto.idsMateriais() == null ? null : dto.idsMateriais().stream()
                     .map(materialRepository::findById)
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList()));
-            sustentacao.setCor(corRepository.findById(dto.idCor()));
             sustentacao.setQuantidade(dto.quantidade());
             sustentacao.setTamanhoEmCm(dto.tamanhoEmCm());
             sustentacao.setTipoSustentacao(dto.tipoSustentacao());

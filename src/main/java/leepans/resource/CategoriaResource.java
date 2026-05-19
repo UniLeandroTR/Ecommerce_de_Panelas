@@ -9,6 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import leepans.dto.categoria.CategoriaRequestDTO;
 import leepans.dto.categoria.CategoriaResponseDTO;
+import leepans.exception.ValidationException;
 import leepans.mapper.CategoriaMapper;
 import leepans.model.Categoria;
 import leepans.service.ecommerce.CategoriaService;
@@ -62,6 +63,9 @@ public class CategoriaResource {
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, CategoriaRequestDTO dto) {
+        if (dto.version() == null) {
+            throw new ValidationException("A versão da categoria é obrigatória para atualização.", "version");
+        }
         service.update(id, dto);
         return Response.noContent().build();
     }

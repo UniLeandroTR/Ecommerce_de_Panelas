@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import leepans.dto.colecao.ColecaoRequestDTO;
 import leepans.dto.colecao.ColecaoResponseDTO;
+import leepans.exception.ValidationException;
 import leepans.mapper.ColecaoMapper;
 import leepans.model.Colecao;
 import leepans.service.ecommerce.ColecaoService;
@@ -71,6 +72,9 @@ public class ColecaoResource {
     @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, ColecaoRequestDTO dto) {
+        if (dto.version() == null) {
+            throw new ValidationException("A versão da coleção é obrigatória para atualização.", "version");
+        }
         service.update(id, dto);
         return Response.noContent().build();
     }

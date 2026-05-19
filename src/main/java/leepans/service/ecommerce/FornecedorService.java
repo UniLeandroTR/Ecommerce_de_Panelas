@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.OptimisticLockException;
 import leepans.dto.fornecedor.FornecedorRequestDTO;
 import leepans.model.Fornecedor;
 import leepans.repository.FornecedorRepository;
@@ -38,6 +39,11 @@ public class FornecedorService implements FornecedorServiceInter {
     @Override
     public void update(Long id, FornecedorRequestDTO dto) {
         Fornecedor fornecedor = repository.findById(id);
+        if (fornecedor.getVersion() != dto.version()) {
+            throw new OptimisticLockException(
+                "Conflito de concorrência: o fornecedor foi alterado por outra transação."
+            );
+        }
         fornecedor.setNome(dto.nome());
         fornecedor.setTelefone(dto.telefone());
         fornecedor.setCnpj(dto.cnpj());

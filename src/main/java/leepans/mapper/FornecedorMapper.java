@@ -13,6 +13,10 @@ public class FornecedorMapper {
         fornecedor.setNome(dto.nome());
         fornecedor.setCnpj(dto.cnpj());
         fornecedor.setTelefone(dto.telefone());
+        if(dto.version() != null){
+            fornecedor.setVersion(dto.version());
+        }
+
         return fornecedor;
     }
 
@@ -23,7 +27,9 @@ public class FornecedorMapper {
           fornecedor.getId(),
           fornecedor.getNome(),
           fornecedor.getTelefone(),
-          fornecedor.getCnpj()
+          fornecedor.getCnpj(),
+          fornecedor.getDataCadastro(),
+          fornecedor.getVersion()
         );
     }
 }

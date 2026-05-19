@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import leepans.dto.fornecedor.FornecedorRequestDTO;
 import leepans.dto.fornecedor.FornecedorResponseDTO;
+import leepans.exception.ValidationException;
 import leepans.mapper.FornecedorMapper;
 import leepans.model.Fornecedor;
 import leepans.service.ecommerce.FornecedorService;
@@ -69,6 +70,9 @@ public class FornecedorResource {
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, FornecedorRequestDTO dto) {
+        if (dto.version() == null) {
+            throw new ValidationException("A versão do fornecedor é obrigatória para atualização.", "version");
+        }
         service.update(id, dto);
         return Response.noContent().build();
     }

@@ -14,6 +14,10 @@ public class MaterialMapper {
         Material material = new Material();
         material.setNome(dto.nome());
         material.setQualidades(dto.qualidades());
+        if(dto.version() != null){
+            material.setVersion(dto.version());
+        }
+        
         return material;
     }
 
@@ -23,7 +27,10 @@ public class MaterialMapper {
         return new MaterialResponseDTO(
             material.getId(), 
             material.getNome(), 
-            material.getQualidades());
+            material.getQualidades(),
+            material.getDataCadastro(),
+            material.getVersion()
+        );
     }
 
     public static List<MaterialResponseDTO> toResponseDTO(List<Material> materiais) {

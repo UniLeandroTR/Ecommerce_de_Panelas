@@ -19,6 +19,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.cor.CorRequestDTO;
 import leepans.dto.cor.CorResponseDTO;
+import leepans.exception.ValidationException;
 import leepans.mapper.CorMapper;
 import leepans.model.Cor;
 import leepans.service.ecommerce.CorService;
@@ -73,6 +74,9 @@ public class CorResource {
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, CorRequestDTO dto) {
+        if (dto.version() == null) {
+            throw new ValidationException("A versão da cor é obrigatória para atualização.", "version");
+        }
         Cor cor = service.findById(id);
         if (cor == null) {
             return Response.status(Response.Status.NOT_FOUND).build();

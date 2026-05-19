@@ -250,7 +250,6 @@ public class SustentacaoResourceHttpContractTest {
                 Sustentacao s = new Sustentacao();
                 s.setId(id);
                 s.setPeso(peso);
-                s.setCor(cor);
                 s.setMateriais(materiais);
                 s.setTamanhoEmCm(tamanhoEmCm);
                 s.setQuantidade(quantidade);

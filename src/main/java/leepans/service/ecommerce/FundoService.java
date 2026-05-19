@@ -8,9 +8,9 @@ import org.hibernate.Hibernate;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.OptimisticLockException;
 import leepans.dto.fundo.FundoRequestDTO;
 import leepans.model.Fundo;
-import leepans.repository.CorRepository;
 import leepans.repository.FundoRepository;
 import leepans.repository.MaterialRepository;
 
@@ -19,9 +19,6 @@ public class FundoService implements FundoServiceInter{
 
     @Inject
     FundoRepository repository;
-
-    @Inject
-    CorRepository corRepository;
 
     @Inject
     MaterialRepository materialRepository;
@@ -53,9 +50,12 @@ public class FundoService implements FundoServiceInter{
     @Override
     public void update(Long id, FundoRequestDTO dto) {
         Fundo fundo = findById(id);
-
+        if (fundo.getVersion() != dto.version()) {
+            throw new OptimisticLockException(
+                "Conflito de concorrência: o fundo foi alterado por outra transação."
+            );
+        }
         if(fundo != null){
-            fundo.setCor(corRepository.findById(dto.idCor()));
             fundo.setMateriais(dto.idsMateriais() == null ? null : dto.idsMateriais().stream()
                     .map(materialRepository::findById)
                     .filter(Objects::nonNull)

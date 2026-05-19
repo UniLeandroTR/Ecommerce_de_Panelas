@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.OptimisticLockException;
 import leepans.dto.cor.CorRequestDTO;
 import leepans.model.Cor;
 import leepans.repository.CorRepository;
@@ -38,6 +39,11 @@ public class CorService implements CorServiceInter{
     @Override
     public void update(Long id, CorRequestDTO dto) {
         Cor cor = repository.findById(id);
+        if (cor.getVersion() != dto.version()) {
+            throw new OptimisticLockException(
+                "Conflito de concorrência: a cor foi alterado por outra transação."
+            );
+        }
         if(cor != null){
             cor.setNome(dto.nome());
             repository.persist(cor);

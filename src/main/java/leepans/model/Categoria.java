@@ -4,23 +4,12 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Categoria {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Categoria extends DefaultEntity {
 
     private String tipo;
 
     @OneToMany(mappedBy = "categoria", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Panela> panelas;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getTipo() {
         return tipo;

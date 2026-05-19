@@ -1,13 +1,13 @@
 package leepans.model;
 
-import jakarta.persistence.*;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+
 @Entity
-public class Fornecedor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Fornecedor extends DefaultEntity {
 
     private String nome;
     private String telefone;
@@ -15,14 +15,6 @@ public class Fornecedor {
 
     @OneToMany(mappedBy = "fornecedor", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Panela> panelas;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNome() {
         return nome;

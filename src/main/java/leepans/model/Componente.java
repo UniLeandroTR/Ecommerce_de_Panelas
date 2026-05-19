@@ -6,10 +6,7 @@ import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Componente {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public abstract class Componente extends DefaultEntity {
 
     private Double peso;
 
@@ -20,17 +17,6 @@ public abstract class Componente {
         inverseJoinColumns = @JoinColumn(name = "material_id")
     )
     private List<Material> materiais = new ArrayList<>();
-
-    @ManyToOne
-    private Cor cor;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Double getPeso() {
         return peso;
@@ -46,13 +32,5 @@ public abstract class Componente {
 
     public void setMateriais(List<Material> materiais) {
         this.materiais = materiais;
-    }
-
-    public Cor getCor() {
-        return cor;
-    }
-
-    public void setCor(Cor cor) {
-        this.cor = cor;
     }
 }

@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.Version;
 
 @MappedSuperclass
 public class DefaultEntity {
@@ -17,6 +18,9 @@ public class DefaultEntity {
 
     @Column(name = "data_cadastro")
     private LocalDateTime dataCadastro;
+
+    @Version
+    private Integer version;
 
     @PrePersist
     private void preencherDataCadastro() {
@@ -39,5 +43,11 @@ public class DefaultEntity {
         this.dataCadastro = dataCadastro;
     }
 
-    
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 }

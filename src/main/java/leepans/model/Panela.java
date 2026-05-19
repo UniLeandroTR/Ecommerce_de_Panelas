@@ -2,20 +2,12 @@ package leepans.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Panela {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_panela")
-    private Long id;
+public class Panela extends DefaultEntity {
 
     private String modelo;
     private Long preco;
@@ -23,6 +15,14 @@ public class Panela {
     private Double capacidadeLitros;
     private String descricaco;
     private Boolean isInducao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_material_principal")
+    private Material materialPrincipal;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cor")
+    private Cor cor;
 
     @ManyToOne
     @JoinColumn(name = "id_colecao")
@@ -50,14 +50,6 @@ public class Panela {
     @ManyToOne
     @JoinColumn(name = "id_categoria")
     private Categoria categoria;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getModelo() {
         return modelo;
@@ -113,6 +105,22 @@ public class Panela {
 
     public void setTamanho(Tamanho tamanho) {
         this.tamanho = tamanho;
+    }
+
+    public Material getMaterialPrincipal() {
+        return materialPrincipal;
+    }
+
+    public void setMaterialPrincipal(Material materialPrincipal) {
+        this.materialPrincipal = materialPrincipal;
+    }
+
+    public Cor getCor() {
+        return cor;
+    }
+
+    public void setCor(Cor cor) {
+        this.cor = cor;
     }
 
     public Categoria getCategoria() {

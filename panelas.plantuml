@@ -1,4 +1,4 @@
-@startuml
+@startuml ecommerce
 class Panela{
 - id : long
 - modelo : String
@@ -67,17 +67,20 @@ class Sustentacao{
 - quantidade : int
 }
 
-Panela "*" o-up-> "1" Colecao
+Panela "*" o--> "1" Colecao
 Panela "1" *--> "1" Fundo
 Panela "1" *--> "1" Sustentacao
 Panela "1" *--> "0..1" Tampa
-Panela "*" o-right-> "1" Fornecedor
+Panela "*" o--> "1" Fornecedor
 Panela "*" --> "1" Tamanho
-Panela "*" o-left-> "1" Categoria
-Fundo --|>  Componente
-Tampa --|>  Componente
-Sustentacao --|> Componente
-Sustentacao "*" --> "1" TipoSustentacao
+Panela "*" o--> "1" Categoria
+Panela "*" --> "1" Cor
+
+Componente <|-- Tampa
+Componente <|-- Fundo
+Componente <|-- Sustentacao
 Componente "*" o-- "*" Material
-Componente "*" o--> "1" Cor
+
+Sustentacao "*" --> "1" TipoSustentacao
+
 @enduml

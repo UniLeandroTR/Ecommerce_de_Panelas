@@ -8,7 +8,7 @@ public interface ListaDesejoServiceInter {
     
     List<ListaDesejo> findAll();
     ListaDesejo findById(Long id);
-    ListaDesejo findByUsuarioId(Long usuarioId);
+    ListaDesejo findByUsuarioLogin(String usuarioLogin);
     ListaDesejo create(ListaDesejo listaDesejo);
     void update(Long id, ListaDesejoRequestDTO dto);
     void delete(Long id);

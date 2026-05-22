@@ -1,16 +1,21 @@
 package leepans.service.ecommerce;
 
+import java.util.List;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
+import org.hibernate.Hibernate;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
 import leepans.dto.listaDesejo.ListaDesejoRequestDTO;
 import leepans.model.ListaDesejo;
 import leepans.model.Panela;
+import leepans.model.Usuario;
 import leepans.repository.ListaDesejoRepository;
 import leepans.repository.PanelaRepository;
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
-import java.util.List;
+import leepans.repository.UsuarioRepository;
 
 @ApplicationScoped
 public class ListaDesejoService implements ListaDesejoServiceInter {
@@ -19,12 +24,25 @@ public class ListaDesejoService implements ListaDesejoServiceInter {
     ListaDesejoRepository repository;
 
     @Inject
+    UsuarioRepository usuarioRepository;
+
+    @Inject
     PanelaRepository panelaRepository;
 
     public ListaDesejo findWishList(JsonWebToken jwt){
-        String usuarioId = jwt.getSubject();
-        ListaDesejo lista = repository.find("usuarioId", usuarioId).firstResult();
+        String usuarioLogin = jwt.getName();
+        ListaDesejo lista = repository.findByUsuarioLogin(usuarioLogin).singleResult();
+        if (lista != null && lista.getProdutos() != null) {
+            lista.getProdutos().forEach(panela -> {
+                initializePanela(panela);
+            });
+        }
         return lista;
+    }
+
+    public Usuario findUsuario(JsonWebToken jwt) {
+        String usuarioLogin = jwt.getName();
+        return usuarioRepository.findByLogin(usuarioLogin).singleResult();
     }
 
     @Override
@@ -38,12 +56,33 @@ public class ListaDesejoService implements ListaDesejoServiceInter {
     }
 
     @Override
-    public ListaDesejo findByUsuarioId(Long usuarioId) {
-        return repository.findByUsuarioId(usuarioId);
+    public ListaDesejo findByUsuarioLogin(String usuarioLogin) {
+        return repository.findByUsuarioLogin(usuarioLogin).singleResult();
     }
 
     @Override
     public ListaDesejo create(ListaDesejo listaDesejo) {
+        listaDesejo.getProdutos().forEach(panela -> {
+            initializePanela(panela);
+        });
+        repository.persist(listaDesejo);
+        return listaDesejo;
+    }
+
+    public ListaDesejo create(List<Long> idProdutos, JsonWebToken jwt) {
+        ListaDesejo listaDesejo = new ListaDesejo();
+        listaDesejo.setUsuario(findUsuario(jwt));
+        listaDesejo.setProdutos(idProdutos.stream()
+            .map(id -> {
+                Panela panela = panelaRepository.findById(id);
+                if (panela != null) {
+                    initializePanela(panela);
+                }
+                return panela;
+            })
+            .filter(panela -> panela != null)
+            .toList()
+        );
         repository.persist(listaDesejo);
         return listaDesejo;
     }
@@ -95,6 +134,24 @@ public class ListaDesejoService implements ListaDesejoServiceInter {
         if(listaDesejo != null && panela != null) {
             listaDesejo.getProdutos().remove(panela);
             repository.persist(listaDesejo);
+        }
+    }
+
+    public static void initializePanela(Panela panela) {
+        if (panela.getTampa() != null) {
+            Hibernate.initialize(panela.getTampa().getMateriais());
+            panela.getTampa().getMateriais()
+                .forEach(material -> Hibernate.initialize(material.getQualidades()));
+        }
+        if (panela.getFundo() != null) {
+            Hibernate.initialize(panela.getFundo().getMateriais());
+            panela.getFundo().getMateriais()
+                .forEach(material -> Hibernate.initialize(material.getQualidades()));
+        }
+        if (panela.getSustentacao() != null) {
+            Hibernate.initialize(panela.getSustentacao().getMateriais());
+            panela.getSustentacao().getMateriais()
+                .forEach(material -> Hibernate.initialize(material.getQualidades()));
         }
     }
 }

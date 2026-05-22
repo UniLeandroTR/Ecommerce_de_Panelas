@@ -100,7 +100,6 @@ public class PanelaMapper {
         return new PanelaEcommerceDTO(
                 panela.getId(),
                 panela.getModelo(),
-                panela.getDataCadastro(),
                 panela.getPreco(),
                 panela.getCapacidadeLitros(),
                 panela.getIsInducao(),

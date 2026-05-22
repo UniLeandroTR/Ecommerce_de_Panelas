@@ -1,7 +1,5 @@
 package leepans.dto.panela;
 
-import java.time.LocalDateTime;
-
 import leepans.dto.categoria.CategoriaResponseDTO;
 import leepans.dto.colecao.ColecaoResponseDTO;
 import leepans.dto.cor.CorResponseDTO;
@@ -14,7 +12,6 @@ import leepans.model.Tamanho;
 public record PanelaEcommerceDTO(
     Long id,
     String modelo,
-    LocalDateTime dataCadastro,
     Long preco,
     Double capacidadeLitros,
     boolean isInducao,

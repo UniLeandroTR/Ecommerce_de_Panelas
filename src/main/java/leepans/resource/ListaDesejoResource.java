@@ -1,10 +1,21 @@
 package leepans.resource;
 
+import java.util.List;
+
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import leepans.dto.listaDesejo.ListaDesejoRequestDTO;
@@ -13,9 +24,6 @@ import leepans.exception.ValidationException;
 import leepans.mapper.ListaDesejoMapper;
 import leepans.model.ListaDesejo;
 import leepans.service.ecommerce.ListaDesejoService;
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
-import java.util.List;
 
 @Path("/listas-desejo")
 @Produces(MediaType.APPLICATION_JSON)
@@ -34,9 +42,8 @@ public class ListaDesejoResource {
     @POST
     @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
-    public Response create(@Valid ListaDesejoRequestDTO dto) {
-        ListaDesejo listaDesejo = listaDesejoMapper.toEntity(dto);
-        ListaDesejo created = service.create(listaDesejo);
+    public Response create(List<Long> idProdutos) {
+        ListaDesejo created = service.create(idProdutos, jwt);
         return Response.status(Response.Status.CREATED).entity(listaDesejoMapper.toResponse(created)).build();
     }
 
@@ -58,8 +65,8 @@ public class ListaDesejoResource {
     @GET
     @Path("/usuario/{usuarioId}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
-    public Response findByUsuarioId(@PathParam("usuarioId") Long usuarioId) {
-        ListaDesejoResponseDTO listaDesejo = listaDesejoMapper.toResponse(service.findByUsuarioId(usuarioId));
+    public Response findByUsuarioLogin(@PathParam("usuarioLogin") String usuarioLogin) {
+        ListaDesejoResponseDTO listaDesejo = listaDesejoMapper.toResponse(service.findByUsuarioLogin(usuarioLogin));
         return Response.ok(listaDesejo).build();
     }
 

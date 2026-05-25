@@ -17,7 +17,7 @@ public class JwtService {
      * O perfil é incluido como grupo (claim "groups"), permitindo uso com @RolesAllowed.
      */
     public String gerarToken(Usuario usuario) {
-        return Jwt.issuer("sga-api")
+        return Jwt.issuer("Ecommerce-de-Panelas")
                 .upn(usuario.getLogin())
                 .groups(Set.of(usuario.getPerfil().name()))
                 .expiresIn(EXPIRACAO_SEGUNDOS)

@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.Transactional;
 import leepans.dto.cor.CorRequestDTO;
 import leepans.model.Cor;
 import leepans.repository.CorRepository;
@@ -31,12 +32,14 @@ public class CorService implements CorServiceInter{
     }
 
     @Override
+    @Transactional
     public Cor create(Cor cor) {
         repository.persist(cor);
         return cor;
     }
 
     @Override
+    @Transactional
     public void update(Long id, CorRequestDTO dto) {
         Cor cor = repository.findById(id);
         if (cor.getVersion() != dto.version()) {
@@ -51,6 +54,7 @@ public class CorService implements CorServiceInter{
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
     }

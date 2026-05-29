@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.Transactional;
 import leepans.dto.colecao.ColecaoRequestDTO;
 import leepans.model.Colecao;
 import leepans.repository.ColecaoRepository;
@@ -31,12 +32,14 @@ public class ColecaoService implements ColecaoServiceInter{
     }
 
     @Override
+    @Transactional
     public Colecao create(Colecao colecao) {
         repository.persist(colecao);
         return colecao;
     }
 
     @Override
+    @Transactional
     public void update(Long id, ColecaoRequestDTO dto) {
         Colecao colecao = repository.findById(id);
 
@@ -52,6 +55,7 @@ public class ColecaoService implements ColecaoServiceInter{
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
     }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -36,7 +35,6 @@ public class TampaResource {
     TampaMapper tampaMapper;
 
     @POST
-    @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid TampaRequestDTO dto) {
         Tampa tampa = service.create(tampaMapper.toEntity(dto));
@@ -73,7 +71,6 @@ public class TampaResource {
     }
 
     @PUT
-    @Transactional
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, TampaRequestDTO dto) {
@@ -85,7 +82,6 @@ public class TampaResource {
     }
 
     @DELETE
-    @Transactional
     @Path("/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {

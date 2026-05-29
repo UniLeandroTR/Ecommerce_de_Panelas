@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -35,7 +34,6 @@ public class ColecaoResource {
     ColecaoMapper mapper;
 
     @POST
-    @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid ColecaoRequestDTO dto) {
         Colecao colecao = service.create(mapper.toEntity(dto));
@@ -69,7 +67,6 @@ public class ColecaoResource {
 
     @PUT
     @Path("/{id}")
-    @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, ColecaoRequestDTO dto) {
         if (dto.version() == null) {
@@ -81,7 +78,6 @@ public class ColecaoResource {
 
     @DELETE
     @Path("/{id}")
-    @Transactional
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

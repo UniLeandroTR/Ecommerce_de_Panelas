@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -32,7 +31,6 @@ public class FornecedorResource {
     FornecedorService service;
 
     @POST
-    @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid FornecedorRequestDTO dto) {
         Fornecedor fornecedor = service.create(FornecedorMapper.toEntity(dto));
@@ -66,7 +64,6 @@ public class FornecedorResource {
     }
 
     @PUT
-    @Transactional
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, FornecedorRequestDTO dto) {
@@ -78,7 +75,6 @@ public class FornecedorResource {
     }
 
     @DELETE
-    @Transactional
     @Path("/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id){

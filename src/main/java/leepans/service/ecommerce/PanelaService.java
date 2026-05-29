@@ -7,6 +7,7 @@ import org.hibernate.Hibernate;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.Transactional;
 import leepans.dto.panela.PanelaRequestDTO;
 import leepans.model.Panela;
 import leepans.repository.CategoriaRepository;
@@ -18,8 +19,8 @@ import leepans.repository.SustentacaoRepository;
 import leepans.repository.TampaRepository;
 
 @ApplicationScoped
-public class PanelaService implements PanelaServiceInter{
-    
+public class PanelaService implements PanelaServiceInter {
+
     @Inject
     PanelaRepository repository;
 
@@ -44,17 +45,17 @@ public class PanelaService implements PanelaServiceInter{
     @Override
     public List<Panela> findAll() {
         List<Panela> panelas = repository.findAll().list();
-        panelas.forEach(panela ->{
+        panelas.forEach(panela -> {
             Hibernate.initialize(panela.getTampa().getMateriais());
             Hibernate.initialize(panela.getFundo().getMateriais());
             Hibernate.initialize(panela.getSustentacao().getMateriais());
 
             panela.getTampa().getMateriais()
-                .forEach(material -> Hibernate.initialize(material.getQualidades()));
+                    .forEach(material -> Hibernate.initialize(material.getQualidades()));
             panela.getFundo().getMateriais()
-                .forEach(material -> Hibernate.initialize(material.getQualidades()));
+                    .forEach(material -> Hibernate.initialize(material.getQualidades()));
             panela.getSustentacao().getMateriais()
-                .forEach(material -> Hibernate.initialize(material.getQualidades()));
+                    .forEach(material -> Hibernate.initialize(material.getQualidades()));
         });
         return panelas;
     }
@@ -75,6 +76,7 @@ public class PanelaService implements PanelaServiceInter{
     }
 
     @Override
+    @Transactional
     public Panela create(Panela panela) {
         repository.persist(panela);
         panela.getFundo().getMateriais().forEach(material -> Hibernate.initialize(material.getQualidades()));
@@ -84,12 +86,12 @@ public class PanelaService implements PanelaServiceInter{
     }
 
     @Override
+    @Transactional
     public void update(Long id, PanelaRequestDTO dto) {
         Panela panela = repository.findById(id);
         if (panela.getVersion() != dto.version()) {
             throw new OptimisticLockException(
-                "Conflito de concorrência: a panela foi alterada por outra transação."
-            );
+                    "Conflito de concorrência: a panela foi alterada por outra transação.");
         }
         panela.setModelo(dto.modelo());
         panela.setPreco(dto.preco());
@@ -109,6 +111,7 @@ public class PanelaService implements PanelaServiceInter{
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
     }

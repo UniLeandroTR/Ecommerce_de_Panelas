@@ -6,7 +6,6 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -40,7 +39,6 @@ public class ListaDesejoResource {
     ListaDesejoMapper listaDesejoMapper;
 
     @POST
-    @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response create(List<Long> idProdutos) {
         ListaDesejo created = service.create(idProdutos, jwt);
@@ -71,7 +69,6 @@ public class ListaDesejoResource {
     }
 
     @PUT
-    @Transactional
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response update(@PathParam("id") Long id, @Valid ListaDesejoRequestDTO dto) {
@@ -83,7 +80,6 @@ public class ListaDesejoResource {
     }
 
     @DELETE
-    @Transactional
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "CLIENTE" })
     public Response delete(@PathParam("id") Long id) {
@@ -92,7 +88,6 @@ public class ListaDesejoResource {
     }
 
     @POST
-    @Transactional
     @Path("/{listaDesejoId}/produtos/{panelaId}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response adicionarProduto(
@@ -104,7 +99,6 @@ public class ListaDesejoResource {
     }
 
     @DELETE
-    @Transactional
     @Path("/{listaDesejoId}/produtos/{panelaId}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response removerProduto(

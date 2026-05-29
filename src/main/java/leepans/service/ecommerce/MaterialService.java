@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.Transactional;
 import leepans.dto.material.MaterialRequestDTO;
 import leepans.model.Material;
 import leepans.repository.MaterialRepository;
@@ -31,12 +32,14 @@ public class MaterialService implements MaterialServiceInter{
     }
 
     @Override
+    @Transactional
     public Material create(Material material) {
         repository.persist(material);
         return material;
     }
 
     @Override
+    @Transactional
     public void update(Long id, MaterialRequestDTO dto) {
         Material material = repository.findById(id);
         if (material.getVersion() != dto.version()) {
@@ -52,6 +55,7 @@ public class MaterialService implements MaterialServiceInter{
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
     }

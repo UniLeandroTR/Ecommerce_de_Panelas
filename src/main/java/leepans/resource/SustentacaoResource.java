@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -36,7 +35,6 @@ public class SustentacaoResource {
     SustentacaoMapper sustentacaoMapper;
 
     @POST
-    @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid SustentacaoRequestDTO dto) {
         Sustentacao sustentacao = service.create(sustentacaoMapper.toEntity(dto));
@@ -73,7 +71,6 @@ public class SustentacaoResource {
     }
 
     @PUT
-    @Transactional
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, SustentacaoRequestDTO dto) {
@@ -89,7 +86,6 @@ public class SustentacaoResource {
     }
 
     @DELETE
-    @Transactional
     @Path("/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {

@@ -4,7 +4,6 @@ import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -36,7 +35,6 @@ public class PanelaResource {
     PanelaMapper mapper;
 
     @POST
-    @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid PanelaRequestDTO dto) {
         Panela panela = service.create(mapper.toEntity(dto));
@@ -98,7 +96,6 @@ public class PanelaResource {
 
     @PUT
     @Path("/{id}")
-    @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, PanelaRequestDTO dto) {
         if (dto.version() == null) {
@@ -110,7 +107,6 @@ public class PanelaResource {
 
     @DELETE
     @Path("/{id}")
-    @Transactional
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.Transactional;
 import leepans.dto.fornecedor.FornecedorRequestDTO;
 import leepans.model.Fornecedor;
 import leepans.repository.FornecedorRepository;
@@ -31,12 +32,14 @@ public class FornecedorService implements FornecedorServiceInter {
     }
 
     @Override
+    @Transactional
     public Fornecedor create(Fornecedor fornecedor) {
         repository.persist(fornecedor);
         return fornecedor;
     }
 
     @Override
+    @Transactional
     public void update(Long id, FornecedorRequestDTO dto) {
         Fornecedor fornecedor = repository.findById(id);
         if (fornecedor.getVersion() != dto.version()) {
@@ -51,6 +54,7 @@ public class FornecedorService implements FornecedorServiceInter {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
     }

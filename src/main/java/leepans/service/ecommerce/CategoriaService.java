@@ -3,6 +3,7 @@ package leepans.service.ecommerce;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.Transactional;
 import leepans.dto.categoria.CategoriaRequestDTO;
 import leepans.model.Categoria;
 import leepans.repository.CategoriaRepository;
@@ -31,12 +32,14 @@ public class CategoriaService implements CategoriaServiceInter {
     }
     
     @Override
+    @Transactional
     public Categoria create(Categoria categoria) {
         repository.persist(categoria);
         return categoria;
     }
 
     @Override
+    @Transactional
     public void update(Long id, CategoriaRequestDTO dto) {
         Categoria categoria = repository.findById(id);
 
@@ -51,6 +54,7 @@ public class CategoriaService implements CategoriaServiceInter {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
     }

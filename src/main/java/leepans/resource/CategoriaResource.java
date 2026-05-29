@@ -1,10 +1,18 @@
 package leepans.resource;
 
+import java.util.List;
+
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import leepans.dto.categoria.CategoriaRequestDTO;
@@ -13,8 +21,6 @@ import leepans.exception.ValidationException;
 import leepans.mapper.CategoriaMapper;
 import leepans.model.Categoria;
 import leepans.service.ecommerce.CategoriaService;
-
-import java.util.List;
 
 @Path("/categorias")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,7 +31,6 @@ public class CategoriaResource {
     CategoriaService service;
 
     @POST
-    @Transactional
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid CategoriaRequestDTO dto) {
         Categoria categoria = service.create(CategoriaMapper.toEntity(dto));
@@ -59,7 +64,6 @@ public class CategoriaResource {
     }
 
     @PUT
-    @Transactional
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, CategoriaRequestDTO dto) {
@@ -71,7 +75,6 @@ public class CategoriaResource {
     }
 
     @DELETE
-    @Transactional
     @Path("/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {

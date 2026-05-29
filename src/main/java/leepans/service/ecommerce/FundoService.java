@@ -9,6 +9,7 @@ import org.hibernate.Hibernate;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
+import jakarta.transaction.Transactional;
 import leepans.dto.fundo.FundoRequestDTO;
 import leepans.model.Fundo;
 import leepans.repository.FundoRepository;
@@ -39,6 +40,7 @@ public class FundoService implements FundoServiceInter{
     }
 
     @Override
+    @Transactional
     public Fundo create(Fundo fundo) {
         repository.persist(fundo);
         if (fundo.getMateriais() != null) {
@@ -48,6 +50,7 @@ public class FundoService implements FundoServiceInter{
     }
 
     @Override
+    @Transactional
     public void update(Long id, FundoRequestDTO dto) {
         Fundo fundo = findById(id);
         if (fundo.getVersion() != dto.version()) {
@@ -68,6 +71,7 @@ public class FundoService implements FundoServiceInter{
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         Fundo fundo = repository.findById(id);
         if(fundo != null) repository.delete(fundo);

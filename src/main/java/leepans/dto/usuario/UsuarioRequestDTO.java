@@ -6,6 +6,7 @@ public record UsuarioRequestDTO(
         String login,
         String senha,
         Perfil perfil,
+        Long idEndereco,
         Integer version
 ) {
 }

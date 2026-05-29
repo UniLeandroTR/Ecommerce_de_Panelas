@@ -1,8 +1,12 @@
 package leepans.resource;
 
+import org.eclipse.microprofile.jwt.JsonWebToken;
+
+import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -20,10 +24,20 @@ public class AuthResource {
     @Inject
     AuthService authService;
 
+    @Inject
+    JsonWebToken jwt;
+
     @POST
     @Path("/login")
     public Response login(@Valid AuthRequestDTO dto) {
         AuthResponseDTO response = authService.login(dto);
         return Response.ok(response).build();
+    }
+
+    @GET
+    @Path("info")
+    @Authenticated
+    public Response info() {
+        return Response.ok(authService.info(jwt)).build();
     }
 }

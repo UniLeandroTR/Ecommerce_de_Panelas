@@ -20,6 +20,9 @@ public class ListaDesejoMapper {
     @Inject
     PanelaMapper panelaMapper;
 
+    @Inject
+    UsuarioMapper usuarioMapper;
+
     public ListaDesejo toEntity(ListaDesejoRequestDTO dto) {
         if(dto == null) return null;
 
@@ -54,7 +57,7 @@ public class ListaDesejoMapper {
 
         return new ListaDesejoResponseDTO(
             listaDesejo.getId(),
-                UsuarioMapper.toResponseDTO(listaDesejo.getUsuario()),
+            usuarioMapper.toResponseDTO(listaDesejo.getUsuario()),
             panelasDTOs,
             listaDesejo.getVersion()
         );

@@ -1,20 +1,24 @@
 package leepans.service.ecommerce;
 
+import java.util.List;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 import leepans.dto.usuario.UsuarioRequestDTO;
 import leepans.model.Usuario;
+import leepans.repository.EnderecoRepository;
 import leepans.repository.UsuarioRepository;
-
-import java.util.List;
 
 @ApplicationScoped
 public class UsuarioService implements UsuarioServiceInter {
 
     @Inject
     private UsuarioRepository repository;
+
+    @Inject
+    private EnderecoRepository enderecoRepository;
 
     @Override
     public List<Usuario> findAll() {
@@ -27,10 +31,23 @@ public class UsuarioService implements UsuarioServiceInter {
     }
 
     @Override
+    public Usuario findByLogin(String login) {
+        return repository.findByLogin(login).firstResult();
+    }
+
+    @Override
     @Transactional
     public Usuario create(Usuario usuario) {
         repository.persist(usuario);
         return usuario;
+    }
+
+    @Override
+    @Transactional
+    public void setEndereco(String login, Long enderecoId) {
+        Usuario usuario = repository.findByLogin(login).firstResult();
+        usuario.setEndereco(enderecoRepository.findById(enderecoId));
+        repository.persist(usuario);
     }
 
     @Override

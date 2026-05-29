@@ -18,6 +18,9 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import leepans.dto.endereco.EnderecoRequestDTO;
+import leepans.dto.usuario.CadastroCompletoDTO;
+import leepans.dto.usuario.CadastroSimplesDTO;
 import leepans.dto.usuario.UsuarioRequestDTO;
 import leepans.dto.usuario.UsuarioResponseDTO;
 import leepans.mapper.UsuarioMapper;
@@ -39,14 +42,30 @@ public class UsuarioResource {
     UsuarioMapper usuarioMapper;
 
     @POST
-    @RolesAllowed( {"ADMIN", "FUNCIONARIO" })
-    public Response create(@Valid UsuarioRequestDTO dto){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response create(@Valid UsuarioRequestDTO dto) {
         Usuario usuario = service.create(usuarioMapper.toEntity(dto));
         return Response.status(201).entity(usuarioMapper.toResponseDTO(usuario)).build();
     }
 
+    @POST
+    @Path("/cadastro/simples")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response createSimples(@Valid CadastroSimplesDTO dto) {
+        Usuario usuario = service.create(dto);
+        return Response.status(201).entity(usuarioMapper.toResponseDTO(usuario)).build();
+    }
+
+    @POST
+    @Path("/cadastro/completo")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response createCompleto(@Valid CadastroCompletoDTO dto) {
+        Usuario usuario = service.create(dto);
+        return Response.status(201).entity(usuarioMapper.toResponseDTO(usuario)).build();
+    }
+
     @GET
-    public Response findAll(){
+    public Response findAll() {
         List<UsuarioResponseDTO> lista = service.findAll()
                 .stream()
                 .map(usuarioMapper::toResponseDTO)
@@ -56,18 +75,18 @@ public class UsuarioResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed( {"ADMIN", "FUNCIONARIO" } )
-    public Response findById(@PathParam("id") Long id){
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response findById(@PathParam("id") Long id) {
         UsuarioResponseDTO usuario = usuarioMapper.toResponseDTO(service.findById(id));
         return Response.ok(usuario).build();
     }
 
     @PATCH
-    @Path("/enderecos/{id}")
+    @Path("/enderecos")
     @RolesAllowed( {"ADMIN", "FUNCIONARIO", "CLIENTE" } )
-    public Response setEndereco(@PathParam("id") Long enderecoId) {
+    public Response setEndereco(EnderecoRequestDTO endereco) {
         String login = jwt.getClaim("upn");
-        service.setEndereco(login, enderecoId);
+        service.setEndereco(login, endereco);
         return Response.noContent().build();
     }
 
@@ -81,8 +100,8 @@ public class UsuarioResource {
 
     @DELETE
     @Path("/{id}")
-    @RolesAllowed( "ADMIN" )
-    public Response delete (@PathParam("id") Long id){
+    @RolesAllowed("ADMIN")
+    public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();
     }

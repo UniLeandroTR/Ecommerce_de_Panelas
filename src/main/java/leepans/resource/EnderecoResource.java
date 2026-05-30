@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -54,9 +53,8 @@ public class EnderecoResource {
     
     @GET
     @Path("/usuario")
-    @Authenticated
     public Response findByUsuario() {
-        EnderecoResponseDTO endereco = EnderecoMapper.toResponse(service.findByUsuario(jwt.getClaim("upn")));
+        EnderecoResponseDTO endereco = EnderecoMapper.toResponse(service.findByUsuario(jwt.getSubject()));
         return Response.ok(endereco).build();
     }
 

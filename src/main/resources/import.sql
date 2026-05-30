@@ -2,29 +2,29 @@
 -- Cada entidade possui pelo menos 3 registros
 
 -- Categorias
-insert into Categoria (tipo, data_cadastro, version) values ('Frigideira', CURRENT_DATE, 0);
-insert into Categoria (tipo, data_cadastro, version) values ('Panela de Pressão', CURRENT_DATE, 0);
-insert into Categoria (tipo, data_cadastro, version) values ('Caçarola', CURRENT_DATE, 0);
+insert into Categoria (tipo) values ('Frigideira');
+insert into Categoria (tipo) values ('Panela de Pressão');
+insert into Categoria (tipo) values ('Caçarola');
 
 -- Coleções
-insert into Colecao (nome, data_cadastro, version) values ('Clássica', CURRENT_DATE, 0);
-insert into Colecao (nome, data_cadastro, version) values ('Gourmet', CURRENT_DATE, 0);
-insert into Colecao (nome, data_cadastro, version) values ('Avançada', CURRENT_DATE, 0);
+insert into Colecao (nome) values ('Clássica');
+insert into Colecao (nome) values ('Gourmet');
+insert into Colecao (nome) values ('Avançada');
 
 -- Cores
-insert into Cor (nome, data_cadastro, version) values ('Vermelho', CURRENT_DATE, 0);
-insert into Cor (nome, data_cadastro, version) values ('Preto', CURRENT_DATE, 0);
-insert into Cor (nome, data_cadastro, version) values ('Inox', CURRENT_DATE, 0);
+insert into Cor (nome) values ('Vermelho');
+insert into Cor (nome) values ('Preto');
+insert into Cor (nome) values ('Inox');
 
 -- Fornecedores
-insert into Fornecedor (nome, telefone, cnpj, data_cadastro, version) values ('Panelas Brasil', '(11) 4002-8922', '12.345.678/0001-01', CURRENT_DATE, 0);
-insert into Fornecedor (nome, telefone, cnpj, data_cadastro, version) values ('Cozinha Pro', '(21) 5555-1234', '98.765.432/0001-09', CURRENT_DATE, 0);
-insert into Fornecedor (nome, telefone, cnpj, data_cadastro, version) values ('Utensílios Prime', '(31) 3333-6789', '45.987.123/0001-55', CURRENT_DATE, 0);
+insert into Fornecedor (nome, telefone, cnpj) values ('Panelas Brasil', '(11) 4002-8922', '12.345.678/0001-01');
+insert into Fornecedor (nome, telefone, cnpj) values ('Cozinha Pro', '(21) 5555-1234', '98.765.432/0001-09');
+insert into Fornecedor (nome, telefone, cnpj) values ('Utensílios Prime', '(31) 3333-6789', '45.987.123/0001-55');
 
 -- Materiais
-insert into Material (nome, data_cadastro, version) values ('Alumínio', CURRENT_DATE, 0);
-insert into Material (nome, data_cadastro, version) values ('Aço Inox', CURRENT_DATE, 0);
-insert into Material (nome, data_cadastro, version) values ('Cerâmica', CURRENT_DATE, 0);
+insert into Material (nome) values ('Alumínio');
+insert into Material (nome) values ('Aço Inox');
+insert into Material (nome) values ('Cerâmica');
 
 -- Qualidades dos materiais
 insert into material_qualidades (material_id, qualidades) values (1, 'Leve');
@@ -35,15 +35,15 @@ insert into material_qualidades (material_id, qualidades) values (3, 'Antiaderen
 insert into material_qualidades (material_id, qualidades) values (3, 'Fácil limpeza');
 
 -- Componentes (superclasse Componente)
-insert into Componente (peso, data_cadastro, version) values (0.9, CURRENT_DATE, 0);
-insert into Componente (peso, data_cadastro, version) values (1.2, CURRENT_DATE, 0);
-insert into Componente (peso, data_cadastro, version) values (1.5, CURRENT_DATE, 0);
-insert into Componente (peso, data_cadastro, version) values (0.4, CURRENT_DATE, 0);
-insert into Componente (peso, data_cadastro, version) values (0.5, CURRENT_DATE, 0);
-insert into Componente (peso, data_cadastro, version) values (0.6, CURRENT_DATE, 0);
-insert into Componente (peso, data_cadastro, version) values (0.8, CURRENT_DATE, 0);
-insert into Componente (peso, data_cadastro, version) values (0.7, CURRENT_DATE, 0);
-insert into Componente (peso, data_cadastro, version) values (0.9, CURRENT_DATE, 0);
+insert into Componente (peso) values (0.9);
+insert into Componente (peso) values (1.2);
+insert into Componente (peso) values (1.5);
+insert into Componente (peso) values (0.4);
+insert into Componente (peso) values (0.5);
+insert into Componente (peso) values (0.6);
+insert into Componente (peso) values (0.8);
+insert into Componente (peso) values (0.7);
+insert into Componente (peso) values (0.9);
 
 -- Fundos
 insert into Fundo (id, espessura, isantiaderente) values (1, 2.8, true);
@@ -74,21 +74,42 @@ insert into componente_material (componente_id, material_id) values (8, 3);
 insert into componente_material (componente_id, material_id) values (9, 1);
 
 -- Panelas
-insert into Panela (modelo, preco, peso, capacidadelitros, descricaco, isinducao, id_cor, id_material_principal, id_colecao, id_fundo, id_sustentacao, id_tampa, id_fornecedor, codigo_tamanho, id_categoria, data_cadastro, version) values
-  ('Classic 24', 24990, 1.8, 3.5, 'Panela clássica com fundo triplo.', true, 3, 2, 1, 1, 4, 7, 1, 1, 1, CURRENT_DATE, 0),
-  ('PressurePro', 49990, 2.4, 5.0, 'Panela de pressão com tampa de segurança.', false, 1, 1, 2, 2, 5, 8, 2, 2, 2, CURRENT_DATE, 0),
-  ('CookPlus', 32990, 2.0, 4.2, 'Panela multiuso com acabamento inox.', true, 2, 2, 3, 3, 6, 9, 3, 3, 3, CURRENT_DATE, 0);
+insert into Panela (modelo, preco, peso, capacidadelitros, descricaco, isinducao, id_cor, id_material_principal, id_colecao, id_fundo, id_sustentacao, id_tampa, id_fornecedor, codigo_tamanho, id_categoria) values
+  ('Classic 24', 24990, 1.8, 3.5, 'Panela clássica com fundo triplo.', true, 3, 2, 1, 1, 4, 7, 1, 1, 1),
+  ('PressurePro', 49990, 2.4, 5.0, 'Panela de pressão com tampa de segurança.', false, 1, 1, 2, 2, 5, 8, 2, 2, 2),
+  ('CookPlus', 32990, 2.0, 4.2, 'Panela multiuso com acabamento inox.', true, 2, 2, 3, 3, 6, 9, 3, 3, 3);
 
 -- Endereços
-insert into Endereco (rua, numero, cidade, estado, cep, data_cadastro, version) values ('Rua das Flores', '123', 'São Paulo', 'SP', '01234-567', CURRENT_DATE, 0);
-insert into Endereco (rua, numero, cidade, estado, cep, data_cadastro, version) values ('Avenida Paulista', '1000', 'São Paulo', 'SP', '01311-100', CURRENT_DATE, 0);
-insert into Endereco (rua, numero, cidade, estado, cep, data_cadastro, version) values ('Rua Oscar Freire', '500', 'São Paulo', 'SP', '01426-100', CURRENT_DATE, 0);
-insert into Endereco (rua, numero, cidade, estado, cep, data_cadastro, version) values ('Avenida Rio Branco', '156', 'Rio de Janeiro', 'RJ', '20040-020', CURRENT_DATE, 0);
-insert into Endereco (rua, numero, cidade, estado, cep, data_cadastro, version) values ('Rua Gonçalves Dias', '45', 'Rio de Janeiro', 'RJ', '20040-030', CURRENT_DATE, 0);
-insert into Endereco (rua, numero, cidade, estado, cep, data_cadastro, version) values ('Avenida Getúlio Vargas', '1200', 'Belo Horizonte', 'MG', '30130-100', CURRENT_DATE, 0);
-insert into Endereco (rua, numero, cidade, estado, cep, data_cadastro, version) values ('Rua Espírito Santo', '789', 'Belo Horizonte', 'MG', '30140-071', CURRENT_DATE, 0);
+insert into Endereco (rua, numero, cidade, estado, cep) values ('Rua das Flores', '123', 'São Paulo', 'SP', '01234-567');
+insert into Endereco (rua, numero, cidade, estado, cep) values ('Avenida Paulista', '1000', 'São Paulo', 'SP', '01311-100');
+insert into Endereco (rua, numero, cidade, estado, cep) values ('Rua Oscar Freire', '500', 'São Paulo', 'SP', '01426-100');
+insert into Endereco (rua, numero, cidade, estado, cep) values ('Avenida Rio Branco', '156', 'Rio de Janeiro', 'RJ', '20040-020');
+insert into Endereco (rua, numero, cidade, estado, cep) values ('Rua Gonçalves Dias', '45', 'Rio de Janeiro', 'RJ', '20040-030');
+insert into Endereco (rua, numero, cidade, estado, cep) values ('Avenida Getúlio Vargas', '1200', 'Belo Horizonte', 'MG', '30130-100');
+insert into Endereco (rua, numero, cidade, estado, cep) values ('Rua Espírito Santo', '789', 'Belo Horizonte', 'MG', '30140-071');
 
 -- Usuários
-insert into Usuario (login, senha_hash, perfil, data_cadastro, version) values ('Leandro', '$2a$10$nycXt13354pHn507PMJNlerq2mYe8kE/zCl7K.Y5xFbaWwv9DRoxe', 'ADMIN', CURRENT_DATE, 0);
-insert into Usuario (login, senha_hash, perfil, data_cadastro, version) values ('Gustavo', '$2a$10$cHmSVT9OZtbbtmkfhANSjumNlcDZZptLjRcpt17G9bKcDxLZ4GW6a', 'FUNCIONARIO', CURRENT_DATE, 0);
-insert into Usuario (login, senha_hash, perfil, data_cadastro, version) values ('Pedro', '$2a$10$UrqbJxikJp46JzELXAeaBeCeOM9ssfGhD92rjStksf2Qfw4dCqdRG', 'CLIENTE', CURRENT_DATE, 0);
+insert into Usuario (login, senha_hash, perfil) values ('Leandro', '$2a$10$nycXt13354pHn507PMJNlerq2mYe8kE/zCl7K.Y5xFbaWwv9DRoxe', 'ADMIN');
+insert into Usuario (login, senha_hash, perfil) values ('Gustavo', '$2a$10$cHmSVT9OZtbbtmkfhANSjumNlcDZZptLjRcpt17G9bKcDxLZ4GW6a', 'FUNCIONARIO');
+insert into Usuario (login, senha_hash, perfil) values ('Pedro', '$2a$10$UrqbJxikJp46JzELXAeaBeCeOM9ssfGhD92rjStksf2Qfw4dCqdRG', 'CLIENTE');
+
+-- Itens de Pedido
+insert into ItemPedido (panela_id, quantidade, valor_unitario) values (1, 2, 24990.0);
+insert into ItemPedido (panela_id, quantidade, valor_unitario) values (2, 1, 49990.0);
+insert into ItemPedido (panela_id, quantidade, valor_unitario) values (3, 1, 32990.0);
+insert into ItemPedido (panela_id, quantidade, valor_unitario) values (1, 3, 24990.0);
+insert into ItemPedido (panela_id, quantidade, valor_unitario) values (2, 2, 49990.0);
+insert into ItemPedido (panela_id, quantidade, valor_unitario) values (3, 1, 32990.0);
+
+-- Pedidos
+insert into Pedido (usuario_id, endereco_id, codigo_status_pedido, valor_total) values (1, 1, 2, 99970.0);
+insert into Pedido (usuario_id, endereco_id, codigo_status_pedido, valor_total) values (2, 4, 1, 82980.0);
+insert into Pedido (usuario_id, endereco_id, codigo_status_pedido, valor_total) values (3, 6, 2, 157950.0);
+
+-- Associação Pedido <-> ItemPedido
+insert into Pedido_itens (Pedido_id, itens_id) values (1, 1);
+insert into Pedido_itens (Pedido_id, itens_id) values (1, 2);
+insert into Pedido_itens (Pedido_id, itens_id) values (2, 3);
+insert into Pedido_itens (Pedido_id, itens_id) values (3, 4);
+insert into Pedido_itens (Pedido_id, itens_id) values (3, 5);
+insert into Pedido_itens (Pedido_id, itens_id) values (3, 6);

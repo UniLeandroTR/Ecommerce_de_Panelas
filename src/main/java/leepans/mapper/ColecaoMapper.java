@@ -1,6 +1,7 @@
 package leepans.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import leepans.dto.colecao.ColecaoEcommerceDTO;
 import leepans.dto.colecao.ColecaoRequestDTO;
 import leepans.dto.colecao.ColecaoResponseDTO;
 import leepans.model.Colecao;
@@ -30,5 +31,14 @@ public class ColecaoMapper {
             colecao.getNome(),
             colecao.getDataCadastro(),
             colecao.getVersion());
+    }
+
+    public ColecaoEcommerceDTO toEcommerceDTO(Colecao colecao) {
+        if (colecao == null) return null;
+
+        return new ColecaoEcommerceDTO(
+                colecao.getId(),
+                colecao.getNome()
+        );
     }
 }

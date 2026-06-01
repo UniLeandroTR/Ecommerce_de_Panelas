@@ -2,6 +2,8 @@ package leepans.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import leepans.dto.material.MaterialEcommerceDTO;
 import leepans.dto.material.MaterialRequestDTO;
 import leepans.dto.material.MaterialResponseDTO;
 import leepans.model.Material;
@@ -38,5 +40,22 @@ public class MaterialMapper {
         return materiais.stream()
                 .map(MaterialMapper::toResponseDTO)
                 .collect(Collectors.toList());
+    }
+
+    public static MaterialEcommerceDTO toEcommerceDTO(Material material) {
+        if (material == null) return null;
+
+        return new MaterialEcommerceDTO(
+                material.getId(),
+                material.getNome()
+        );
+    }
+
+    public static List<MaterialEcommerceDTO> toEcommerceDTO(List<Material> materiais) {
+        if (materiais == null || materiais.isEmpty()) return null;
+
+        return materiais.stream()
+            .map(MaterialMapper::toEcommerceDTO)
+            .collect(Collectors.toList());
     }
 }

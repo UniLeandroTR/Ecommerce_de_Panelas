@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import leepans.dto.fundo.FundoEcommerceDTO;
 import leepans.dto.fundo.FundoRequestDTO;
 import leepans.dto.fundo.FundoResponseDTO;
 import leepans.model.Fundo;
@@ -50,4 +51,14 @@ public class FundoMapper {
             fundo.getVersion()
         );
     }
+
+        public FundoEcommerceDTO toEcommerceDTO(Fundo fundo) {
+            if (fundo == null) return null;
+    
+            return new FundoEcommerceDTO(
+                    fundo.getId(),
+                    MaterialMapper.toEcommerceDTO(fundo.getMateriais()),
+                    fundo.getIsAntiaderente()
+            );
+        }
 }

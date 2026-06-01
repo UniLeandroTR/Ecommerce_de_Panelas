@@ -1,10 +1,10 @@
 package leepans.dto.pedido;
 
-import leepans.dto.panela.PanelaResponseDTO;
+import leepans.dto.panela.PanelaEcommerceDTO;
 
 public record ItemPedidoResponseDTO(
         Long id,
-        PanelaResponseDTO panela,
+        PanelaEcommerceDTO panela,
         Integer quantidade,
         Double valorUnitario
 ) {

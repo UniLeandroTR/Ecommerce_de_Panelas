@@ -2,12 +2,14 @@ package leepans.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class ItemPedido extends DefaultEntity {
 
-    @OneToOne(optional = false)
+    @ManyToOne
+    @JoinColumn(name = "panela_id", nullable = false)
     private Panela panela;
 
     @Column(name = "quantidade", nullable = false)

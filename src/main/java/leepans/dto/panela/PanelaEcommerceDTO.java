@@ -1,12 +1,12 @@
 package leepans.dto.panela;
 
-import leepans.dto.categoria.CategoriaResponseDTO;
-import leepans.dto.colecao.ColecaoResponseDTO;
-import leepans.dto.cor.CorResponseDTO;
-import leepans.dto.fundo.FundoResponseDTO;
-import leepans.dto.material.MaterialResponseDTO;
-import leepans.dto.sustentacao.SustentacaoResponseDTO;
-import leepans.dto.tampa.TampaResponseDTO;
+import leepans.dto.categoria.CategoriaEcommerceDTO;
+import leepans.dto.colecao.ColecaoEcommerceDTO;
+import leepans.dto.cor.CorEcommerceDTO;
+import leepans.dto.fundo.FundoEcommerceDTO;
+import leepans.dto.material.MaterialEcommerceDTO;
+import leepans.dto.sustentacao.SustentacaoEcommerceDTO;
+import leepans.dto.tampa.TampaEcommerceDTO;
 import leepans.model.Tamanho;
 
 public record PanelaEcommerceDTO(
@@ -16,13 +16,13 @@ public record PanelaEcommerceDTO(
     Double capacidadeLitros,
     boolean isInducao,
     Tamanho tamanho,
-    MaterialResponseDTO material,
-    CorResponseDTO cor,
-    CategoriaResponseDTO categoria,
-    ColecaoResponseDTO colecao,
-    TampaResponseDTO tampa,
-    FundoResponseDTO fundo,
-    SustentacaoResponseDTO sustentacao,
+    MaterialEcommerceDTO material,
+    CorEcommerceDTO cor,
+    CategoriaEcommerceDTO categoria,
+    ColecaoEcommerceDTO colecao,
+    TampaEcommerceDTO tampa,
+    FundoEcommerceDTO fundo,
+    SustentacaoEcommerceDTO sustentacao,
     Integer version
 ) {
     

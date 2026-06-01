@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import leepans.dto.pedido.ItemPedidoRequestDTO;
 import leepans.dto.pedido.ItemPedidoResponseDTO;
 import leepans.model.ItemPedido;
+import leepans.repository.PanelaRepository;
 
 @ApplicationScoped
 public class ItemPedidoMapper {
@@ -12,12 +13,18 @@ public class ItemPedidoMapper {
     @Inject
     PanelaMapper panelaMapper;
 
+    @Inject
+    PanelaRepository panelaRepository;
+
     public ItemPedido toEntity(ItemPedidoRequestDTO dto) {
         if (dto == null) return null;
 
         ItemPedido itemPedido = new ItemPedido();
         itemPedido.setQuantidade(dto.quantidade());
         itemPedido.setValorUnitario(dto.valorUnitario());
+        if (dto.idPanela() != null) {
+            itemPedido.setPanela(panelaRepository.findById(dto.idPanela()));
+        }
         return itemPedido;
     }
 
@@ -26,7 +33,7 @@ public class ItemPedidoMapper {
 
         return new ItemPedidoResponseDTO(
                 itemPedido.getId(),
-                panelaMapper.toResponseDTO(itemPedido.getPanela()),
+                panelaMapper.toEcommerceDTO(itemPedido.getPanela()),
                 itemPedido.getQuantidade(),
                 itemPedido.getValorUnitario()
         );

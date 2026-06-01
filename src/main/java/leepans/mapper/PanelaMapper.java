@@ -104,13 +104,13 @@ public class PanelaMapper {
                 panela.getCapacidadeLitros(),
                 panela.getIsInducao(),
                 panela.getTamanho(),
-                MaterialMapper.toResponseDTO(panela.getMaterialPrincipal()),
-                CorMapper.toResponseDTO(panela.getCor()),
-                CategoriaMapper.toResponse(panela.getCategoria()),
-                colecaoMapper.toResponseDTO(panela.getColecao()),
-                tampaMapper.toResponseDTO(panela.getTampa()),
-                fundoMapper.toResponseDTO(panela.getFundo()),
-                sustentacaoMapper.toResponseDTO(panela.getSustentacao()),
+                MaterialMapper.toEcommerceDTO(panela.getMaterialPrincipal()),
+                CorMapper.toEcommerceDTO(panela.getCor()),
+                CategoriaMapper.toEcommerceDTO(panela.getCategoria()),
+                colecaoMapper.toEcommerceDTO(panela.getColecao()),
+                tampaMapper.toEcommerceDTO(panela.getTampa()),
+                fundoMapper.toEcommerceDTO(panela.getFundo()),
+                sustentacaoMapper.toEcommerceDTO(panela.getSustentacao()),
                 panela.getVersion()
         );
     }

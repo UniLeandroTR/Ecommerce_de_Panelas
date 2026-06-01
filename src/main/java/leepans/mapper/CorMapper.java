@@ -1,5 +1,6 @@
 package leepans.mapper;
 
+import leepans.dto.cor.CorEcommerceDTO;
 import leepans.dto.cor.CorRequestDTO;
 import leepans.dto.cor.CorResponseDTO;
 import leepans.model.Cor;
@@ -28,5 +29,14 @@ public class CorMapper {
             cor.getNome(),
             cor.getDataCadastro(),
             cor.getVersion());
+    }
+
+    public static CorEcommerceDTO toEcommerceDTO(Cor cor) {
+        if (cor == null) return null;
+
+        return new CorEcommerceDTO(
+                cor.getId(),
+                cor.getNome()
+        );
     }
 }

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import leepans.dto.tampa.TampaEcommerceDTO;
 import leepans.dto.tampa.TampaRequestDTO;
 import leepans.dto.tampa.TampaResponseDTO;
 import leepans.model.Material;
@@ -47,5 +48,15 @@ public class TampaMapper {
             tampa.getDataCadastro(),
             tampa.getVersion()
         );
+    }
+
+    public TampaEcommerceDTO toEcommerceDTO(Tampa tampa) {
+        if (tampa == null) return null;
+
+        return new TampaEcommerceDTO(
+            tampa.getId(),
+            MaterialMapper.toEcommerceDTO(tampa.getMateriais()),
+            tampa.getIsDePressao()
+         );
     }
 }

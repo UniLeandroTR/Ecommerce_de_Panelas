@@ -84,7 +84,8 @@ public class PedidoService implements PedidoServiceInter {
             itensSalvos.add(item);
             valorTotal += item.getValorUnitario() * item.getQuantidade();
         }
-        Usuario usuario = usuarioService.findByLogin(jwt.getSubject());
+        String login = jwt.getClaim("upn");
+        Usuario usuario = usuarioService.findByLogin(login);
         pedido.setUsuario(usuario);
         pedido.setEndereco(usuario.getEndereco());
         pedido.setItens(itensSalvos);
@@ -105,8 +106,6 @@ public class PedidoService implements PedidoServiceInter {
                     "version");
         }
 
-        // Atualizar apenas o status (outros campos são imutáveis após criação)
-        pedido.setStatus(StatusPedido.valueOf(dto.idStatusPedido()));
         repository.persist(pedido);
     }
 

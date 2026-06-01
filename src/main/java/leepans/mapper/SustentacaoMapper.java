@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import leepans.dto.sustentacao.SustentacaoEcommerceDTO;
 import leepans.dto.sustentacao.SustentacaoRequestDTO;
 import leepans.dto.sustentacao.SustentacaoResponseDTO;
 import leepans.model.Material;
@@ -50,6 +51,17 @@ public class SustentacaoMapper {
             sustentacao.getTipoSustentacao(),
             sustentacao.getDataCadastro(),
             sustentacao.getVersion()
+        );
+    }
+
+    public SustentacaoEcommerceDTO toEcommerceDTO(Sustentacao sustentacao) {
+        if (sustentacao == null) return null;
+
+        return new SustentacaoEcommerceDTO(
+                sustentacao.getId(),
+                MaterialMapper.toEcommerceDTO(sustentacao.getMateriais()),
+                sustentacao.getQuantidade(),
+                sustentacao.getTipoSustentacao()
         );
     }
 }

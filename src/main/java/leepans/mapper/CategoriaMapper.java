@@ -1,5 +1,6 @@
 package leepans.mapper;
 
+import leepans.dto.categoria.CategoriaEcommerceDTO;
 import leepans.dto.categoria.CategoriaRequestDTO;
 import leepans.dto.categoria.CategoriaResponseDTO;
 import leepans.model.Categoria;
@@ -25,6 +26,15 @@ public class CategoriaMapper {
           categoria.getTipo(),
           categoria.getDataCadastro(),
           categoria.getVersion()
+        );
+    }
+
+    public static CategoriaEcommerceDTO toEcommerceDTO(Categoria categoria) {
+        if (categoria == null) return null;
+
+        return new CategoriaEcommerceDTO(
+                categoria.getId(),
+                categoria.getTipo()
         );
     }
 }

@@ -1,9 +1,12 @@
 package leepans.mapper;
 
+import java.util.List;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import leepans.dto.pedido.PedidoRequestDTO;
 import leepans.dto.pedido.PedidoResponseDTO;
+import leepans.model.ItemPedido;
 import leepans.model.Pedido;
 import leepans.model.StatusPedido;
 
@@ -20,7 +23,11 @@ public class PedidoMapper {
         if (dto == null) return null;
 
         Pedido pedido = new Pedido();
-        pedido.setStatus(StatusPedido.valueOf(dto.idStatusPedido()));
+        pedido.setStatus(StatusPedido.PENDENTE);
+        List<ItemPedido> itens = dto.itens().stream()
+                .map(itemPedidoMapper::toEntity)
+                .toList();
+        pedido.setItens(itens);
         if (dto.version() != null) {
             pedido.setVersion(dto.version());
         }

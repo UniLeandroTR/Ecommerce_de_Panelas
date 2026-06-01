@@ -1,6 +1,12 @@
 @startuml ecommerce
+class DefaultEntity{
+- id : Long
+- dataCriacao : LocalDateTime
+- version : Integer
+
+}
+
 class Panela{
-- id : long
 - modelo : String
 - preco : long
 - peso : double
@@ -10,22 +16,18 @@ class Panela{
 }
 
 class Colecao{
-- id : long
 - nome : String
 }
 
 class Categoria{
-- id : long
 - tipo : String
 }
 
 class Cor{
-- id : long
 - nome : String
 }
 
 abstract Componente{
-- id : long
 - peso : double
 }
 
@@ -41,14 +43,12 @@ enum TipoSustentacao{
 + ALCA
 }
 class Fornecedor{
-- id : long
 - nome : String
 - telefone : String
 - cnpj : String
 }
 
 class Material{
-- id : long
 - nome : String
 - qualidades[] : String
 }
@@ -67,20 +67,106 @@ class Sustentacao{
 - quantidade : int
 }
 
+class Usuario{
+- nome : String
+- sobrenome : String
+- login : String
+- senha : String
+- telefone : String
+}
+
+enum Perfil{
++ ADMIN
++ FUCIONARIO
++ CLIENTE
+}
+
+class Endereco{
+- rua : String
+- numero : String
+- cidade : String
+- estado : String
+- cep : String
+}
+
+class ListaDeDesejo{
+}
+
+class Pedido{
+- valorTotal : double
+- valorDesconto : double
+}
+
+class ItemPedido{
+- quantidade : Integer
+- valorUnitario : double
+}
+
+enum StatusPedido{
++ CANCELADO
++ PENDENTE
++ ENTREGUE
+}
+
+class CupomDesconto {
+- codigo : String
+- percentualDesconto : double
+- valorDesconto : double
+- dataValidade : LocalDateTime
+- quantidadeDisponivel : int
+- isAtivo : boolean
+}
+
+class Pagamento{
+- dataCriacao : LocalDateTime
+- dataProcessado : LocalDateTime
+}
+
+enum TipoPagamento{
++ CARTAO_CREDITO
++ CARTAO_DEBITO
++ BOLETO
++ PIX
+}
+
+enum StatusPagamento{
++ PENDENTE
++ APROVADO
++ RECUSADO
+}
+
+
 Panela "*" o--> "1" Colecao
 Panela "1" *--> "1" Fundo
 Panela "1" *--> "1" Sustentacao
 Panela "1" *--> "0..1" Tampa
 Panela "*" o--> "1" Fornecedor
-Panela "*" --> "1" Tamanho
+Panela "*" *--> "1" Tamanho
 Panela "*" o--> "1" Categoria
-Panela "*" --> "1" Cor
+Panela "*" o--> "1" Cor
+Panela "*" o--> "1" Material
+Panela <-up- ItemPedido
 
 Componente <|-- Tampa
 Componente <|-- Fundo
 Componente <|-- Sustentacao
 Componente "*" o-- "*" Material
 
-Sustentacao "*" --> "1" TipoSustentacao
+Sustentacao "*" -up-> "1" TipoSustentacao
+
+Usuario "*" --> "1" Perfil
+Usuario "*" --> "1" Endereco
+
+ListaDeDesejo "1" --> "1" Usuario
+ListaDeDesejo "*" --> "*" Panela
+
+Pedido "*" --> "1" Usuario
+Pedido "1" --> "*" ItemPedido
+Pedido "*" --> "1" StatusPedido
+Pedido "*" --> "1" Pagamento
+Pedido "*" --> "0..1" CupomDesconto
+
+Pagamento "*" --> "1" TipoPagamento
+Pagamento "*" --> "1" StatusPagamento
 
 @enduml

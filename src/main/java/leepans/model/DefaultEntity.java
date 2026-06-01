@@ -20,7 +20,7 @@ public class DefaultEntity {
     private LocalDateTime dataCadastro;
 
     @Version
-    private Integer version;
+    private Integer version = 0;
 
     @PrePersist
     private void preencherDataCadastro() {

@@ -84,7 +84,9 @@ public class UsuarioService implements UsuarioServiceInter {
     @Transactional
     public void setEndereco(String login, EnderecoRequestDTO endereco) {
         Usuario usuario = repository.findByLogin(login).firstResult();
-        usuario.setEndereco(EnderecoMapper.toEntity(endereco));
+        Endereco novoEndereco = EnderecoMapper.toEntity(endereco);
+        enderecoRepository.persist(novoEndereco);
+        usuario.setEndereco(novoEndereco);
         repository.persist(usuario);
     }
 

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-import leepans.dto.pedido.PedidoRequestDTO;
 import leepans.model.Pedido;
 import leepans.model.StatusPedido;
 
@@ -14,6 +13,8 @@ public interface PedidoServiceInter {
 
     Pedido findById(Long id);
 
+    List<Pedido> findCompras(String usuarioLogin);
+
     List<Pedido> findByUsuarioId(Long usuarioId);
 
     List<Pedido> findByStatus(StatusPedido status);
@@ -22,7 +23,7 @@ public interface PedidoServiceInter {
 
     Pedido create(Pedido pedido, JsonWebToken jwt);
 
-    void update(Long id, PedidoRequestDTO dto);
+    void setStatus(Long id, StatusPedido status);
 
     void delete(Long id);
 }

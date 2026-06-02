@@ -8,7 +8,6 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import leepans.dto.pedido.PedidoRequestDTO;
 import leepans.exception.ValidationException;
 import leepans.model.ItemPedido;
 import leepans.model.Pedido;
@@ -50,6 +49,11 @@ public class PedidoService implements PedidoServiceInter {
     }
 
     @Override
+    public List<Pedido> findCompras(String usuarioLogin){
+        return repository.findCompras(usuarioLogin).list();
+    }
+
+    @Override
     public List<Pedido> findByUsuarioId(Long usuarioId) {
         return repository.findByUsuarioId(usuarioId).list();
     }
@@ -67,8 +71,6 @@ public class PedidoService implements PedidoServiceInter {
     @Override
     @Transactional
     public Pedido create(Pedido pedido, JsonWebToken jwt) {
-
-
         // Validar e salvar itens do pedido
         Double valorTotal = 0.0;
         List<ItemPedido> itensSalvos = new ArrayList<>();
@@ -84,6 +86,16 @@ public class PedidoService implements PedidoServiceInter {
             itensSalvos.add(item);
             valorTotal += item.getValorUnitario() * item.getQuantidade();
         }
+        if(pedido.getCupomDesconto() != null) {
+            Double valorDesconto = pedido.getCupomDesconto().getValorDesconto();
+            if(pedido.getCupomDesconto().getPercentualDesconto() != null) {
+                valorDesconto += valorTotal * (pedido.getCupomDesconto().getPercentualDesconto() / 100);
+            }
+            valorTotal -= valorDesconto;
+            pedido.setValorDesconto(valorDesconto);
+        } else {
+            pedido.setValorDesconto(0.0);
+        }
         String login = jwt.getClaim("upn");
         Usuario usuario = usuarioService.findByLogin(login);
         pedido.setUsuario(usuario);
@@ -96,18 +108,12 @@ public class PedidoService implements PedidoServiceInter {
 
     @Override
     @Transactional
-    public void update(Long id, PedidoRequestDTO dto) {
+    public void setStatus(Long id, StatusPedido status) {
         Pedido pedido = findById(id);
-
-        // Controle de concorrência com Version
-        if (dto.version() != null && !pedido.getVersion().equals(dto.version())) {
-            throw new ValidationException(
-                    "Conflito de concorrência: o pedido foi alterado por outra transação.",
-                    "version");
-        }
-
+        pedido.setStatus(status);
         repository.persist(pedido);
     }
+
 
     @Override
     @Transactional

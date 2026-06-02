@@ -5,6 +5,9 @@ import jakarta.validation.constraints.Positive;
 import leepans.model.TipoPagamento;
 
 public record PagamentoRequestDTO(
+        @NotNull(message = "O ID do pedido é obrigatório")
+        Long pedidoId,
+
         @NotNull(message = "O valor é obrigatório")
         @Positive(message = "O valor deve ser positivo")
         Double valor,

@@ -34,12 +34,15 @@ public class PagamentoResource {
     @Inject
     PagamentoService service;
 
+    @Inject
+    PagamentoMapper pagamentoMapper;
+
     @POST
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid PagamentoRequestDTO dto) {
         Pagamento pagamento = service.create(PagamentoMapper.toEntity(dto));
         return Response.status(Response.Status.CREATED)
-                .entity(PagamentoMapper.toResponse(pagamento))
+                .entity(pagamentoMapper.toResponse(pagamento))
                 .build();
     }
 
@@ -48,7 +51,7 @@ public class PagamentoResource {
     public Response findAll() {
         List<PagamentoResponseDTO> lista = service.findAll()
                 .stream()
-                .map(PagamentoMapper::toResponse)
+                .map(pagamentoMapper::toResponse)
                 .toList();
         return Response.ok(lista).build();
     }
@@ -57,7 +60,7 @@ public class PagamentoResource {
     @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
-        PagamentoResponseDTO pagamento = PagamentoMapper.toResponse(service.findById(id));
+        PagamentoResponseDTO pagamento = pagamentoMapper.toResponse(service.findById(id));
         return Response.ok(pagamento).build();
     }
 
@@ -67,7 +70,7 @@ public class PagamentoResource {
     public Response findByStatus(@PathParam("status") StatusPagamento statusPagamento) {
         List<PagamentoResponseDTO> lista = service.findByStatusPagamento(statusPagamento)
                 .stream()
-                .map(PagamentoMapper::toResponse)
+                .map(pagamentoMapper::toResponse)
                 .toList();
         return Response.ok(lista).build();
     }
@@ -78,7 +81,7 @@ public class PagamentoResource {
     public Response findByTipo(@PathParam("tipo") TipoPagamento tipoPagamento) {
         List<PagamentoResponseDTO> lista = service.findByTipoPagamento(tipoPagamento)
                 .stream()
-                .map(PagamentoMapper::toResponse)
+                .map(pagamentoMapper::toResponse)
                 .toList();
         return Response.ok(lista).build();
     }
@@ -91,7 +94,7 @@ public class PagamentoResource {
             @PathParam("tipo") TipoPagamento tipoPagamento) {
         List<PagamentoResponseDTO> lista = service.findByStatusAndTipo(statusPagamento, tipoPagamento)
                 .stream()
-                .map(PagamentoMapper::toResponse)
+                .map(pagamentoMapper::toResponse)
                 .toList();
         return Response.ok(lista).build();
     }
@@ -102,7 +105,7 @@ public class PagamentoResource {
     public Response findByValorGreaterThan(@PathParam("valor") Double valor) {
         List<PagamentoResponseDTO> lista = service.findByValorGreaterThan(valor)
                 .stream()
-                .map(PagamentoMapper::toResponse)
+                .map(pagamentoMapper::toResponse)
                 .toList();
         return Response.ok(lista).build();
     }

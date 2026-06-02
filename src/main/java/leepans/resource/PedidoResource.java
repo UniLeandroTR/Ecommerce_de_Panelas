@@ -11,8 +11,8 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -55,6 +55,18 @@ public class PedidoResource {
     public Response findById(@PathParam("id") Long id) {
         PedidoResponseDTO pedido = pedidoMapper.toResponse(service.findById(id));
         return Response.ok(pedido).build();
+    }
+
+    @GET
+    @Path("/compras")
+    @Authenticated
+    public Response findCompras() {
+        String login = jwt.getClaim("upn");
+        List<PedidoResponseDTO> lista = service.findCompras(login)
+                .stream()
+                .map(pedidoMapper::toResponse)
+                .toList();
+        return Response.ok(lista).build();
     }
 
     @GET
@@ -103,14 +115,11 @@ public class PedidoResource {
                 .build();
     }
 
-    @PUT
-    @Path("/{id}")
+    @PATCH
+    @Path("/{id}/status/{status}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
-    public Response update(@PathParam("id") Long id, @Valid PedidoRequestDTO dto) {
-        if (dto.version() == null) {
-            throw new ValidationException("A versão do pedido é obrigatória para atualização.", "version");
-        }
-        service.update(id, dto);
+    public Response setStatus(@PathParam("id") Long id, @PathParam("status") StatusPedido status) {
+        service.setStatus(id, status);
         return Response.noContent().build();
     }
 

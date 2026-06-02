@@ -4,9 +4,13 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Pagamento extends DefaultEntity {
+
+    @OneToOne(optional = false)
+    private Pedido pedido;
 
     @Column(name = "data_processado")
     private LocalDateTime dataProcessado;
@@ -17,6 +21,14 @@ public class Pagamento extends DefaultEntity {
 
     @Column(name = "codigo_status_pagamento", nullable = false)
     private StatusPagamento statusPagamento;
+
+    public Pedido getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(Pedido pedido) {
+        this.pedido = pedido;
+    }
 
     public LocalDateTime getDataProcessado() {
         return dataProcessado;

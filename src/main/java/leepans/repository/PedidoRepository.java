@@ -4,10 +4,19 @@ import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import leepans.model.Pedido;
+import leepans.model.StatusPagamento;
 import leepans.model.StatusPedido;
 
 @ApplicationScoped
 public class PedidoRepository implements PanacheRepository<Pedido> {
+
+    public PanacheQuery<Pedido> findCompras(String usuarioLogin){
+        return find("SELECT p FROM Pedido p WHERE p.usuario.login = ?1 " +
+                    "AND p.status = ?2", usuarioLogin, StatusPedido.ENTREGUE); 
+        // return find("SELECT p FROM Pedido p WHERE p.usuario.login = ?1 " +
+        //             "AND (p.status = ?2 OR (p.status = ?3 AND p.pagamento IS NOT NULL AND p.pagamento.statusPagamento = ?4))", 
+        //     usuarioLogin, StatusPedido.ENTREGUE, StatusPedido.PENDENTE, StatusPagamento.APROVADO); 
+    }
 
     public PanacheQuery<Pedido> findByUsuarioId(Long usuarioId) {
         return find("SELECT p FROM Pedido p WHERE p.usuario.id = ?1", usuarioId);

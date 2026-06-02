@@ -11,6 +11,8 @@ public record PedidoRequestDTO(
         @Valid
         List<ItemPedidoRequestDTO> itens,
 
+        String codigoCupomDesconto,
+
         Integer version
 ) {
 }

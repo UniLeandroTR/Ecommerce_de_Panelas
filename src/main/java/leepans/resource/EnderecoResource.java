@@ -53,8 +53,10 @@ public class EnderecoResource {
     
     @GET
     @Path("/usuario")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" , "CLIENTE" })
     public Response findByUsuario() {
-        EnderecoResponseDTO endereco = EnderecoMapper.toResponse(service.findByUsuario(jwt.getSubject()));
+        String login = jwt.getClaim("upn");
+        EnderecoResponseDTO endereco = EnderecoMapper.toResponse(service.findByUsuario(login));
         return Response.ok(endereco).build();
     }
 

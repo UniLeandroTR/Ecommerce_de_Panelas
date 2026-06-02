@@ -9,6 +9,7 @@ import leepans.dto.pedido.PedidoResponseDTO;
 import leepans.model.ItemPedido;
 import leepans.model.Pedido;
 import leepans.model.StatusPedido;
+import leepans.repository.CupomDescontoRepository;
 
 @ApplicationScoped
 public class PedidoMapper {
@@ -19,6 +20,12 @@ public class PedidoMapper {
     @Inject
     UsuarioMapper usuarioMapper;
 
+    @Inject
+    PagamentoMapper pagamentoMapper;
+
+    @Inject
+    CupomDescontoRepository cupomRepository;
+
     public Pedido toEntity(PedidoRequestDTO dto) {
         if (dto == null) return null;
 
@@ -28,6 +35,13 @@ public class PedidoMapper {
                 .map(itemPedidoMapper::toEntity)
                 .toList();
         pedido.setItens(itens);
+        if (dto.codigoCupomDesconto() != null) {
+            try{
+                pedido.setCupomDesconto(cupomRepository.findByCodigo(dto.codigoCupomDesconto()).firstResult());
+            } catch (Exception e) {
+                throw new RuntimeException("Cupom de desconto não encontrado: " + dto.codigoCupomDesconto());
+            }
+        }
         if (dto.version() != null) {
             pedido.setVersion(dto.version());
         }
@@ -43,6 +57,9 @@ public class PedidoMapper {
                 pedido.getEndereco() != null ? EnderecoMapper.toResponse(pedido.getEndereco()) : null,
                 pedido.getStatus(),
                 pedido.getValorTotal(),
+                pedido.getValorDesconto(),
+                CupomDescontoMapper.toResponse(pedido.getCupomDesconto()),
+                pagamentoMapper.toResponse(pedido.getPagamento()),
                 pedido.getItens() != null ? pedido.getItens().stream()
                         .map(itemPedidoMapper::toResponse)
                         .toList() : null,

@@ -1,20 +1,20 @@
 package leepans.model;
 
-public enum StatusPedido {
-    ENTREGUE(1L, "Entregue"),
-    PENDENTE(2L, "Pendente"),
-    CANCELADO(3L, "Cancelado");
+public enum StatusPagamento {
+    PENDENTE(1L, "Pendente"),
+    APROVADO(2L, "Aprovado"),
+    RECUSADO(3L, "Recusado");
 
     private final Long id;
     private final String nome;
 
-    StatusPedido(Long id, String nome) {
+    StatusPagamento(Long id, String nome) {
         this.id = id;
         this.nome = nome;
     }
 
-    public static StatusPedido valueOf(Long id){
-        for(StatusPedido status : StatusPedido.values()){
+    public static StatusPagamento valueOf(Long id){
+        for(StatusPagamento status : StatusPagamento.values()){
             if(status.getId().equals(id)){
                 return status;
             }

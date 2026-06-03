@@ -6,9 +6,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.endereco.EnderecoRequestDTO;
 import leepans.dto.usuario.CadastroCompletoDTO;
 import leepans.dto.usuario.CadastroSimplesDTO;
+import leepans.dto.usuario.EditarDadosDTO;
 import leepans.dto.usuario.UsuarioRequestDTO;
 import leepans.mapper.EnderecoMapper;
 import leepans.model.Endereco;
@@ -16,6 +19,7 @@ import leepans.model.Perfil;
 import leepans.model.Usuario;
 import leepans.repository.EnderecoRepository;
 import leepans.repository.UsuarioRepository;
+import leepans.service.auth.CacheService;
 import leepans.service.auth.HashService;
 
 @ApplicationScoped
@@ -29,6 +33,9 @@ public class UsuarioService implements UsuarioServiceInter {
 
     @Inject
     private HashService hashService;
+
+    @Inject
+    private CacheService cacheService;
 
     @Override
     public List<Usuario> findAll() {
@@ -48,7 +55,7 @@ public class UsuarioService implements UsuarioServiceInter {
     @Override
     @Transactional
     public Usuario create(Usuario usuario) {
-        usuario.setSenhaHash(hashService.bcrypt(usuario.getSenhaHash()));
+        usuario.setSenhaHash(hashService.Argon2(usuario.getSenhaHash()));
         repository.persist(usuario);
         return usuario;
     }
@@ -59,7 +66,7 @@ public class UsuarioService implements UsuarioServiceInter {
         Usuario usuario = new Usuario();
         usuario.setNome(dto.nome());
         usuario.setLogin(dto.login());
-        usuario.setSenhaHash(hashService.bcrypt(dto.senha()));
+        usuario.setSenhaHash(hashService.Bcrypt(dto.senha()));
         usuario.setPerfil(Perfil.CLIENTE);
         repository.persist(usuario);
         return usuario;
@@ -71,7 +78,7 @@ public class UsuarioService implements UsuarioServiceInter {
         Usuario usuario = new Usuario();
         usuario.setNome(dto.nome());
         usuario.setLogin(dto.login());
-        usuario.setSenhaHash(hashService.bcrypt(dto.senha()));
+        usuario.setSenhaHash(hashService.Argon2(dto.senha()));
         usuario.setPerfil(Perfil.CLIENTE);
         Endereco endereco = EnderecoMapper.toEntity(dto.endereco());
         usuario.setEndereco(endereco);
@@ -82,11 +89,37 @@ public class UsuarioService implements UsuarioServiceInter {
 
     @Override
     @Transactional
+    public void update(String login, EditarDadosDTO dto){
+        Usuario usuario = repository.findByLogin(login).firstResult();
+        usuario.setNome(dto.nome());
+        usuario.setSobrenome(dto.sobrenome());
+        if(dto.endereco() != null){
+            Endereco novoEndereco = EnderecoMapper.toEntity(dto.endereco());
+            enderecoRepository.persist(novoEndereco);
+            usuario.setEndereco(novoEndereco);
+        }
+        repository.persist(usuario);
+    }
+
+    @Override
+    @Transactional
     public void setEndereco(String login, EnderecoRequestDTO endereco) {
         Usuario usuario = repository.findByLogin(login).firstResult();
         Endereco novoEndereco = EnderecoMapper.toEntity(endereco);
         enderecoRepository.persist(novoEndereco);
         usuario.setEndereco(novoEndereco);
+        repository.persist(usuario);
+    }
+
+    @Override
+    @Transactional
+    public void setPassword(String login, String token, String novaSenha) {
+        Usuario usuario = repository.findByLogin(login).firstResult();
+        if(!cacheService.checkToken(login, token)) {
+            throw new WebApplicationException("Token inválido ou expirado", Status.BAD_REQUEST);
+        }
+        usuario.setSenhaHash(hashService.Argon2(novaSenha));
+        cacheService.invalidateToken(token);
         repository.persist(usuario);
     }
 
@@ -108,5 +141,4 @@ public class UsuarioService implements UsuarioServiceInter {
     @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
-    }
-}
+    }}

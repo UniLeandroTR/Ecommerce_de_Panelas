@@ -89,9 +89,9 @@ insert into Endereco (rua, numero, cidade, estado, cep, data_cadastro, version) 
 insert into Endereco (rua, numero, cidade, estado, cep, data_cadastro, version) values ('Rua Espírito Santo', '789', 'Belo Horizonte', 'MG', '30140-071', CURRENT_DATE, 0);
 
 -- Usuários
-insert into Usuario (login, senha_hash, perfil, data_cadastro, version) values ('Leandro', '$2a$10$nycXt13354pHn507PMJNlerq2mYe8kE/zCl7K.Y5xFbaWwv9DRoxe', 'ADMIN', CURRENT_DATE, 0);
-insert into Usuario (login, senha_hash, perfil, data_cadastro, version) values ('Gustavo', '$2a$10$cHmSVT9OZtbbtmkfhANSjumNlcDZZptLjRcpt17G9bKcDxLZ4GW6a', 'FUNCIONARIO', CURRENT_DATE, 0);
-insert into Usuario (login, senha_hash, perfil, data_cadastro, version) values ('Pedro', '$2a$10$UrqbJxikJp46JzELXAeaBeCeOM9ssfGhD92rjStksf2Qfw4dCqdRG', 'CLIENTE', CURRENT_DATE, 0);
+insert into Usuario (login, senha_hash, perfil, data_cadastro, version) values ('Leandro', '$argon2id$v=19$m=65536,t=3,p=4$upAxp+68yN5Q+2Ttn6PiUg$mtcho1Pl1uRVdr/IizjBPzPs9mH9kp12r4QDj4ZklRI', 'ADMIN', CURRENT_DATE, 0);
+insert into Usuario (login, senha_hash, perfil, data_cadastro, version) values ('Gustavo', '$argon2id$v=19$m=65536,t=3,p=4$1fWVYmlX/DbiEuHP930ZmA$mtQ4YUxXawl6JAb9m7HsHUQSpR6V+uij+LnfTV8460k', 'FUNCIONARIO', CURRENT_DATE, 0);
+insert into Usuario (login, senha_hash, perfil, data_cadastro, version) values ('Pedro', '$argon2id$v=19$m=65536,t=3,p=4$le+GEcgt+PGyT+Q4Yep+4w$NYEpQ9ZJwpqKTON3e2QqpSdB20dWdODRZoDJfcxrUxE', 'CLIENTE', CURRENT_DATE, 0);
 
 -- Itens de Pedido
 insert into ItemPedido (panela_id, quantidade, valor_unitario, data_cadastro, version) values (1, 2, 24990.0, CURRENT_DATE, 0);

@@ -21,6 +21,7 @@ import jakarta.ws.rs.core.Response;
 import leepans.dto.endereco.EnderecoRequestDTO;
 import leepans.dto.usuario.CadastroCompletoDTO;
 import leepans.dto.usuario.CadastroSimplesDTO;
+import leepans.dto.usuario.EditarDadosDTO;
 import leepans.dto.usuario.UsuarioRequestDTO;
 import leepans.dto.usuario.UsuarioResponseDTO;
 import leepans.mapper.UsuarioMapper;
@@ -42,7 +43,6 @@ public class UsuarioResource {
     UsuarioMapper usuarioMapper;
 
     @POST
-    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid UsuarioRequestDTO dto) {
         Usuario usuario = service.create(usuarioMapper.toEntity(dto));
         return Response.status(201).entity(usuarioMapper.toResponseDTO(usuario)).build();
@@ -82,7 +82,7 @@ public class UsuarioResource {
     }
 
     @PATCH
-    @Path("/enderecos")
+    @Path("/editar/enderecos")
     @RolesAllowed( {"ADMIN", "FUNCIONARIO", "CLIENTE" } )
     public Response setEndereco(EnderecoRequestDTO endereco) {
         String login = jwt.getClaim("upn");
@@ -90,11 +90,21 @@ public class UsuarioResource {
         return Response.noContent().build();
     }
 
+    @PATCH
+    @Path("/editar/senha/{token}")
+    @RolesAllowed( { "ADMIN", "FUNCIONARIO", "CLIENTE" } )
+    public Response setPassword(@PathParam("token") String token, String novaSenha) {
+        String login = jwt.getClaim("upn");
+        service.setPassword(login, token, novaSenha);
+        return Response.noContent().build();
+    }
+
     @PUT
-    @Path("/{id}")
-    @RolesAllowed( { "ADMIN" } )
-    public Response update (@PathParam("id") Long id, UsuarioRequestDTO dto){
-        service.update(id, dto);
+    @Path("/editar/dados")
+    @RolesAllowed( { "ADMIN", "FUNCIONARIO", "CLIENTE" } )
+    public Response update (EditarDadosDTO dto){
+        String login = jwt.getClaim("upn");
+        service.update(login, dto);
         return Response.noContent().build();
     }
 

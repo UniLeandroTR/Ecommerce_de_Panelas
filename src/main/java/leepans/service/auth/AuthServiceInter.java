@@ -4,6 +4,7 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import leepans.dto.auth.AuthRequestDTO;
 import leepans.dto.auth.AuthResponseDTO;
+import leepans.dto.auth.ForgotPasswordDTO;
 import leepans.dto.usuario.UsuarioResponseDTO;
 
 public interface AuthServiceInter {
@@ -14,4 +15,6 @@ public interface AuthServiceInter {
     AuthResponseDTO login(AuthRequestDTO dto);
 
     UsuarioResponseDTO info(JsonWebToken jwt);
+
+    String alterarSenha(ForgotPasswordDTO dto);
 }

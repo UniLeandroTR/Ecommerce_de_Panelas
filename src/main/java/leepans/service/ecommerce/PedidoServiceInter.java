@@ -13,6 +13,8 @@ public interface PedidoServiceInter {
 
     Pedido findById(Long id);
 
+    List<Pedido> findCompras(String usuarioLogin, StatusPedido status);
+
     List<Pedido> findCompras(String usuarioLogin);
 
     List<Pedido> findByUsuarioId(Long usuarioId);

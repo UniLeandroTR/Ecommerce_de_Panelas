@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import leepans.dto.auth.AuthRequestDTO;
 import leepans.dto.auth.AuthResponseDTO;
+import leepans.dto.auth.ForgotPasswordDTO;
 import leepans.service.auth.AuthService;
 
 @Path("/auth")
@@ -39,5 +40,12 @@ public class AuthResource {
     @Authenticated
     public Response info() {
         return Response.ok(authService.info(jwt)).build();
+    }
+
+    @POST
+    @Path("/alterar-senha")
+    @Authenticated
+    public Response alterarSenha(@Valid ForgotPasswordDTO dto) {
+        return Response.ok(authService.alterarSenha(dto)).build();
     }
 }

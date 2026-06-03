@@ -70,6 +70,18 @@ public class PedidoResource {
     }
 
     @GET
+    @Path("/compras/status/{status}")
+    @Authenticated
+    public Response findComprasPorStatus(@PathParam("status") StatusPedido status) {
+        String login = jwt.getClaim("upn");
+        List<PedidoResponseDTO> lista = service.findCompras(login, status)
+                .stream()
+                .map(pedidoMapper::toResponse)
+                .toList();
+        return Response.ok(lista).build();
+    }
+
+    @GET
     @Path("/usuario/{usuarioId}")
     public Response findByUsuarioId(@PathParam("usuarioId") Long usuarioId) {
         List<PedidoResponseDTO> lista = service.findByUsuarioId(usuarioId)
@@ -81,12 +93,8 @@ public class PedidoResource {
 
     @GET
     @Path("/status/{status}")
-    public Response findByStatus(@PathParam("status") Long status) {
-        StatusPedido statusPedido = StatusPedido.valueOf(status);
-        if (statusPedido == null) {
-            throw new ValidationException("Status com id " + status + " não encontrado.", "status");
-        }
-        List<PedidoResponseDTO> lista = service.findByStatus(statusPedido)
+    public Response findByStatus(@PathParam("status") StatusPedido status) {
+        List<PedidoResponseDTO> lista = service.findByStatus(status)
                 .stream()
                 .map(pedidoMapper::toResponse)
                 .toList();

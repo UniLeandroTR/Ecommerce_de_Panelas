@@ -49,8 +49,13 @@ public class PedidoService implements PedidoServiceInter {
     }
 
     @Override
+    public List<Pedido> findCompras(String usuarioLogin, StatusPedido status){
+        return repository.findComprasUsuario(usuarioLogin, status).list();
+    }
+
+    @Override
     public List<Pedido> findCompras(String usuarioLogin){
-        return repository.findCompras(usuarioLogin).list();
+        return repository.findComprasUsuario(usuarioLogin).list();
     }
 
     @Override

@@ -117,9 +117,30 @@ class CupomDesconto {
 - isAtivo : boolean
 }
 
-class Pagamento{
-- dataCriacao : LocalDateTime
+abstract Pagamento{
 - dataProcessado : LocalDateTime
+}
+
+class CartaoCredito{
+- numero : String
+- nomeTitular : String
+- dataValidade : String
+- codigoSeguranca : String
+}
+
+class CartaoDebito{
+- numero : String
+- nomeTitular : String
+- dataValidade : String
+- codigoSeguranca : String
+}
+
+class Pix{
+- chavePix : String
+}
+
+class Boleto{
+- codigoBarras : String
 }
 
 enum TipoPagamento{
@@ -147,12 +168,12 @@ Panela "*" o--> "1" Cor
 Panela "*" o--> "1" Material
 Panela <-up- ItemPedido
 
-Componente <|-- Tampa
-Componente <|-- Fundo
-Componente <|-- Sustentacao
-Componente "*" o-- "*" Material
+Componente <|-up- Tampa
+Componente <|-up- Fundo
+Componente <|-up- Sustentacao
+Componente "*" o-up- "*" Material
 
-Sustentacao "*" -up-> "1" TipoSustentacao
+Sustentacao "*" -down-> "1" TipoSustentacao
 
 Usuario "*" --> "1" Perfil
 Usuario "*" --> "1" Endereco
@@ -165,8 +186,12 @@ Pedido "1" --> "*" ItemPedido
 Pedido "*" --> "1" StatusPedido
 Pedido "*" --> "1" Pagamento
 Pedido "*" --> "0..1" CupomDesconto
+Pedido -- TipoPagamento
 
-Pagamento "*" --> "1" TipoPagamento
 Pagamento "*" --> "1" StatusPagamento
+Pagamento <|-- CartaoCredito
+Pagamento <|-- CartaoDebito
+Pagamento <|-- Pix
+Pagamento <|-- Boleto
 
 @enduml

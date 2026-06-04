@@ -15,10 +15,13 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import leepans.dto.pagamento.BoletoRequestDTO;
+import leepans.dto.pagamento.CartaoRequestDTO;
 import leepans.dto.pagamento.PagamentoEcommerceDTO;
 import leepans.dto.pagamento.PagamentoPatchDTO;
 import leepans.dto.pagamento.PagamentoRequestDTO;
 import leepans.dto.pagamento.PagamentoResponseDTO;
+import leepans.dto.pagamento.PixRequestDTO;
 import leepans.exception.ValidationException;
 import leepans.mapper.PagamentoMapper;
 import leepans.model.Pagamento;
@@ -40,10 +43,34 @@ public class PagamentoResource {
     @POST
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid PagamentoRequestDTO dto) {
-        Pagamento pagamento = service.create(PagamentoMapper.toEntity(dto));
+        Pagamento pagamento = service.create(pagamentoMapper.toEntity(dto));
         return Response.status(Response.Status.CREATED)
                 .entity(pagamentoMapper.toResponse(pagamento))
                 .build();
+    }
+
+    @POST
+    @Path("/{id}/cartao")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
+    public Response completeInfoCartao(@PathParam("id") Long id, @Valid CartaoRequestDTO dto) {
+        service.completeInfo(id, dto);
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Path("/{id}/boleto")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
+    public Response completeInfoBoleto(@PathParam("id") Long id, @Valid BoletoRequestDTO dto) {
+        service.completeInfo(id, dto);
+        return Response.noContent().build();
+    }
+
+    @POST
+    @Path("/{id}/pix")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
+    public Response completeInfoPix(@PathParam("id") Long id, @Valid PixRequestDTO dto) {
+        service.completeInfo(id, dto);
+        return Response.noContent().build();
     }
 
     @GET
@@ -116,7 +143,7 @@ public class PagamentoResource {
     public Response findAllEcommerce() {
         List<PagamentoEcommerceDTO> lista = service.findAll()
                 .stream()
-                .map(PagamentoMapper::toEcommerceDTO)
+                .map(pagamentoMapper::toEcommerceDTO)
                 .toList();
         return Response.ok(lista).build();
     }
@@ -125,7 +152,7 @@ public class PagamentoResource {
     @Path("/ecommerce/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response findByIdEcommerce(@PathParam("id") Long id) {
-        return Response.ok(PagamentoMapper.toEcommerceDTO(service.findById(id))).build();
+        return Response.ok(pagamentoMapper.toEcommerceDTO(service.findById(id))).build();
     }
 
     @PATCH

@@ -3,11 +3,12 @@ package leepans.model;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.OneToOne;
 
-@Entity
-public class Pagamento extends DefaultEntity {
+@Inheritance( strategy = InheritanceType.JOINED)
+public abstract class Pagamento extends DefaultEntity {
 
     @OneToOne(optional = false)
     private Pedido pedido;

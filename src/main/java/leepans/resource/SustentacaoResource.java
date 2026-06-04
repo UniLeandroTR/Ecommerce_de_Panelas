@@ -35,6 +35,7 @@ public class SustentacaoResource {
     SustentacaoMapper sustentacaoMapper;
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid SustentacaoRequestDTO dto) {
         Sustentacao sustentacao = service.create(sustentacaoMapper.toEntity(dto));
@@ -42,6 +43,8 @@ public class SustentacaoResource {
     }
 
     @GET
+    @Path("/admin")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<SustentacaoResponseDTO> lista = service.findAll()
                 .stream()
@@ -51,7 +54,8 @@ public class SustentacaoResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         SustentacaoResponseDTO sustentacao = sustentacaoMapper.toResponseDTO(service.findById(id));
         if (sustentacao == null) {
@@ -61,7 +65,8 @@ public class SustentacaoResource {
     }
 
     @GET
-    @Path("/material/{id}")
+    @Path("/admin/material/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByMaterial(@PathParam("id") Long id) {
         List<SustentacaoResponseDTO> lista = service.findByMaterial(id)
                 .stream()
@@ -71,7 +76,7 @@ public class SustentacaoResource {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, SustentacaoRequestDTO dto) {
         if (dto.version() == null) {
@@ -86,7 +91,7 @@ public class SustentacaoResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

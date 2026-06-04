@@ -35,11 +35,6 @@ public class FundoService implements FundoServiceInter{
     }
 
     @Override
-    public List<Fundo> findByCor(Long idCor) {
-        return repository.findByCor(idCor).list();
-    }
-
-    @Override
     @Transactional
     public Fundo create(Fundo fundo) {
         repository.persist(fundo);

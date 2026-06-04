@@ -38,6 +38,7 @@ public class FornecedorResource {
     }
 
     @GET
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<FornecedorResponseDTO> lista = service.findAll()
                 .stream()
@@ -48,6 +49,7 @@ public class FornecedorResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         FornecedorResponseDTO fornecedor = FornecedorMapper.toResponse(service.findById(id));
         return Response.ok(fornecedor).build();
@@ -55,6 +57,7 @@ public class FornecedorResource {
 
     @GET
     @Path("/nome/{nome}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByNome(@PathParam("nome") String nome) {
         List<FornecedorResponseDTO> lista = service.findByNome(nome)
                 .stream()

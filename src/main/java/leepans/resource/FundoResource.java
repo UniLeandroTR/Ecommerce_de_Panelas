@@ -35,6 +35,7 @@ public class FundoResource {
     FundoMapper fundoMapper;
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid FundoRequestDTO dto) {
         Fundo fundo = service.create(fundoMapper.toEntity(dto));
@@ -42,6 +43,8 @@ public class FundoResource {
     }
 
     @GET
+    @Path("/admin")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<FundoResponseDTO> lista = service.findAll()
                 .stream()
@@ -51,7 +54,8 @@ public class FundoResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         FundoResponseDTO fundo = fundoMapper.toResponseDTO(service.findById(id));
         if (fundo == null) {
@@ -60,18 +64,8 @@ public class FundoResource {
         return Response.ok(fundo).build();
     }
 
-    @GET
-    @Path("/cor/{id}")
-    public Response findByCor(@PathParam("id") Long idCor) {
-        List<FundoResponseDTO> lista = service.findByCor(idCor)
-                .stream()
-                .map(fundoMapper::toResponseDTO)
-                .toList();
-        return Response.ok(lista).build();
-    }
-
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, FundoRequestDTO dto) {
         if (dto.version() == null) {
@@ -82,7 +76,7 @@ public class FundoResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

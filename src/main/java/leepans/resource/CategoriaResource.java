@@ -31,6 +31,7 @@ public class CategoriaResource {
     CategoriaService service;
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid CategoriaRequestDTO dto) {
         Categoria categoria = service.create(CategoriaMapper.toEntity(dto));
@@ -38,6 +39,8 @@ public class CategoriaResource {
     }
 
     @GET
+    @Path("/admin")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<CategoriaResponseDTO> lista = service.findAll()
                 .stream()
@@ -47,7 +50,8 @@ public class CategoriaResource {
     }
 
     @GET
-    @Path("/nome/{nome}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    @Path("/admin/nome/{nome}")
     public Response findByNome(@PathParam("nome") String nome) {
         List<CategoriaResponseDTO> lista = service.findByNome(nome)
                 .stream()
@@ -57,14 +61,15 @@ public class CategoriaResource {
     }
 
     @GET
-    @Path("/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    @Path("/admin/{id}")
     public Response findById(@PathParam("id") Long id) {
         CategoriaResponseDTO categoria = CategoriaMapper.toResponse(service.findById(id));
         return Response.ok(categoria).build();
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, CategoriaRequestDTO dto) {
         if (dto.version() == null) {
@@ -75,7 +80,7 @@ public class CategoriaResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

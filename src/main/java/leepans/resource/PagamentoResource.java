@@ -43,7 +43,7 @@ public class PagamentoResource {
     JsonWebToken jwt;
 
     @PUT
-    @Path("/{id}/processar")
+    @Path("/processar/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response processarPagamento(@PathParam("id") Long id) {
         service.processarPagamento(service.findById(id));
@@ -51,7 +51,7 @@ public class PagamentoResource {
     }
     
     @PUT
-    @Path("/{id}/cartao")
+    @Path("/cartao/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response completeInfoCartao(@PathParam("id") Long id, @Valid CartaoRequestDTO dto) {
         service.completeInfo(id, dto);
@@ -59,7 +59,7 @@ public class PagamentoResource {
     }
 
     @PUT
-    @Path("/{id}/boleto")
+    @Path("/boleto/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response completeInfoBoleto(@PathParam("id") Long id, @Valid BoletoRequestDTO dto) {
         service.completeInfo(id, dto);
@@ -67,7 +67,7 @@ public class PagamentoResource {
     }
 
     @PUT
-    @Path("/{id}/pix")
+    @Path("/pix/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response completeInfoPix(@PathParam("id") Long id, @Valid PixRequestDTO dto) {
         service.completeInfo(id, dto);

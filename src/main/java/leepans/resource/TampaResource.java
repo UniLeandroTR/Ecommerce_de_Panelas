@@ -42,6 +42,7 @@ public class TampaResource {
     }
 
     @GET
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<TampaResponseDTO> lista = service.findAll()
                 .stream()
@@ -51,7 +52,8 @@ public class TampaResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         TampaResponseDTO tampa = tampaMapper.toResponseDTO(service.findById(id));
         if (tampa == null) {
@@ -61,7 +63,8 @@ public class TampaResource {
     }
 
     @GET
-    @Path("/material/{id}")
+    @Path("/admin/material/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByMaterial(@PathParam("id") Long id) {
         List<TampaResponseDTO> lista = service.findByMaterial(id)
                 .stream()
@@ -71,7 +74,7 @@ public class TampaResource {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, TampaRequestDTO dto) {
         if (dto.version() == null) {
@@ -82,7 +85,7 @@ public class TampaResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

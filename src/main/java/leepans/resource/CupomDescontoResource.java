@@ -34,6 +34,7 @@ public class CupomDescontoResource {
     CupomDescontoService service;
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN" })
     public Response create(@Valid CupomDescontoRequestDTO dto) {
         CupomDesconto cupomDesconto = service.create(CupomDescontoMapper.toEntity(dto));
@@ -43,6 +44,7 @@ public class CupomDescontoResource {
     }
 
     @GET
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<CupomDescontoResponseDTO> lista = service.findAll()
@@ -53,7 +55,7 @@ public class CupomDescontoResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         CupomDescontoResponseDTO cupomDesconto = CupomDescontoMapper.toResponse(service.findById(id));
@@ -91,7 +93,6 @@ public class CupomDescontoResource {
     }
 
     @GET
-    @Path("/ecommerce")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response findAllEcommerce() {
         List<CupomDescontoEcommerceDTO> lista = service.findByAtivo(true)
@@ -102,7 +103,7 @@ public class CupomDescontoResource {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, @Valid CupomDescontoRequestDTO dto) {
         if (dto.version() == null) {
@@ -116,7 +117,7 @@ public class CupomDescontoResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

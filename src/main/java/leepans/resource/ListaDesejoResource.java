@@ -53,24 +53,24 @@ public class ListaDesejoResource {
     }
 
     @GET
-    @Path("/{id}")
-    @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         ListaDesejoResponseDTO listaDesejo = listaDesejoMapper.toResponse(service.findById(id));
         return Response.ok(listaDesejo).build();
     }
 
     @GET
-    @Path("/usuario/{usuarioId}")
-    @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
+    @Path("/admin/usuario/{usuarioId}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByUsuarioLogin(@PathParam("usuarioLogin") String usuarioLogin) {
         ListaDesejoResponseDTO listaDesejo = listaDesejoMapper.toResponse(service.findByUsuarioLogin(usuarioLogin));
         return Response.ok(listaDesejo).build();
     }
 
     @PUT
-    @Path("/{id}")
-    @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, @Valid ListaDesejoRequestDTO dto) {
         if (dto.version() == null) {
             throw new ValidationException("A versão da lista de desejo é obrigatória para atualização.", "version");
@@ -80,8 +80,8 @@ public class ListaDesejoResource {
     }
 
     @DELETE
-    @Path("/{id}")
-    @RolesAllowed({ "ADMIN", "CLIENTE" })
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);
         return Response.noContent().build();

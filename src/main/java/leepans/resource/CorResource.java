@@ -32,6 +32,7 @@ public class CorResource {
     CorService service;
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid CorRequestDTO dto) {
         Cor cor = service.create(CorMapper.toEntity(dto));
@@ -39,6 +40,8 @@ public class CorResource {
     }
 
     @GET
+    @Path("/admin")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<CorResponseDTO> lista = service.findAll()
                 .stream()
@@ -48,7 +51,8 @@ public class CorResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         CorResponseDTO cor = CorMapper.toResponseDTO(service.findById(id));
         if (cor == null) {
@@ -58,7 +62,8 @@ public class CorResource {
     }
 
     @GET
-    @Path("/nome/{nome}")
+    @Path("/admin/nome/{nome}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByNome(@PathParam("nome") String nome) {
         List<CorResponseDTO> lista = service.findByNome(nome)
                 .stream()
@@ -68,7 +73,7 @@ public class CorResource {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, CorRequestDTO dto) {
         if (dto.version() == null) {
@@ -83,7 +88,7 @@ public class CorResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

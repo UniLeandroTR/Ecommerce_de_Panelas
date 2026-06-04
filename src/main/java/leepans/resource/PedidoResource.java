@@ -52,6 +52,8 @@ public class PedidoResource {
     JsonWebToken jwt;
 
     @GET
+    @Path("/admin")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<PedidoResponseDTO> lista = service.findAll()
                 .stream()
@@ -61,7 +63,8 @@ public class PedidoResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         PedidoResponseDTO pedido = pedidoMapper.toResponse(service.findById(id));
         return Response.ok(pedido).build();
@@ -92,7 +95,8 @@ public class PedidoResource {
     }
 
     @GET
-    @Path("/usuario/{usuarioId}")
+    @Path("/admin/usuario/{usuarioId}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByUsuarioId(@PathParam("usuarioId") Long usuarioId) {
         List<PedidoResponseDTO> lista = service.findByUsuarioId(usuarioId)
                 .stream()
@@ -102,7 +106,8 @@ public class PedidoResource {
     }
 
     @GET
-    @Path("/status/{status}")
+    @Path("/admin/status/{status}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByStatus(@PathParam("status") StatusPedido status) {
         List<PedidoResponseDTO> lista = service.findByStatus(status)
                 .stream()
@@ -112,7 +117,8 @@ public class PedidoResource {
     }
 
     @GET
-    @Path("/endereco/cidade")
+    @Path("/admin/endereco/cidade")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByEnderecoCidade(@QueryParam("cidade") String cidade) {
         if (cidade == null || cidade.isBlank()) {
             throw new ValidationException("Cidade é obrigatória para filtrar por endereço.", "cidade");

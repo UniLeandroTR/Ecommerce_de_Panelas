@@ -81,7 +81,6 @@ public class PanelaResource {
     }
 
     @GET
-    @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response findAllEcommerce() {
         List<PanelaEcommerceDTO> lista = service.findAll()
                 .stream()

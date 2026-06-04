@@ -22,7 +22,6 @@ import leepans.dto.endereco.EnderecoRequestDTO;
 import leepans.dto.usuario.CadastroCompletoDTO;
 import leepans.dto.usuario.CadastroSimplesDTO;
 import leepans.dto.usuario.EditarDadosDTO;
-import leepans.dto.usuario.UsuarioRequestDTO;
 import leepans.dto.usuario.UsuarioResponseDTO;
 import leepans.mapper.UsuarioMapper;
 import leepans.model.Usuario;
@@ -43,12 +42,6 @@ public class UsuarioResource {
     UsuarioMapper usuarioMapper;
 
     @POST
-    public Response create(@Valid UsuarioRequestDTO dto) {
-        Usuario usuario = service.create(usuarioMapper.toEntity(dto));
-        return Response.status(201).entity(usuarioMapper.toResponseDTO(usuario)).build();
-    }
-
-    @POST
     @Path("/cadastro/simples")
     public Response createSimples(@Valid CadastroSimplesDTO dto) {
         Usuario usuario = service.create(dto);
@@ -63,6 +56,8 @@ public class UsuarioResource {
     }
 
     @GET
+    @Path("/admin")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<UsuarioResponseDTO> lista = service.findAll()
                 .stream()
@@ -72,7 +67,7 @@ public class UsuarioResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         UsuarioResponseDTO usuario = usuarioMapper.toResponseDTO(service.findById(id));

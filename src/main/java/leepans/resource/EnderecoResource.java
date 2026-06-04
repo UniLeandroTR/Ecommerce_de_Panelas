@@ -36,6 +36,8 @@ public class EnderecoResource {
     JsonWebToken jwt;
 
     @GET
+    @Path("/admin")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<EnderecoResponseDTO> lista = service.findAll()
                 .stream()
@@ -45,7 +47,8 @@ public class EnderecoResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         EnderecoResponseDTO endereco = EnderecoMapper.toResponse(service.findById(id));
         return Response.ok(endereco).build();
@@ -62,7 +65,8 @@ public class EnderecoResource {
 
 
     @GET
-    @Path("/cidade/{cidade}")
+    @Path("/admin/cidade/{cidade}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByCidade(@PathParam("cidade") String cidade) {
         List<EnderecoResponseDTO> lista = service.findByCidade(cidade)
                 .stream()
@@ -72,7 +76,8 @@ public class EnderecoResource {
     }
 
     @GET
-    @Path("/estado/{estado}")
+    @Path("/admin/estado/{estado}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByEstado(@PathParam("estado") String estado) {
         List<EnderecoResponseDTO> lista = service.findByEstado(estado)
                 .stream()
@@ -82,6 +87,7 @@ public class EnderecoResource {
     }
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid EnderecoRequestDTO dto) {
         Endereco endereco = service.create(EnderecoMapper.toEntity(dto));
@@ -91,7 +97,7 @@ public class EnderecoResource {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, @Valid EnderecoRequestDTO dto) {
         if(service.findById(id) == null) {
@@ -105,7 +111,7 @@ public class EnderecoResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

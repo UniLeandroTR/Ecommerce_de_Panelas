@@ -32,6 +32,7 @@ public class MaterialResource {
     MaterialService service;
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid MaterialRequestDTO dto) {
         Material material = service.create(MaterialMapper.toEntity(dto));
@@ -39,6 +40,8 @@ public class MaterialResource {
     }
 
     @GET
+    @Path("/admin")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<MaterialResponseDTO> lista = service.findAll()
                 .stream()
@@ -48,7 +51,8 @@ public class MaterialResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         MaterialResponseDTO material = MaterialMapper.toResponseDTO(service.findById(id));
         if (material == null) {
@@ -58,7 +62,8 @@ public class MaterialResource {
     }
 
     @GET
-    @Path("/nome/{nome}")
+    @Path("/admin/nome/{nome}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByNome(@PathParam("nome") String nome) {
         List<MaterialResponseDTO> lista = service.findByNome(nome)
                 .stream()
@@ -68,7 +73,7 @@ public class MaterialResource {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, MaterialRequestDTO dto) {
         if (dto.version() == null) {
@@ -83,7 +88,7 @@ public class MaterialResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

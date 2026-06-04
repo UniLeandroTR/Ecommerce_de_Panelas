@@ -34,6 +34,7 @@ public class ColecaoResource {
     ColecaoMapper mapper;
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid ColecaoRequestDTO dto) {
         Colecao colecao = service.create(mapper.toEntity(dto));
@@ -41,6 +42,8 @@ public class ColecaoResource {
     }
 
     @GET
+    @Path("/admin")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<ColecaoResponseDTO> lista = service.findAll()
                 .stream()
@@ -50,7 +53,8 @@ public class ColecaoResource {
     }
 
     @GET
-    @Path("/nome/{nome}")
+    @Path("/admin/nome/{nome}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByNome(@PathParam("nome") String nome) {
         List<ColecaoResponseDTO> lista = service.findByNome(nome)
                 .stream()
@@ -60,13 +64,14 @@ public class ColecaoResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         return Response.ok(service.findById(id)).build();
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, ColecaoRequestDTO dto) {
         if (dto.version() == null) {
@@ -77,7 +82,7 @@ public class ColecaoResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

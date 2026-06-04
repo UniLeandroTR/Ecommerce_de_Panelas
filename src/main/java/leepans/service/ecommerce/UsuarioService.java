@@ -66,7 +66,7 @@ public class UsuarioService implements UsuarioServiceInter {
         Usuario usuario = new Usuario();
         usuario.setNome(dto.nome());
         usuario.setLogin(dto.login());
-        usuario.setSenhaHash(hashService.Bcrypt(dto.senha()));
+        usuario.setSenhaHash(hashService.Argon2(dto.senha()));
         usuario.setPerfil(Perfil.CLIENTE);
         repository.persist(usuario);
         return usuario;
@@ -132,7 +132,7 @@ public class UsuarioService implements UsuarioServiceInter {
                     "Conflito de concorrência: o usuário foi alterado por outra transação.");
         }
         usuario.setLogin(dto.login());
-        usuario.setSenhaHash(dto.senha());
+        usuario.setSenhaHash(hashService.Argon2(dto.senha()));
         usuario.setPerfil(dto.perfil());
         repository.persist(usuario);
     }

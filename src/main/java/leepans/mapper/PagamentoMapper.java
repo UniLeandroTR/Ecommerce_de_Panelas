@@ -48,7 +48,7 @@ public class PagamentoMapper {
 
         return new PagamentoResponseDTO(
                 pagamento.getId(),
-                pedidoMapper.toResponse(pagamento.getPedido()),
+                pagamento.getPedido().getId(),
                 pagamento.getDataProcessado(),
                 pagamento.getValor(),
                 pagamento.getTipoPagamento(),
@@ -63,7 +63,7 @@ public class PagamentoMapper {
 
         return new CartaoResponseDTO(
                 cartao.getId(),
-                pedidoMapper.toResponse(cartao.getPedido()),
+                cartao.getPedido().getId(),
                 cartao.getDataProcessado(),
                 cartao.getDataCadastro(),
                 cartao.getValor(),
@@ -82,7 +82,7 @@ public class PagamentoMapper {
 
         return new CartaoResponseDTO(
                 cartao.getId(),
-                pedidoMapper.toResponse(cartao.getPedido()),
+                cartao.getPedido().getId(),
                 cartao.getDataProcessado(),
                 cartao.getDataCadastro(),
                 cartao.getValor(),
@@ -101,7 +101,7 @@ public class PagamentoMapper {
 
         return new BoletoResponseDTO(
             boleto.getId(), 
-            pedidoMapper.toResponse(boleto.getPedido()), 
+            boleto.getPedido().getId(),
             boleto.getDataProcessado(),
             boleto.getDataCadastro(), 
             boleto.getValor(), 
@@ -116,7 +116,7 @@ public class PagamentoMapper {
 
         return new PixResponseDTO(
             pix.getId(), 
-            pedidoMapper.toResponse(pix.getPedido()), 
+            pix.getPedido().getId(),
             pix.getDataProcessado(),
             pix.getDataCadastro(), 
             pix.getValor(), 

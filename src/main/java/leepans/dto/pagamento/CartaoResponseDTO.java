@@ -3,12 +3,11 @@ package leepans.dto.pagamento;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import leepans.dto.pedido.PedidoResponseDTO;
 import leepans.model.StatusPagamento;
 
 public record CartaoResponseDTO (
     Long id,
-    PedidoResponseDTO pedido,
+    Long pedidoId,
     LocalDateTime dataProcessado,
     LocalDateTime dataCadastro,
     Double valor,

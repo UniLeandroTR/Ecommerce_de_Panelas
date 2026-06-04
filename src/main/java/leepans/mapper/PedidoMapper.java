@@ -30,11 +30,10 @@ public class PedidoMapper {
         if (dto == null) return null;
 
         Pedido pedido = new Pedido();
-        pedido.setStatus(StatusPedido.PENDENTE);
         List<ItemPedido> itens = dto.itens().stream()
                 .map(itemPedidoMapper::toEntity)
                 .toList();
-        pedido.setItens(itens);
+        
         if (dto.codigoCupomDesconto() != null) {
             try{
                 pedido.setCupomDesconto(cupomRepository.findByCodigo(dto.codigoCupomDesconto()).firstResult());
@@ -45,6 +44,9 @@ public class PedidoMapper {
         if (dto.version() != null) {
             pedido.setVersion(dto.version());
         }
+        pedido.setItens(itens);
+        pedido.setStatus(StatusPedido.PENDENTE);
+        pedido.setEndereco(EnderecoMapper.toEntity(dto.endereco()));
         return pedido;
     }
 
@@ -56,7 +58,7 @@ public class PedidoMapper {
                 pedido.getUsuario() != null ? usuarioMapper.toResponseDTO(pedido.getUsuario()) : null,
                 pedido.getEndereco() != null ? EnderecoMapper.toResponse(pedido.getEndereco()) : null,
                 pedido.getStatus(),
-                pedido.getValorTotal(),
+                pedido.getValorBruto(),
                 pedido.getValorDesconto(),
                 CupomDescontoMapper.toResponse(pedido.getCupomDesconto()),
                 pagamentoMapper.toResponse(pedido.getPagamento()),

@@ -102,9 +102,9 @@ insert into ItemPedido (panela_id, quantidade, valor_unitario, data_cadastro, ve
 insert into ItemPedido (panela_id, quantidade, valor_unitario, data_cadastro, version) values (3, 1, 32990.0, CURRENT_DATE, 0);
 
 -- Pedidos
-insert into Pedido (usuario_id, endereco_id, codigo_status_pedido, valor_total, data_cadastro, version) values (1, 1, 2, 99970.0, CURRENT_DATE, 0);
-insert into Pedido (usuario_id, endereco_id, codigo_status_pedido, valor_total, data_cadastro, version) values (2, 4, 1, 82980.0, CURRENT_DATE, 0);
-insert into Pedido (usuario_id, endereco_id, codigo_status_pedido, valor_total, data_cadastro, version) values (3, 6, 2, 157950.0, CURRENT_DATE, 0);
+insert into Pedido (usuario_id, endereco_id, codigo_status_pedido, valor_Bruto, data_cadastro, version) values (1, 1, 2, 99970.0, CURRENT_DATE, 0);
+insert into Pedido (usuario_id, endereco_id, codigo_status_pedido, valor_Bruto, data_cadastro, version) values (2, 4, 1, 82980.0, CURRENT_DATE, 0);
+insert into Pedido (usuario_id, endereco_id, codigo_status_pedido, valor_Bruto, data_cadastro, version) values (3, 6, 2, 157950.0, CURRENT_DATE, 0);
 
 -- Associação Pedido <-> ItemPedido
 insert into pedido_itempedido (Pedido_id, itens_id) values (1, 1);

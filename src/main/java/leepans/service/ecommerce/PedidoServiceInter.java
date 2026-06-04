@@ -2,10 +2,10 @@ package leepans.service.ecommerce;
 
 import java.util.List;
 
-import org.eclipse.microprofile.jwt.JsonWebToken;
-
+import leepans.model.Endereco;
 import leepans.model.Pedido;
 import leepans.model.StatusPedido;
+import leepans.model.TipoPagamento;
 
 public interface PedidoServiceInter {
 
@@ -23,7 +23,7 @@ public interface PedidoServiceInter {
 
     List<Pedido> findByEnderecoCidade(String cidade);
 
-    Pedido create(Pedido pedido, JsonWebToken jwt);
+    Pedido create(Pedido pedido, String login, Endereco endereco, TipoPagamento tipoPagamento);
 
     void setStatus(Long id, StatusPedido status);
 

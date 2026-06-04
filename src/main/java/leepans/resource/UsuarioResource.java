@@ -50,7 +50,6 @@ public class UsuarioResource {
 
     @POST
     @Path("/cadastro/simples")
-    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response createSimples(@Valid CadastroSimplesDTO dto) {
         Usuario usuario = service.create(dto);
         return Response.status(201).entity(usuarioMapper.toResponseDTO(usuario)).build();
@@ -58,7 +57,6 @@ public class UsuarioResource {
 
     @POST
     @Path("/cadastro/completo")
-    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response createCompleto(@Valid CadastroCompletoDTO dto) {
         Usuario usuario = service.create(dto);
         return Response.status(201).entity(usuarioMapper.toResponseDTO(usuario)).build();

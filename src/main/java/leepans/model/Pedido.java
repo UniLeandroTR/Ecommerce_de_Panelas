@@ -23,8 +23,8 @@ public class Pedido extends DefaultEntity {
     @Column(name = "codigo_status_pedido", nullable = false)
     private StatusPedido status;
 
-    @Column(name = "valor_total", nullable = false)
-    private Double valorTotal;
+    @Column(name = "valor_bruto", nullable = false)
+    private Double valorBruto;
 
     @Column(name = "valor_desconto")
     private Double valorDesconto;
@@ -63,12 +63,12 @@ public class Pedido extends DefaultEntity {
         this.status = status;
     }
 
-    public Double getValorTotal() {
-        return valorTotal;
+    public Double getValorBruto() {
+        return valorBruto;
     }
 
-    public void setValorTotal(Double valorTotal) {
-        this.valorTotal = valorTotal;
+    public void setValorBruto(Double valorTotal) {
+        this.valorBruto = valorTotal;
     }
 
     public Double getValorDesconto() {

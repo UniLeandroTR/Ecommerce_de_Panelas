@@ -1,17 +1,23 @@
 package leepans.service.ecommerce;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
-
-import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import leepans.exception.ValidationException;
+import leepans.model.Boleto;
+import leepans.model.CartaoCredito;
+import leepans.model.CartaoDebito;
+import leepans.model.Endereco;
 import leepans.model.ItemPedido;
+import leepans.model.Pagamento;
 import leepans.model.Pedido;
+import leepans.model.Pix;
+import leepans.model.StatusPagamento;
 import leepans.model.StatusPedido;
+import leepans.model.TipoPagamento;
 import leepans.model.Usuario;
 import leepans.repository.ItemPedidoRepository;
 import leepans.repository.PedidoRepository;
@@ -33,6 +39,9 @@ public class PedidoService implements PedidoServiceInter {
 
     @Inject
     PanelaService panelaService;
+
+    @Inject
+    PagamentoService pagamentoService;
 
     @Override
     public List<Pedido> findAll() {
@@ -75,39 +84,32 @@ public class PedidoService implements PedidoServiceInter {
 
     @Override
     @Transactional
-    public Pedido create(Pedido pedido, JsonWebToken jwt) {
+    public Pedido create(Pedido pedido, String login, Endereco endereco, TipoPagamento tipoPagamento) {
         // Validar e salvar itens do pedido
-        Double valorTotal = 0.0;
-        List<ItemPedido> itensSalvos = new ArrayList<>();
-
-        for (ItemPedido item : pedido.getItens()) {
-            if (item.getPanela() == null || item.getPanela().getId() == null) {
-                throw new ValidationException("Panela é obrigatória em cada item do pedido.", "item.panela");
-            }
-            
-            panelaService.findById(item.getPanela().getId());
-
-            itemRepository.persist(item);
-            itensSalvos.add(item);
-            valorTotal += item.getValorUnitario() * item.getQuantidade();
+        Double valorBruto = calcularValorBruto(pedido.getItens());
+        Double valorDesconto = 0.0;
+        if(pedido.getCupomDesconto() != null){
+            valorDesconto = pedido.getCupomDesconto().getValorDesconto();
         }
-        if(pedido.getCupomDesconto() != null) {
-            Double valorDesconto = pedido.getCupomDesconto().getValorDesconto();
-            if(pedido.getCupomDesconto().getPercentualDesconto() != null) {
-                valorDesconto += valorTotal * (pedido.getCupomDesconto().getPercentualDesconto() / 100);
-            }
-            valorTotal -= valorDesconto;
-            pedido.setValorDesconto(valorDesconto);
-        } else {
-            pedido.setValorDesconto(0.0);
-        }
-        String login = jwt.getClaim("upn");
+
         Usuario usuario = usuarioService.findByLogin(login);
+
+        Pagamento pagamento = criarPagamento(pedido, tipoPagamento);
+        pagamento.setValor(valorBruto - valorDesconto);
+
         pedido.setUsuario(usuario);
-        pedido.setEndereco(usuario.getEndereco());
-        pedido.setItens(itensSalvos);
-        pedido.setValorTotal(valorTotal);
+        if(endereco == null)
+            pedido.setEndereco(usuario.getEndereco());
+        else{
+            enderecoService.create(endereco);
+            pedido.setEndereco(endereco);
+        }
+        pedido.setValorBruto(valorBruto);
+        pedido.setValorDesconto(valorDesconto);
+        pedido.setPagamento(pagamento);
+
         repository.persist(pedido);
+        pagamentoService.create(pagamento);
         return pedido;
     }
 
@@ -133,5 +135,30 @@ public class PedidoService implements PedidoServiceInter {
         }
         
         repository.deleteById(id);
+    }
+
+    private Pagamento criarPagamento(Pedido pedido, TipoPagamento tipoPagamento) {
+        Pagamento pagamento = null;
+        if (tipoPagamento == TipoPagamento.CARTAO_CREDITO)
+            pagamento = new CartaoCredito();
+        else if (tipoPagamento == TipoPagamento.CARTAO_DEBITO)
+            pagamento = new CartaoDebito();
+        else if (tipoPagamento == TipoPagamento.BOLETO)
+            pagamento = new Boleto();
+        else 
+            pagamento = new Pix();
+        pagamento.setPedido(pedido);
+        pagamento.setTipoPagamento(tipoPagamento);
+        pagamento.setStatusPagamento(StatusPagamento.PENDENTE);
+        pagamento.setDataProcessado(LocalDateTime.now());
+        return pagamento;
+    }
+
+    private double calcularValorBruto(List<ItemPedido> itens) {
+        double valorBruto = 0.0;
+        for (ItemPedido item : itens) {
+            valorBruto += item.getValorUnitario() * item.getQuantidade();
+        }
+        return valorBruto;
     }
 }

@@ -2,13 +2,12 @@ package leepans.dto.pagamento;
 
 import java.time.LocalDateTime;
 
-import leepans.dto.pedido.PedidoResponseDTO;
 import leepans.model.StatusPagamento;
 import leepans.model.TipoPagamento;
 
 public record PagamentoResponseDTO(
         Long id,
-        PedidoResponseDTO pedido,
+        Long pedidoId,
         LocalDateTime dataProcessado,
         Double valor,
         TipoPagamento tipoPagamento,

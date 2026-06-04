@@ -7,7 +7,6 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -23,8 +22,10 @@ import jakarta.ws.rs.core.Response;
 import leepans.dto.pedido.PedidoRequestDTO;
 import leepans.dto.pedido.PedidoResponseDTO;
 import leepans.exception.ValidationException;
+import leepans.mapper.EnderecoMapper;
 import leepans.mapper.PagamentoMapper;
 import leepans.mapper.PedidoMapper;
+import leepans.model.Endereco;
 import leepans.model.Pedido;
 import leepans.model.StatusPedido;
 import leepans.service.ecommerce.PagamentoService;
@@ -125,9 +126,10 @@ public class PedidoResource {
 
     @POST
     @Authenticated
-    @Transactional
     public Response create(@Valid PedidoRequestDTO dto) {
-        Pedido pedido = service.create(pedidoMapper.toEntity(dto), jwt);
+        String login = jwt.getClaim("upn");
+        Endereco endereco = EnderecoMapper.toEntity(dto.endereco());
+        Pedido pedido = service.create(pedidoMapper.toEntity(dto), login, endereco, dto.pagamento());
         return Response.status(201)
                 .entity(pedidoMapper.toResponse(pedido))
                 .build();

@@ -14,7 +14,7 @@ public record PedidoResponseDTO(
         UsuarioResponseDTO usuario,
         EnderecoResponseDTO endereco,
         StatusPedido status,
-        Double valorTotal,
+        Double valorBruto,
         Double valorDesconto,
         CupomDescontoResponseDTO cupomDesconto,
         PagamentoResponseDTO pagamento,

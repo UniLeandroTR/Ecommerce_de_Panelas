@@ -6,6 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import leepans.dto.pedido.PedidoRequestDTO;
 import leepans.dto.pedido.PedidoResponseDTO;
+import leepans.exception.ValidationException;
 import leepans.model.ItemPedido;
 import leepans.model.Pedido;
 import leepans.model.StatusPedido;
@@ -34,19 +35,28 @@ public class PedidoMapper {
                 .map(itemPedidoMapper::toEntity)
                 .toList();
         
-        if (dto.codigoCupomDesconto() != null) {
-            try{
-                pedido.setCupomDesconto(cupomRepository.findByCodigo(dto.codigoCupomDesconto()).firstResult());
-            } catch (Exception e) {
-                throw new RuntimeException("Cupom de desconto não encontrado: " + dto.codigoCupomDesconto());
+        // Validar e mapear cupom desconto
+        if (dto.codigoCupomDesconto() != null && !dto.codigoCupomDesconto().isBlank()) {
+            String codigoCupom = dto.codigoCupomDesconto().trim();
+            var cupomResult = cupomRepository.findByCodigo(codigoCupom).firstResult();
+            
+            if (cupomResult == null) {
+                throw new ValidationException(
+                        "Cupom de desconto com código '" + codigoCupom + "' não encontrado.",
+                        "codigoCupomDesconto"
+                );
             }
+            
+            pedido.setCupomDesconto(cupomResult);
         }
+
         if (dto.version() != null) {
             pedido.setVersion(dto.version());
         }
+
         pedido.setItens(itens);
         pedido.setStatus(StatusPedido.PENDENTE);
-        pedido.setEndereco(EnderecoMapper.toEntity(dto.endereco()));
+
         return pedido;
     }
 

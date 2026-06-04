@@ -69,6 +69,20 @@ public class CupomDescontoService implements CupomDescontoServiceInter {
         repository.persist(cupomDesconto);
     }
 
+    @Transactional
+    public void decrementarQuantidade(CupomDesconto cupomDesconto) {
+        if (cupomDesconto.getQuantidadeDisponivel() > 0) {
+            cupomDesconto.setQuantidadeDisponivel(cupomDesconto.getQuantidadeDisponivel() - 1);
+            repository.persist(cupomDesconto);
+        }
+    }
+
+    @Transactional
+    public void incrementarQuantidade(CupomDesconto cupomDesconto) {
+        cupomDesconto.setQuantidadeDisponivel(cupomDesconto.getQuantidadeDisponivel() + 1);
+        repository.persist(cupomDesconto);
+    }
+
     @Override
     @Transactional
     public void delete(Long id) {

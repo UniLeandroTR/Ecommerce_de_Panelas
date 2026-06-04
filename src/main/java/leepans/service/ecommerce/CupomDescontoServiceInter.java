@@ -21,5 +21,9 @@ public interface CupomDescontoServiceInter {
 
     void update(Long id, CupomDescontoRequestDTO dto);
 
+    void decrementarQuantidade(CupomDesconto cupomDesconto);
+
+    void incrementarQuantidade(CupomDesconto cupomDesconto);
+
     void delete(Long id);
 }

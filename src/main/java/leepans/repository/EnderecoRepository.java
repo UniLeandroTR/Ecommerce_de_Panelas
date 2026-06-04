@@ -21,4 +21,9 @@ public class EnderecoRepository implements PanacheRepository<Endereco> {
     public PanacheQuery<Endereco> findByEstado(String estado) {
         return find("SELECT e FROM Endereco e WHERE UPPER(e.estado) LIKE UPPER(?1)", "%" + estado + "%");
     }
+
+    public Endereco findByAllFields(String rua, String numero, String cidade, String estado, String cep) {
+        return find("rua = ?1 AND numero = ?2 AND UPPER(cidade) = UPPER(?3) AND UPPER(estado) = UPPER(?4) AND cep = ?5",
+                rua, numero, cidade, estado, cep).firstResult();
+    }
 }

@@ -35,6 +35,7 @@ public class PanelaResource {
     PanelaMapper mapper;
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid PanelaRequestDTO dto) {
         Panela panela = service.create(mapper.toEntity(dto));
@@ -42,6 +43,8 @@ public class PanelaResource {
     }
 
     @GET
+    @Path("/admin")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<PanelaResponseDTO> lista = service.findAll()
                 .stream()
@@ -51,7 +54,8 @@ public class PanelaResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         return Response.ok(mapper.toResponseDTO(service.findById(id))).build();
     }
@@ -59,9 +63,9 @@ public class PanelaResource {
     @GET
     @Path("/categoria/{id}")
     public Response findByCategoria(@PathParam("id") Long id) {
-        List<PanelaResponseDTO> lista = service.findByCategoria(id)
+        List<PanelaEcommerceDTO> lista = service.findByCategoria(id)
                 .stream()
-                .map(mapper::toResponseDTO)
+                .map(mapper::toEcommerceDTO)
                 .toList();
         return Response.ok(lista).build();
     }
@@ -69,15 +73,14 @@ public class PanelaResource {
     @GET
     @Path("/colecao/{id}")
     public Response findByColecao(@PathParam("id") Long id) {
-        List<PanelaResponseDTO> lista = service.findByColecao(id)
+        List<PanelaEcommerceDTO> lista = service.findByColecao(id)
                 .stream()
-                .map(mapper::toResponseDTO)
+                .map(mapper::toEcommerceDTO)
                 .toList();
         return Response.ok(lista).build();
     }
 
     @GET
-    @Path("/ecommerce")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response findAllEcommerce() {
         List<PanelaEcommerceDTO> lista = service.findAll()
@@ -88,14 +91,14 @@ public class PanelaResource {
     }
 
     @GET
-    @Path("/ecommerce/{id}")
+    @Path("/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response findByIdEcommerce(@PathParam("id") Long id) {
         return Response.ok(mapper.toEcommerceDTO(service.findById(id))).build();
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, PanelaRequestDTO dto) {
         if (dto.version() == null) {
@@ -106,7 +109,7 @@ public class PanelaResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

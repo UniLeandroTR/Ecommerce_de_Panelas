@@ -17,7 +17,7 @@ public class Pedido extends DefaultEntity {
     @ManyToOne
     private Usuario usuario;
 
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private Endereco endereco;
 
     @Column(name = "codigo_status_pedido", nullable = false)

@@ -8,7 +8,6 @@ import leepans.dto.pagamento.PagamentoPatchDTO;
 import leepans.dto.pagamento.PixRequestDTO;
 import leepans.model.Pagamento;
 import leepans.model.StatusPagamento;
-import leepans.model.TipoPagamento;
 
 public interface PagamentoServiceInter {
 
@@ -18,13 +17,11 @@ public interface PagamentoServiceInter {
 
     List<Pagamento> findByStatusPagamento(StatusPagamento statusPagamento);
 
-    List<Pagamento> findByTipoPagamento(TipoPagamento tipoPagamento);
-
-    List<Pagamento> findByStatusAndTipo(StatusPagamento statusPagamento, TipoPagamento tipoPagamento);
-
-    List<Pagamento> findByValorGreaterThan(Double valor);
+    List<Pagamento> findByUsuario(String login);
 
     Pagamento create(Pagamento pagamento);
+
+    void processarPagamento(Pagamento pagamento);
 
     void completeInfo(Long id, CartaoRequestDTO dto);
 

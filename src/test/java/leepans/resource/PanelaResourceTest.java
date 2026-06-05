@@ -244,7 +244,7 @@ class PanelaResourceTest {
         Panela p = new Panela();
         p.setId(id);
         p.setModelo("Panela A");
-        p.setPreco(100L);
+        p.setPreco(100.0);
         p.setCapacidadeLitros(2.0);
         p.setIsInducao(true);
         p.setTamanho(Tamanho.PEQUENA);

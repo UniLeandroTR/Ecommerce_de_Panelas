@@ -2,9 +2,11 @@ package leepans.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record ForgotPasswordDTO(
+public record ChangePasswordDTO(
     @NotBlank(message = "O login é obrigatório")
-    String login
+    String login,
+    @NotBlank(message = "A senha atual é obrigatória")
+    String senhaAtual
 ) {
     
 }

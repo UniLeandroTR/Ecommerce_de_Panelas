@@ -13,7 +13,7 @@ public record PanelaRequestDTO(
     String modelo,
 
     @Min(value = 0, message = "O preço não pode ser negativo ou menor que zero")
-    Long preco,
+    Double preco,
 
     Double peso,
 

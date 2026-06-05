@@ -12,7 +12,7 @@ import leepans.model.Tamanho;
 public record PanelaEcommerceDTO(
     Long id,
     String modelo,
-    Long preco,
+    Double preco,
     Double capacidadeLitros,
     boolean isInducao,
     Tamanho tamanho,

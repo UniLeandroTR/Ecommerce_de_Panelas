@@ -6,7 +6,7 @@ import leepans.model.Perfil;
 public record UsuarioResponseDTO (
         Long id,
         String login,
-        String nome,
+        String nomeCompleto,
         Perfil perfil,
         EnderecoResponseDTO endereco
 ){

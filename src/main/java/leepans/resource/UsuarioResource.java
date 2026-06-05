@@ -49,6 +49,22 @@ public class UsuarioResource {
     }
 
     @POST
+    @Path("/admin/cadastro/funcionario")
+    @RolesAllowed({ "ADMIN" })
+    public Response createFuncionario(@Valid CadastroCompletoDTO dto) {
+        Usuario usuario = service.createFuncionario(dto);
+        return Response.status(201).entity(usuarioMapper.toResponseDTO(usuario)).build();
+    }
+
+    @POST
+    @Path("/admin/cadastro/admin")
+    @RolesAllowed({ "ADMIN" })
+    public Response createAdmin(@Valid CadastroCompletoDTO dto) {
+        Usuario usuario = service.createAdmin(dto);
+        return Response.status(201).entity(usuarioMapper.toResponseDTO(usuario)).build();
+    }
+
+    @POST
     @Path("/cadastro/completo")
     public Response createCompleto(@Valid CadastroCompletoDTO dto) {
         Usuario usuario = service.create(dto);

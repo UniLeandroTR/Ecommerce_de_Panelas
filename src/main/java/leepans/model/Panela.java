@@ -10,7 +10,7 @@ import jakarta.persistence.OneToOne;
 public class Panela extends DefaultEntity {
 
     private String modelo;
-    private Long preco;
+    private Double preco;
     private Double peso;
     private Double capacidadeLitros;
     private String descricaco;
@@ -59,11 +59,11 @@ public class Panela extends DefaultEntity {
         this.modelo = modelo;
     }
 
-    public Long getPreco() {
+    public Double getPreco() {
         return preco;
     }
 
-    public void setPreco(Long preco) {
+    public void setPreco(Double preco) {
         this.preco = preco;
     }
 

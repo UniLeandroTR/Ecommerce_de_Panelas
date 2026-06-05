@@ -14,6 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import leepans.dto.auth.AuthRequestDTO;
 import leepans.dto.auth.AuthResponseDTO;
+import leepans.dto.auth.ChangePasswordDTO;
 import leepans.dto.auth.ForgotPasswordDTO;
 import leepans.exception.BadRequestException;
 import leepans.service.auth.AuthService;
@@ -50,7 +51,7 @@ public class AuthResource {
     @POST
     @Path("/alterar-senha")
     @Authenticated
-    public Response alterarSenha(@Valid ForgotPasswordDTO dto) {
+    public Response alterarSenha(@Valid ChangePasswordDTO dto) {
         if (authService.validarRequisicaoSenha(dto)) {
             return Response.ok(emailService.sendPasswordEmail(dto.login())).build();
         }
@@ -60,9 +61,6 @@ public class AuthResource {
     @POST
     @Path("/esqueci-senha")
     public Response esqueciSenha(@Valid ForgotPasswordDTO dto) {
-        if (authService.validarRequisicaoSenha(dto)) {
-            return Response.ok(emailService.sendPasswordEmail(dto.login())).build();
-        }
-        throw new BadRequestException("Login ou senha atual incorretos.", "credenciais");
+        return Response.ok(emailService.sendPasswordEmail(dto.login())).build();
     }
 }

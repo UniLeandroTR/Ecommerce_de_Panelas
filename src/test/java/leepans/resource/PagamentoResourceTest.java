@@ -50,7 +50,7 @@ class PagamentoResourceTest {
         when(service.findById(1L)).thenReturn(pagamento);
         doNothing().when(service).processarPagamento(pagamento);
 
-        given().when().put(BASE + "/processar/1").then().statusCode(204);
+        given().when().put(BASE + "/admin/processar/1").then().statusCode(204);
     }
 
     @Test

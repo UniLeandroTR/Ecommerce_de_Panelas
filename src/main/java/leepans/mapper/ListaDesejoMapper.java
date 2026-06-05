@@ -1,15 +1,16 @@
 package leepans.mapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import leepans.dto.listaDesejo.ListaDesejoRequestDTO;
 import leepans.dto.listaDesejo.ListaDesejoResponseDTO;
-import leepans.dto.panela.PanelaResponseDTO;
+import leepans.dto.panela.PanelaEcommerceDTO;
 import leepans.model.ListaDesejo;
 import leepans.model.Panela;
 import leepans.repository.PanelaRepository;
-import java.util.ArrayList;
-import java.util.List;
 
 @ApplicationScoped
 public class ListaDesejoMapper {
@@ -49,9 +50,9 @@ public class ListaDesejoMapper {
     public ListaDesejoResponseDTO toResponse(ListaDesejo listaDesejo){
         if(listaDesejo == null) return null;
 
-        List<PanelaResponseDTO> panelasDTOs = listaDesejo.getProdutos() != null
+        List<PanelaEcommerceDTO> panelasDTOs = listaDesejo.getProdutos() != null
             ? listaDesejo.getProdutos().stream()
-                .map(panelaMapper::toResponseDTO)
+                .map(panelaMapper::toEcommerceDTO)
                 .toList()
             : new ArrayList<>();
 

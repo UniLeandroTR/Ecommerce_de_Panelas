@@ -88,6 +88,36 @@ public class UsuarioService implements UsuarioServiceInter {
 
     @Override
     @Transactional
+    public Usuario createAdmin(CadastroCompletoDTO dto) {
+        Usuario usuario = new Usuario();
+        usuario.setNome(dto.nome());
+        usuario.setLogin(dto.login());
+        usuario.setSenhaHash(hashService.Argon2(dto.senha()));
+        usuario.setPerfil(Perfil.ADMIN);
+        Endereco endereco = EnderecoMapper.toEntity(dto.endereco());
+        usuario.setEndereco(endereco);
+        enderecoRepository.persist(endereco);
+        repository.persist(usuario);
+        return usuario;
+    }
+
+    @Override
+    @Transactional
+    public Usuario createFuncionario(CadastroCompletoDTO dto) {
+        Usuario usuario = new Usuario();
+        usuario.setNome(dto.nome());
+        usuario.setLogin(dto.login());
+        usuario.setSenhaHash(hashService.Argon2(dto.senha()));
+        usuario.setPerfil(Perfil.FUNCIONARIO);
+        Endereco endereco = EnderecoMapper.toEntity(dto.endereco());
+        usuario.setEndereco(endereco);
+        enderecoRepository.persist(endereco);
+        repository.persist(usuario);
+        return usuario;
+    }
+
+    @Override
+    @Transactional
     public void update(String login, EditarDadosDTO dto){
         Usuario usuario = repository.findByLogin(login).firstResult();
         usuario.setNome(dto.nome());

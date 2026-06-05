@@ -8,7 +8,7 @@ class DefaultEntity{
 
 class Panela{
 - modelo : String
-- preco : long
+- preco : double
 - peso : double
 - capacidadeLitros : double
 - descricao : String
@@ -72,7 +72,6 @@ class Usuario{
 - sobrenome : String
 - login : String
 - senha : String
-- telefone : String
 }
 
 enum Perfil{
@@ -93,7 +92,7 @@ class ListaDeDesejo{
 }
 
 class Pedido{
-- valorTotal : double
+- valorBruto : double
 - valorDesconto : double
 }
 
@@ -184,7 +183,7 @@ ListaDeDesejo "*" --> "*" Panela
 Pedido "*" --> "1" Usuario
 Pedido "1" --> "*" ItemPedido
 Pedido "*" --> "1" StatusPedido
-Pedido "*" --> "1" Pagamento
+Pedido "1" --> "1" Pagamento
 Pedido "*" --> "0..1" CupomDesconto
 Pedido -- TipoPagamento
 

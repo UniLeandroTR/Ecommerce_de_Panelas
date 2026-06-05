@@ -9,7 +9,7 @@ import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotAuthorizedException;
 import leepans.dto.auth.AuthRequestDTO;
 import leepans.dto.auth.AuthResponseDTO;
-import leepans.dto.auth.ForgotPasswordDTO;
+import leepans.dto.auth.ChangePasswordDTO;
 import leepans.dto.usuario.UsuarioResponseDTO;
 import leepans.mapper.EnderecoMapper;
 import leepans.model.Usuario;
@@ -50,13 +50,14 @@ public class AuthService implements AuthServiceInter {
     public UsuarioResponseDTO info(JsonWebToken jwt) {
         String login = (String) jwt.getClaim("upn");
         Usuario usuario = usuarioRepository.findByLogin(login).singleResult();
-        return new UsuarioResponseDTO(usuario.getId(), usuario.getLogin(), usuario.getNome(), usuario.getPerfil(),
+        String nomeCompleto = (usuario.getNome()!=null ? usuario.getNome() : "") + " " + (usuario.getSobrenome()!=null ? usuario.getSobrenome() : "");
+        return new UsuarioResponseDTO(usuario.getId(), usuario.getLogin(), nomeCompleto, usuario.getPerfil(),
                 EnderecoMapper.toResponse(usuario.getEndereco()));
     }
 
     @Override
     @Transactional
-    public String alterarSenha(ForgotPasswordDTO dto) {
+    public String alterarSenha(ChangePasswordDTO dto) {
         if (!validarRequisicaoSenha(dto)) {
             throw new NotAuthorizedException("Login ou Senha atual incorretos.");
         }
@@ -65,7 +66,7 @@ public class AuthService implements AuthServiceInter {
         return token;
     }
 
-    public boolean validarRequisicaoSenha(ForgotPasswordDTO dto) {
+    public boolean validarRequisicaoSenha(ChangePasswordDTO dto) {
         Usuario usuario = usuarioRepository.findByLogin(dto.login()).firstResult();
 
         if (usuario == null || !hashService.verifyArgon2(dto.senhaAtual(), usuario.getSenhaHash())) {

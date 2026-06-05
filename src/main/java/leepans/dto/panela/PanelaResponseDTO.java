@@ -14,7 +14,7 @@ public record PanelaResponseDTO(
     Long id,
     String modelo,
     LocalDateTime dataCadastro,
-    Long preco,
+    Double preco,
     Double peso,
     Double capacidadeLitros,
     String descricao,

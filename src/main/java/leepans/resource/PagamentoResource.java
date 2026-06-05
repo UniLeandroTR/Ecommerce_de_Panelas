@@ -43,7 +43,7 @@ public class PagamentoResource {
     JsonWebToken jwt;
 
     @PUT
-    @Path("/processar/{id}")
+    @Path("/admin/processar/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response processarPagamento(@PathParam("id") Long id) {
         service.processarPagamento(service.findById(id));

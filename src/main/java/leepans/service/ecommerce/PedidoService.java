@@ -23,6 +23,7 @@ import leepans.model.Usuario;
 import leepans.repository.EnderecoRepository;
 import leepans.repository.ItemPedidoRepository;
 import leepans.repository.PedidoRepository;
+import leepans.service.auth.EmailService;
 
 @ApplicationScoped
 public class PedidoService implements PedidoServiceInter {
@@ -50,6 +51,9 @@ public class PedidoService implements PedidoServiceInter {
 
     @Inject
     CupomDescontoService cupomDescontoService;
+
+    @Inject
+    EmailService emailService;
 
     @Override
     public List<Pedido> findAll() {
@@ -126,6 +130,10 @@ public class PedidoService implements PedidoServiceInter {
         // Persistir pedido e pagamento
         repository.persist(pedido);
         pagamentoService.create(pagamento);
+
+        //Enviar email de confirmação para o cliente
+        emailService.sendOrderConfirmedEmail(pedido.getUsuario().getNome(), pedido.getId().toString());
+
 
         return pedido;
     }

@@ -50,14 +50,17 @@ public class AuthResource {
     @Path("/alterar-senha")
     @Authenticated
     public Response alterarSenha(@Valid ForgotPasswordDTO dto) {
-        return Response.ok(authService.alterarSenha(dto)).build();
+        if(authService.validarRequisicaoSenha(dto)){
+            return Response.ok(emailService.sendPasswordEmail(dto.login())).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).entity("Login ou Senha atual incorretos.").build();
     }
 
     @POST
     @Path("/esqueci-senha")
     public Response esqueciSenha(@Valid ForgotPasswordDTO dto) {
         if(authService.validarRequisicaoSenha(dto)){
-            return Response.ok(emailService.sendEmail(dto.login())).build();
+            return Response.ok(emailService.sendPasswordEmail(dto.login())).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).entity("Login ou Senha atual incorretos.").build();
     }

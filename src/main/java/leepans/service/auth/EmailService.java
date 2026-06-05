@@ -17,7 +17,7 @@ public class EmailService {
     @Inject
     EmailTemplateService emailTemplateService;
 
-    public String sendEmail(String login){
+    public String sendPasswordEmail(String login){
         String token = cacheService.getTokenSenha(login);
         String destinatario = "leandrotavares@unitins.br";
         String assunto = "Recuperação de senha - LeePans";
@@ -27,6 +27,32 @@ public class EmailService {
             mailer.send(Mail.withHtml(destinatario, assunto, htmlContent));
             return "email enviado com sucesso";
         }catch(Exception e){
+            return "falha ao enviar email: " + e.getMessage();
+        }
+    }
+
+    public String sendOrderConfirmedEmail(String nomeCliente, String numeroPedido) {
+        String destinatario = "leandrotavares@unitins.br";
+        String assunto = "Confirmação de Pedido - LeePans";
+        String htmlContent = emailTemplateService.renderOrderConfirmedTemplate(nomeCliente, numeroPedido);
+
+        try {
+            mailer.send(Mail.withHtml(destinatario, assunto, htmlContent));
+            return "email enviado com sucesso";
+        } catch (Exception e) {
+            return "falha ao enviar email: " + e.getMessage();
+        }
+    }
+
+    public String sendPaymentApprovedEmail(String nomeCliente, String numeroPedido) {
+        String destinatario = "leandrotavares@unitins.br";
+        String assunto = "Pagamento Aprovado - LeePans";
+        String htmlContent = emailTemplateService.renderPaymentApprovedTemplate(nomeCliente, numeroPedido);
+
+        try {
+            mailer.send(Mail.withHtml(destinatario, assunto, htmlContent));
+            return "email enviado com sucesso";
+        } catch (Exception e) {
             return "falha ao enviar email: " + e.getMessage();
         }
     }

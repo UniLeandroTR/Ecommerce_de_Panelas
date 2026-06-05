@@ -15,10 +15,13 @@ import leepans.exception.ValidationException;
 import leepans.model.Boleto;
 import leepans.model.CartaoCredito;
 import leepans.model.CartaoDebito;
+import leepans.model.ListaDesejo;
 import leepans.model.Pagamento;
 import leepans.model.Pix;
 import leepans.model.StatusPagamento;
+import leepans.model.Usuario;
 import leepans.repository.PagamentoRepository;
+import leepans.service.auth.EmailService;
 
 @ApplicationScoped
 public class PagamentoService implements PagamentoServiceInter {
@@ -28,6 +31,12 @@ public class PagamentoService implements PagamentoServiceInter {
 
     @Inject
     CupomDescontoService cupomService;
+
+    @Inject
+    ListaDesejoService listaDesejoService;
+
+    @Inject
+    EmailService emailService;
 
     @Override
     public List<Pagamento> findAll() {
@@ -79,79 +88,13 @@ public class PagamentoService implements PagamentoServiceInter {
 
         // Persistir as alterações
         repository.persist(pagamentoAtual);
-    }
+        
+        // Verificar e remover itens da lista de desejo do usuário
+        removerItensListaDesejo(pagamentoAtual);
 
-    /**
-     * Valida se todos os dados obrigatórios do pagamento foram preenchidos
-     * de acordo com seu tipo (Cartão, Boleto, PIX)
-     */
-    private void validarDadosPagamento(Pagamento pagamento) {
-        if (pagamento instanceof CartaoCredito) {
-            validarCartao((CartaoCredito) pagamento, "crédito");
-        } else if (pagamento instanceof CartaoDebito) {
-            validarCartao((CartaoDebito) pagamento, "débito");
-        } else if (pagamento instanceof Boleto) {
-            validarBoleto((Boleto) pagamento);
-        } else if (pagamento instanceof Pix) {
-            validarPix((Pix) pagamento);
-        } else {
-            cupomService.incrementarQuantidade(pagamento.getPedido().getCupomDesconto());
-            throw new ValidationException("Tipo de pagamento desconhecido.", "tipoPagamento");
-        }
-    }
+        //Enviar email de confirmação para o cliente
+        emailService.sendPaymentApprovedEmail(pagamentoAtual.getPedido().getUsuario().getNome(), pagamentoAtual.getId().toString());
 
-    /**
-     * Valida dados do cartão (crédito ou débito)
-     */
-    private void validarCartao(CartaoCredito cartao, String tipo) {
-        if (cartao.getNumero() == null || cartao.getNumero().isBlank()) {
-            throw new ValidationException("Número do cartão de " + tipo + " é obrigatório.", "cartao.numero");
-        }
-        if (cartao.getTitular() == null || cartao.getTitular().isBlank()) {
-            throw new ValidationException("Nome do titular do cartão de " + tipo + " é obrigatório.", "cartao.titular");
-        }
-        if (cartao.getValidade() == null || cartao.getValidade().toString().isBlank()) {
-            throw new ValidationException("Validade do cartão de " + tipo + " é obrigatória.", "cartao.validade");
-        }
-        if (cartao.getCodigoSeguranca() == null || cartao.getCodigoSeguranca().isBlank()) {
-            throw new ValidationException("Código de segurança do cartão de " + tipo + " é obrigatório.", "cartao.codigoSeguranca");
-        }
-    }
-
-    /**
-     * Valida dados do cartão débito
-     */
-    private void validarCartao(CartaoDebito cartao, String tipo) {
-        if (cartao.getNumero() == null || cartao.getNumero().isBlank()) {
-            throw new ValidationException("Número do cartão de " + tipo + " é obrigatório.", "cartao.numero");
-        }
-        if (cartao.getTitular() == null || cartao.getTitular().isBlank()) {
-            throw new ValidationException("Nome do titular do cartão de " + tipo + " é obrigatório.", "cartao.titular");
-        }
-        if (cartao.getValidade() == null || cartao.getValidade().toString().isBlank()) {
-            throw new ValidationException("Validade do cartão de " + tipo + " é obrigatória.", "cartao.validade");
-        }
-        if (cartao.getCodigoSeguranca() == null || cartao.getCodigoSeguranca().isBlank()) {
-            throw new ValidationException("Código de segurança do cartão de " + tipo + " é obrigatório.", "cartao.codigoSeguranca");
-        }
-    }
-
-    /**
-     * Valida dados do boleto
-     */
-    private void validarBoleto(Boleto boleto) {
-        if (boleto.getCodigoBarras() == null || boleto.getCodigoBarras().isBlank()) {
-            throw new ValidationException("Código de barras do boleto é obrigatório.", "boleto.codigoBarras");
-        }
-    }
-
-    /**
-     * Valida dados do PIX
-     */
-    private void validarPix(Pix pix) {
-        if (pix.getChavePix() == null || pix.getChavePix().isBlank()) {
-            throw new ValidationException("Chave PIX é obrigatória.", "pix.chavePix");
-        }
     }
 
     @Transactional
@@ -234,5 +177,115 @@ public class PagamentoService implements PagamentoServiceInter {
     @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    /**
+     * Valida se todos os dados obrigatórios do pagamento foram preenchidos
+     * de acordo com seu tipo (Cartão, Boleto, PIX)
+     */
+    private void validarDadosPagamento(Pagamento pagamento) {
+        if (pagamento instanceof CartaoCredito) {
+            validarCartao((CartaoCredito) pagamento, "crédito");
+        } else if (pagamento instanceof CartaoDebito) {
+            validarCartao((CartaoDebito) pagamento, "débito");
+        } else if (pagamento instanceof Boleto) {
+            validarBoleto((Boleto) pagamento);
+        } else if (pagamento instanceof Pix) {
+            validarPix((Pix) pagamento);
+        } else {
+            cupomService.incrementarQuantidade(pagamento.getPedido().getCupomDesconto());
+            throw new ValidationException("Tipo de pagamento desconhecido.", "tipoPagamento");
+        }
+    }
+
+    /**
+     * Valida dados do cartão (crédito ou débito)
+     */
+    private void validarCartao(CartaoCredito cartao, String tipo) {
+        if (cartao.getNumero() == null || cartao.getNumero().isBlank()) {
+            throw new ValidationException("Número do cartão de " + tipo + " é obrigatório.", "cartao.numero");
+        }
+        if (cartao.getTitular() == null || cartao.getTitular().isBlank()) {
+            throw new ValidationException("Nome do titular do cartão de " + tipo + " é obrigatório.", "cartao.titular");
+        }
+        if (cartao.getValidade() == null || cartao.getValidade().toString().isBlank()) {
+            throw new ValidationException("Validade do cartão de " + tipo + " é obrigatória.", "cartao.validade");
+        }
+        if (cartao.getCodigoSeguranca() == null || cartao.getCodigoSeguranca().isBlank()) {
+            throw new ValidationException("Código de segurança do cartão de " + tipo + " é obrigatório.", "cartao.codigoSeguranca");
+        }
+    }
+
+    /**
+     * Valida dados do cartão débito
+     */
+    private void validarCartao(CartaoDebito cartao, String tipo) {
+        if (cartao.getNumero() == null || cartao.getNumero().isBlank()) {
+            throw new ValidationException("Número do cartão de " + tipo + " é obrigatório.", "cartao.numero");
+        }
+        if (cartao.getTitular() == null || cartao.getTitular().isBlank()) {
+            throw new ValidationException("Nome do titular do cartão de " + tipo + " é obrigatório.", "cartao.titular");
+        }
+        if (cartao.getValidade() == null || cartao.getValidade().toString().isBlank()) {
+            throw new ValidationException("Validade do cartão de " + tipo + " é obrigatória.", "cartao.validade");
+        }
+        if (cartao.getCodigoSeguranca() == null || cartao.getCodigoSeguranca().isBlank()) {
+            throw new ValidationException("Código de segurança do cartão de " + tipo + " é obrigatório.", "cartao.codigoSeguranca");
+        }
+    }
+
+    /**
+     * Valida dados do boleto
+     */
+    private void validarBoleto(Boleto boleto) {
+        if (boleto.getCodigoBarras() == null || boleto.getCodigoBarras().isBlank()) {
+            throw new ValidationException("Código de barras do boleto é obrigatório.", "boleto.codigoBarras");
+        }
+    }
+
+    /**
+     * Valida dados do PIX
+     */
+    private void validarPix(Pix pix) {
+        if (pix.getChavePix() == null || pix.getChavePix().isBlank()) {
+            throw new ValidationException("Chave PIX é obrigatória.", "pix.chavePix");
+        }
+    }
+
+    /**
+     * Remove os itens do pedido que estão na lista de desejo do usuário
+     * após o pagamento ser aprovado
+     */
+    private void removerItensListaDesejo(Pagamento pagamento) {
+        // Validar se o pagamento e pedido existem
+        if (pagamento.getPedido() == null || pagamento.getPedido().getItens() == null || 
+            pagamento.getPedido().getItens().isEmpty()) {
+            return;
+        }
+
+        Usuario usuario = pagamento.getPedido().getUsuario();
+        if (usuario == null || usuario.getLogin() == null) {
+            return;
+        }
+
+        ListaDesejo listaDesejo = null;
+        // Buscar a lista de desejo do usuário
+        try{
+            listaDesejo= listaDesejoService.findByUsuarioLogin(usuario.getLogin());
+        }catch(Exception e){
+            if (listaDesejo == null || listaDesejo.getProdutos() == null || listaDesejo.getProdutos().isEmpty()) {
+            return;
+            }
+        }
+
+        // Obter os IDs dos produtos do pedido
+        List<Long> produtoIds = pagamento.getPedido().getItens().stream()
+                .map(item -> item.getPanela().getId())
+                .toList();
+
+        // Remover cada produto que está na lista de desejo
+        for (Long produtoId : produtoIds) {
+            listaDesejoService.removerProduto(listaDesejo.getId(), produtoId);
+        }
     }
 }

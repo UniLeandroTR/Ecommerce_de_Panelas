@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Aprovado</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .success-section {
+            background-color: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .success-message {
+            font-size: 18px;
+            font-weight: 600;
+            color: #155724;
+            margin: 0;
+        }
+        .order-section {
+            background-color: #f9f9f9;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        .order-id {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .order-number {
+            background-color: #ffffff;
+            border: 2px dashed #28a745;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #28a745;
+            font-family: 'Courier New', monospace;
+            border-radius: 4px;
+        }
+        .info-notice {
+            background-color: #d1ecf1;
+            border: 1px solid #0c5460;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #0c5460;
+        }
+        .info-notice strong {
+            color: #062c33;
+        }
+        .timeline {
+            margin: 25px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .timeline-item {
+            display: flex;
+            margin: 15px 0;
+            align-items: flex-start;
+        }
+        .timeline-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #28a745;
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        .timeline-content {
+            flex: 1;
+        }
+        .timeline-content strong {
+            color: #333;
+        }
+        .timeline-content p {
+            margin: 5px 0;
+            color: #666;
+        }
+        .important-info {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #004085;
+        }
+        .important-info strong {
+            color: #002752;
+        }
+        .footer {
+            background-color: #f9f9f9;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #eee;
+        }
+        .footer p {
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✅ Pagamento Aprovado!</h1>
+        </div>
+
+        <div class="content">
+            <p class="greeting">Olá {nomeCliente},</p>
+
+            <p>Ótimas notícias! Seu pagamento foi aprovado com sucesso. Seu pedido será processado e enviado em breve.</p>
+
+            <div class="success-section">
+                <div class="success-icon">✓</div>
+                <p class="success-message">Pagamento Confirmado</p>
+            </div>
+
+            <div class="order-section">
+                <div class="order-id">Número do Pedido</div>
+                <div class="order-number">{numeroPedido}</div>
+            </div>
+
+            <div class="info-notice">
+                <strong>📦 Próximos Passos:</strong>
+                <br><br>
+                Seu pedido entrou em processamento. Você receberá um email com o código de rastreamento assim que seu pedido for despachado.
+            </div>
+
+            <div class="timeline">
+                <strong>📋 Timeline do Seu Pedido:</strong>
+                <div class="timeline-item">
+                    <div class="timeline-icon">✓</div>
+                    <div class="timeline-content">
+                        <strong>Pedido Confirmado</strong>
+                        <p>Seu pedido foi recebido e confirmado</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">✓</div>
+                    <div class="timeline-content">
+                        <strong>Pagamento Aprovado</strong>
+                        <p>O pagamento foi processado com sucesso</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">⏳</div>
+                    <div class="timeline-content">
+                        <strong>Em Processamento</strong>
+                        <p>Seu pedido está sendo preparado para envio</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-icon">📍</div>
+                    <div class="timeline-content">
+                        <strong>Enviado</strong>
+                        <p>Você receberá um código de rastreamento por email</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="important-info">
+                <strong>💡 Informação Importante:</strong> Você poderá acompanhar o status do seu pedido e do rastreamento diretamente em sua conta na plataforma LeePans. Fique atento ao seu email para atualizações.
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>LeePans - Ecommerce de Panelas</strong></p>
+            <p>Obrigado por sua compra! Aproveite seu produto.</p>
+            <p>© 2026 LeePans. Todos os direitos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>

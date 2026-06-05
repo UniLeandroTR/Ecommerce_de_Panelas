@@ -92,6 +92,13 @@ public class UsuarioResource {
         return Response.noContent().build();
     }
 
+    @PATCH
+    @Path("/reset/senha/{token}")
+    public Response resetPassword(@PathParam("token") String token, String novaSenha) {
+        service.resetPassword(token, novaSenha);
+        return Response.noContent().build();
+    }
+
     @PUT
     @Path("/editar/dados")
     @RolesAllowed( { "ADMIN", "FUNCIONARIO", "CLIENTE" } )

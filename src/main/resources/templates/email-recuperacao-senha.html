@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperação de Senha</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .content {
+            padding: 30px 20px;
+        }
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .code-section {
+            background-color: #f9f9f9;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 4px;
+        }
+        .code-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .code-display {
+            background-color: #ffffff;
+            border: 2px dashed #667eea;
+            padding: 15px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #667eea;
+            font-family: 'Courier New', monospace;
+            border-radius: 4px;
+        }
+        .expiration-notice {
+            background-color: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #856404;
+        }
+        .expiration-notice strong {
+            color: #d39e00;
+        }
+        .instructions {
+            margin: 25px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin: 8px 0;
+        }
+        .security-note {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d9ff;
+            border-radius: 4px;
+            padding: 12px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #004085;
+        }
+        .security-note strong {
+            color: #003366;
+        }
+        .footer {
+            background-color: #f9f9f9;
+            border-top: 1px solid #e0e0e0;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .footer-links {
+            margin-bottom: 10px;
+        }
+        .footer-links a {
+            color: #667eea;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        .divider {
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 20px 0;
+        }
+        .brand {
+            color: #667eea;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 Recuperação de Senha</h1>
+        </div>
+
+        <div class="content">
+            <div class="greeting">
+                <p>Olá,</p>
+                <p>Recebemos uma solicitação para recuperar sua senha. Use o código abaixo para prosseguir com o processo de recuperação.</p>
+            </div>
+
+            <div class="code-section">
+                <div class="code-label">Seu código de recuperação</div>
+                <div class="code-display">{token}</div>
+                
+                <div class="expiration-notice">
+                    ⏱️ <strong>Este código expira em 5 minutos.</strong> Não compartilhe este código com ninguém.
+                </div>
+            </div>
+
+            <div class="instructions">
+                <p><strong>Como usar:</strong></p>
+                <ol>
+                    <li>Copie o código de recuperação acima</li>
+                    <li>Retorne ao aplicativo e insira o código no campo solicitado</li>
+                    <li>Crie sua nova senha</li>
+                    <li>Faça login com suas novas credenciais</li>
+                </ol>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="security-note">
+                <strong>🔒 Segurança:</strong> Se você não solicitou a recuperação de senha, ignore este email. Se continuar tendo problemas, entre em contato com nosso suporte.
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-links">
+                <a href="#">Política de Privacidade</a>
+                <a href="#">Termos de Serviço</a>
+                <a href="#">Contato</a>
+            </div>
+            <div>© 2026 <span class="brand">LeePans</span>. Todos os direitos reservados.</div>
+            <div style="margin-top: 10px; color: #999;">
+                Este é um email automático, por favor não responda.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

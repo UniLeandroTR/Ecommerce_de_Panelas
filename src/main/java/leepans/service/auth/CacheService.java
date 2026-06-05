@@ -26,6 +26,10 @@ public class CacheService {
         return token;
     }
 
+    public String getLoginByToken(String token) {
+        return valueCommands.get(token);
+    }
+
     public boolean checkToken(String login, String token){
         if(valueCommands.get(token).equals(login))
             return true;

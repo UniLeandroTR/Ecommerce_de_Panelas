@@ -16,6 +16,7 @@ import leepans.dto.auth.AuthRequestDTO;
 import leepans.dto.auth.AuthResponseDTO;
 import leepans.dto.auth.ForgotPasswordDTO;
 import leepans.service.auth.AuthService;
+import leepans.service.auth.EmailService;
 
 @Path("/auth")
 @Produces(MediaType.APPLICATION_JSON)
@@ -25,6 +26,9 @@ public class AuthResource {
     @Inject
     AuthService authService;
 
+    @Inject
+    EmailService emailService;
+    
     @Inject
     JsonWebToken jwt;
 
@@ -47,5 +51,14 @@ public class AuthResource {
     @Authenticated
     public Response alterarSenha(@Valid ForgotPasswordDTO dto) {
         return Response.ok(authService.alterarSenha(dto)).build();
+    }
+
+    @POST
+    @Path("/esqueci-senha")
+    public Response esqueciSenha(@Valid ForgotPasswordDTO dto) {
+        if(authService.validarRequisicaoSenha(dto)){
+            return Response.ok(emailService.sendEmail(dto.login())).build();
+        }
+        return Response.status(Response.Status.BAD_REQUEST).entity("Login ou Senha atual incorretos.").build();
     }
 }

@@ -59,13 +59,20 @@ public class AuthService implements AuthServiceInter {
     @Override
     @Transactional
     public String alterarSenha(ForgotPasswordDTO dto) {
-        Usuario usuario = usuarioRepository.findByLogin(dto.login()).firstResult();
-
-        if (usuario == null || !hashService.VerificarBcrypt(dto.senhaAtual(), usuario.getSenhaHash())) {
-            throw new WebApplicationException("Login ou Senha atual incorreto(s)", Status.BAD_REQUEST);
+        if (!validarRequisicaoSenha(dto)) {
+            throw new NotAuthorizedException("Login ou Senha atual incorretos.");
         }
 
-        String token = cacheService.getTokenSenha(usuario.getLogin());
+        String token = cacheService.getTokenSenha(dto.login());
         return token;
+    }
+
+    public boolean validarRequisicaoSenha(ForgotPasswordDTO dto) {
+        Usuario usuario = usuarioRepository.findByLogin(dto.login()).firstResult();
+
+        if (usuario == null || !hashService.verifyArgon2(dto.senhaAtual(), usuario.getSenhaHash())) {
+            return false;
+        }
+        return true;
     }
 }

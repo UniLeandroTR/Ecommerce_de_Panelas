@@ -20,6 +20,7 @@ public interface UsuarioServiceInter {
     void update(String login, EditarDadosDTO dto);
     void setEndereco(String login, EnderecoRequestDTO endereco);
     void setPassword(String login, String token, String novaSenha);
+    void resetPassword(String token, String novaSenha);
     void update(Long id, UsuarioRequestDTO dto);
     void delete(Long id);
 }

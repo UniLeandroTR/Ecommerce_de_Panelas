@@ -125,6 +125,19 @@ public class UsuarioService implements UsuarioServiceInter {
 
     @Override
     @Transactional
+    public void resetPassword(String token, String novaSenha) {
+        String login = cacheService.getLoginByToken(token);
+        if (login == null) {
+            throw new WebApplicationException("Token inválido ou expirado", Status.BAD_REQUEST);
+        }
+        Usuario usuario = repository.findByLogin(login).firstResult();
+        usuario.setSenhaHash(hashService.Argon2(novaSenha));
+        cacheService.invalidateToken(token);
+        repository.persist(usuario);
+    }
+
+    @Override
+    @Transactional
     public void update(Long id, UsuarioRequestDTO dto) {
         Usuario usuario = repository.findById(id);
         if (usuario.getVersion() != dto.version()) {

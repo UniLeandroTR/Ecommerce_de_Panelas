@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.tampa.TampaRequestDTO;
 import leepans.dto.tampa.TampaResponseDTO;
+import leepans.exception.ResourceNotFoundException;
 import leepans.exception.ValidationException;
 import leepans.mapper.TampaMapper;
 import leepans.model.Tampa;
@@ -55,11 +56,11 @@ public class TampaResource {
     @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
-        TampaResponseDTO tampa = tampaMapper.toResponseDTO(service.findById(id));
+        Tampa tampa = service.findById(id);
         if (tampa == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new ResourceNotFoundException("Tampa", id);
         }
-        return Response.ok(tampa).build();
+        return Response.ok(tampaMapper.toResponseDTO(tampa)).build();
     }
 
     @GET

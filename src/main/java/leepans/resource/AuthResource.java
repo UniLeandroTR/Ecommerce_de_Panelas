@@ -15,6 +15,7 @@ import jakarta.ws.rs.core.Response;
 import leepans.dto.auth.AuthRequestDTO;
 import leepans.dto.auth.AuthResponseDTO;
 import leepans.dto.auth.ForgotPasswordDTO;
+import leepans.exception.BadRequestException;
 import leepans.service.auth.AuthService;
 import leepans.service.auth.EmailService;
 
@@ -50,18 +51,18 @@ public class AuthResource {
     @Path("/alterar-senha")
     @Authenticated
     public Response alterarSenha(@Valid ForgotPasswordDTO dto) {
-        if(authService.validarRequisicaoSenha(dto)){
+        if (authService.validarRequisicaoSenha(dto)) {
             return Response.ok(emailService.sendPasswordEmail(dto.login())).build();
         }
-        return Response.status(Response.Status.BAD_REQUEST).entity("Login ou Senha atual incorretos.").build();
+        throw new BadRequestException("Login ou senha atual incorretos.", "credenciais");
     }
 
     @POST
     @Path("/esqueci-senha")
     public Response esqueciSenha(@Valid ForgotPasswordDTO dto) {
-        if(authService.validarRequisicaoSenha(dto)){
+        if (authService.validarRequisicaoSenha(dto)) {
             return Response.ok(emailService.sendPasswordEmail(dto.login())).build();
         }
-        return Response.status(Response.Status.BAD_REQUEST).entity("Login ou Senha atual incorretos.").build();
+        throw new BadRequestException("Login ou senha atual incorretos.", "credenciais");
     }
 }

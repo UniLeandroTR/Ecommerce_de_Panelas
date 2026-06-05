@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import leepans.exception.ResourceNotFoundException;
 import leepans.exception.ValidationException;
 import leepans.model.Boleto;
 import leepans.model.CartaoCredito;
@@ -64,7 +65,7 @@ public class PedidoService implements PedidoServiceInter {
     public Pedido findById(Long id) {
         Pedido pedido = repository.findById(id);
         if (pedido == null) {
-            throw new ValidationException("Pedido com id " + id + " não encontrado.", "id");
+            throw new ResourceNotFoundException("Pedido", id);
         }
         return pedido;
     }
@@ -109,7 +110,7 @@ public class PedidoService implements PedidoServiceInter {
         // Buscar o usuário
         Usuario usuario = usuarioService.findByLogin(login);
         if (usuario == null) {
-            throw new ValidationException("Usuário com login '" + login + "' não encontrado.", "usuario");
+            throw new ResourceNotFoundException("Usuário", login);
         }
 
         // Validar e processar endereço

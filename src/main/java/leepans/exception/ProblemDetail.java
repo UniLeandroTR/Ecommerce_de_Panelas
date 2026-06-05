@@ -19,12 +19,12 @@ public class ProblemDetail {
     private String instance;
     private String timestamp;
     private String field;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FieldError> errors;
 
     public ProblemDetail() {
         this.timestamp = LocalDateTime.now()
             .format(DateTimeFormatter.ISO_DATE_TIME);
-        this.errors = new ArrayList<>();
     }
 
     public ProblemDetail(Integer status, String title, String detail) {
@@ -116,6 +116,9 @@ public class ProblemDetail {
     }
 
     public void addError(String field, String message) {
+        if (this.errors == null) {
+            this.errors = new ArrayList<>();
+        }
         this.errors.add(new FieldError(field, message));
     }
 

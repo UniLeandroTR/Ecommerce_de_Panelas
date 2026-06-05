@@ -11,6 +11,7 @@ import leepans.dto.pagamento.BoletoRequestDTO;
 import leepans.dto.pagamento.CartaoRequestDTO;
 import leepans.dto.pagamento.PagamentoPatchDTO;
 import leepans.dto.pagamento.PixRequestDTO;
+import leepans.exception.ResourceNotFoundException;
 import leepans.exception.ValidationException;
 import leepans.model.Boleto;
 import leepans.model.CartaoCredito;
@@ -76,7 +77,7 @@ public class PagamentoService implements PagamentoServiceInter {
         // Buscar o pagamento atualizado no banco
         Pagamento pagamentoAtual = repository.findById(pagamento.getId());
         if (pagamentoAtual == null) {
-            throw new ValidationException("Pagamento com id " + pagamento.getId() + " não encontrado.", "pagamento");
+            throw new ResourceNotFoundException("Pagamento", pagamento.getId());
         }
 
         // Validar se todos os dados necessários foram preenchidos

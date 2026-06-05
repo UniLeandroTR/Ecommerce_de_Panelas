@@ -6,13 +6,13 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import leepans.exception.AuthorizationException;
+import leepans.exception.BadRequestException;
 import leepans.exception.ProblemDetail;
 import leepans.exception.ProblemDetailSupport;
 import leepans.exception.ProblemTypes;
 
 @Provider
-public class AuthorizationExceptionMapper implements ExceptionMapper<AuthorizationException> {
+public class BadRequestExceptionMapper implements ExceptionMapper<BadRequestException> {
 
     @Inject
     ProblemDetailSupport problemDetailSupport;
@@ -21,17 +21,17 @@ public class AuthorizationExceptionMapper implements ExceptionMapper<Authorizati
     UriInfo uriInfo;
 
     @Override
-    public Response toResponse(AuthorizationException exception) {
+    public Response toResponse(BadRequestException exception) {
         ProblemDetail problemDetail = problemDetailSupport.create(
-                403,
-                "Acesso negado",
+                400,
+                "Requisição inválida",
                 exception.getMessage(),
-                ProblemTypes.AUTHORIZATION,
+                ProblemTypes.BAD_REQUEST,
                 uriInfo
         );
 
-        if (exception.getResource() != null) {
-            problemDetail.addError("resource", exception.getResource());
+        if (exception.getField() != null) {
+            problemDetail.addError(exception.getField(), exception.getMessage());
         }
 
         return problemDetailSupport.toResponse(problemDetail);

@@ -6,6 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import leepans.dto.endereco.EnderecoRequestDTO;
+import leepans.exception.ResourceNotFoundException;
 import leepans.exception.ValidationException;
 import leepans.model.Endereco;
 import leepans.repository.EnderecoRepository;
@@ -25,7 +26,7 @@ public class EnderecoService implements EnderecoServiceInter {
     public Endereco findById(Long id) {
         Endereco endereco = repository.findById(id);
         if (endereco == null) {
-            throw new ValidationException("Endereço com id " + id + " não encontrado.", "id");
+            throw new ResourceNotFoundException("Endereço", id);
         }
         return endereco;
     }

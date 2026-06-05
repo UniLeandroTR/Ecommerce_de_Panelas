@@ -7,8 +7,6 @@ import jakarta.inject.Inject;
 import jakarta.persistence.NoResultException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotAuthorizedException;
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.auth.AuthRequestDTO;
 import leepans.dto.auth.AuthResponseDTO;
 import leepans.dto.auth.ForgotPasswordDTO;
@@ -44,7 +42,7 @@ public class AuthService implements AuthServiceInter {
             String token = jwtService.gerarToken(usuario);
             return new AuthResponseDTO(token, "Bearer");
         } catch (NoResultException e) {
-            throw new WebApplicationException("Login ou senha invalidos", Status.UNAUTHORIZED);
+            throw new NotAuthorizedException("Login ou senha inválidos");
         }
     }
 

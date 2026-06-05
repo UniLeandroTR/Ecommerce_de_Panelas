@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.cor.CorRequestDTO;
 import leepans.dto.cor.CorResponseDTO;
+import leepans.exception.ResourceNotFoundException;
 import leepans.exception.ValidationException;
 import leepans.mapper.CorMapper;
 import leepans.model.Cor;
@@ -54,11 +55,11 @@ public class CorResource {
     @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
-        CorResponseDTO cor = CorMapper.toResponseDTO(service.findById(id));
+        Cor cor = service.findById(id);
         if (cor == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new ResourceNotFoundException("Cor", id);
         }
-        return Response.ok(cor).build();
+        return Response.ok(CorMapper.toResponseDTO(cor)).build();
     }
 
     @GET
@@ -78,10 +79,6 @@ public class CorResource {
     public Response update(@PathParam("id") Long id, CorRequestDTO dto) {
         if (dto.version() == null) {
             throw new ValidationException("A versão da cor é obrigatória para atualização.", "version");
-        }
-        Cor cor = service.findById(id);
-        if (cor == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
         service.update(id, dto);
         return Response.noContent().build();

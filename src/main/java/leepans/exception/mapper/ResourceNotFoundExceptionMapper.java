@@ -6,13 +6,13 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-import leepans.exception.AuthorizationException;
 import leepans.exception.ProblemDetail;
 import leepans.exception.ProblemDetailSupport;
 import leepans.exception.ProblemTypes;
+import leepans.exception.ResourceNotFoundException;
 
 @Provider
-public class AuthorizationExceptionMapper implements ExceptionMapper<AuthorizationException> {
+public class ResourceNotFoundExceptionMapper implements ExceptionMapper<ResourceNotFoundException> {
 
     @Inject
     ProblemDetailSupport problemDetailSupport;
@@ -21,17 +21,20 @@ public class AuthorizationExceptionMapper implements ExceptionMapper<Authorizati
     UriInfo uriInfo;
 
     @Override
-    public Response toResponse(AuthorizationException exception) {
+    public Response toResponse(ResourceNotFoundException exception) {
         ProblemDetail problemDetail = problemDetailSupport.create(
-                403,
-                "Acesso negado",
+                404,
+                "Recurso não encontrado",
                 exception.getMessage(),
-                ProblemTypes.AUTHORIZATION,
+                ProblemTypes.NOT_FOUND,
                 uriInfo
         );
 
         if (exception.getResource() != null) {
             problemDetail.addError("resource", exception.getResource());
+        }
+        if (exception.getIdentifier() != null) {
+            problemDetail.addError("id", String.valueOf(exception.getIdentifier()));
         }
 
         return problemDetailSupport.toResponse(problemDetail);

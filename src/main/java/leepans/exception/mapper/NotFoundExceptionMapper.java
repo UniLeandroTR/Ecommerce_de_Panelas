@@ -1,7 +1,7 @@
 package leepans.exception.mapper;
 
 import jakarta.inject.Inject;
-import jakarta.persistence.OptimisticLockException;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
@@ -11,7 +11,7 @@ import leepans.exception.ProblemDetailSupport;
 import leepans.exception.ProblemTypes;
 
 @Provider
-public class OptimisticLockExceptionMapper implements ExceptionMapper<OptimisticLockException> {
+public class NotFoundExceptionMapper implements ExceptionMapper<NotFoundException> {
 
     @Inject
     ProblemDetailSupport problemDetailSupport;
@@ -20,16 +20,16 @@ public class OptimisticLockExceptionMapper implements ExceptionMapper<Optimistic
     UriInfo uriInfo;
 
     @Override
-    public Response toResponse(OptimisticLockException exception) {
+    public Response toResponse(NotFoundException exception) {
         String detail = exception.getMessage() != null && !exception.getMessage().isBlank()
                 ? exception.getMessage()
-                : "O recurso foi alterado por outra transação.";
+                : "O recurso solicitado não foi encontrado.";
 
         return problemDetailSupport.toResponse(
-                409,
-                "Conflito de concorrência",
+                404,
+                "Recurso não encontrado",
                 detail,
-                ProblemTypes.CONCURRENCY,
+                ProblemTypes.NOT_FOUND,
                 uriInfo
         );
     }

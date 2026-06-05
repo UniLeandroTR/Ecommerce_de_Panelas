@@ -100,9 +100,6 @@ public class EnderecoResource {
     @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, @Valid EnderecoRequestDTO dto) {
-        if(service.findById(id) == null) {
-            throw new ValidationException("Endereço com id " + id + " não encontrado.", "id");
-        }
         if (dto.version() == null) {
             throw new ValidationException("A versão do endereço é obrigatória para atualização.", "version");
         }

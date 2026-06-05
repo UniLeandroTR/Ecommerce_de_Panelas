@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.sustentacao.SustentacaoRequestDTO;
 import leepans.dto.sustentacao.SustentacaoResponseDTO;
+import leepans.exception.ResourceNotFoundException;
 import leepans.exception.ValidationException;
 import leepans.mapper.SustentacaoMapper;
 import leepans.model.Sustentacao;
@@ -57,11 +58,11 @@ public class SustentacaoResource {
     @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
-        SustentacaoResponseDTO sustentacao = sustentacaoMapper.toResponseDTO(service.findById(id));
+        Sustentacao sustentacao = service.findById(id);
         if (sustentacao == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new ResourceNotFoundException("Sustentação", id);
         }
-        return Response.ok(sustentacao).build();
+        return Response.ok(sustentacaoMapper.toResponseDTO(sustentacao)).build();
     }
 
     @GET
@@ -83,10 +84,6 @@ public class SustentacaoResource {
             throw new ValidationException("A versão da sustentação é obrigatória para atualização.", "version");
         }
         service.update(id, dto);
-        Sustentacao sustentacao = service.findById(id);
-        if (sustentacao == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
         return Response.noContent().build();
     }
 

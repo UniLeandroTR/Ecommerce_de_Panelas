@@ -6,8 +6,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Response.Status;
+import leepans.exception.BadRequestException;
 import leepans.dto.endereco.EnderecoRequestDTO;
 import leepans.dto.usuario.CadastroCompletoDTO;
 import leepans.dto.usuario.CadastroSimplesDTO;
@@ -116,7 +115,7 @@ public class UsuarioService implements UsuarioServiceInter {
     public void setPassword(String login, String token, String novaSenha) {
         Usuario usuario = repository.findByLogin(login).firstResult();
         if(!cacheService.checkToken(login, token)) {
-            throw new WebApplicationException("Token inválido ou expirado", Status.BAD_REQUEST);
+            throw new BadRequestException("Token inválido ou expirado.", "token");
         }
         usuario.setSenhaHash(hashService.Argon2(novaSenha));
         cacheService.invalidateToken(token);
@@ -128,7 +127,7 @@ public class UsuarioService implements UsuarioServiceInter {
     public void resetPassword(String token, String novaSenha) {
         String login = cacheService.getLoginByToken(token);
         if (login == null) {
-            throw new WebApplicationException("Token inválido ou expirado", Status.BAD_REQUEST);
+            throw new BadRequestException("Token inválido ou expirado.", "token");
         }
         Usuario usuario = repository.findByLogin(login).firstResult();
         usuario.setSenhaHash(hashService.Argon2(novaSenha));

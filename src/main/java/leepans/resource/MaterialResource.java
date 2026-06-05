@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.material.MaterialRequestDTO;
 import leepans.dto.material.MaterialResponseDTO;
+import leepans.exception.ResourceNotFoundException;
 import leepans.exception.ValidationException;
 import leepans.mapper.MaterialMapper;
 import leepans.model.Material;
@@ -54,11 +55,11 @@ public class MaterialResource {
     @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
-        MaterialResponseDTO material = MaterialMapper.toResponseDTO(service.findById(id));
+        Material material = service.findById(id);
         if (material == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new ResourceNotFoundException("Material", id);
         }
-        return Response.ok(material).build();
+        return Response.ok(MaterialMapper.toResponseDTO(material)).build();
     }
 
     @GET
@@ -78,10 +79,6 @@ public class MaterialResource {
     public Response update(@PathParam("id") Long id, MaterialRequestDTO dto) {
         if (dto.version() == null) {
             throw new ValidationException("A versão do material é obrigatória para atualização.", "version");
-        }
-        Material material = service.findById(id);
-        if (material == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
         }
         service.update(id, dto);
         return Response.noContent().build();

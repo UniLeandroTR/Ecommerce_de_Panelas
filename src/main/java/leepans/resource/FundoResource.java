@@ -18,6 +18,7 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import leepans.dto.fundo.FundoRequestDTO;
 import leepans.dto.fundo.FundoResponseDTO;
+import leepans.exception.ResourceNotFoundException;
 import leepans.exception.ValidationException;
 import leepans.mapper.FundoMapper;
 import leepans.model.Fundo;
@@ -57,11 +58,11 @@ public class FundoResource {
     @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
-        FundoResponseDTO fundo = fundoMapper.toResponseDTO(service.findById(id));
+        Fundo fundo = service.findById(id);
         if (fundo == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            throw new ResourceNotFoundException("Fundo", id);
         }
-        return Response.ok(fundo).build();
+        return Response.ok(fundoMapper.toResponseDTO(fundo)).build();
     }
 
     @PUT

@@ -61,7 +61,7 @@ class EnderecoResourceTest {
     void buscarPorUsuario_deveRetornar200() {
         when(service.findByUsuario(TestJwt.LOGIN)).thenReturn(endereco(1L));
 
-        given().accept(ContentType.JSON).when().get("/enderecos/usuario").then()
+        given().accept(ContentType.JSON).when().get("/enderecos/usuarios/me").then()
                 .statusCode(200)
                 .body("cidade", equalTo("Palmas"));
     }

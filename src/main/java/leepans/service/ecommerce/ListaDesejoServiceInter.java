@@ -12,6 +12,6 @@ public interface ListaDesejoServiceInter {
     ListaDesejo create(ListaDesejo listaDesejo);
     void update(Long id, ListaDesejoRequestDTO dto);
     void delete(Long id);
-    void adicionarProduto(Long listaDesejoId, Long panelaId);
-    void removerProduto(Long listaDesejoId, Long panelaId);
+    void adicionarProduto(String usuarioLogin, Long panelaId);
+    void removerProduto(String usuarioLogin, Long panelaId);
 }

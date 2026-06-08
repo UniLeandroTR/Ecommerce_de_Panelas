@@ -119,7 +119,7 @@ class PanelaResourceTest {
     void buscarPorCategoria_deveRetornar200() {
         when(service.findByCategoria(1L)).thenReturn(List.of(panela(1L)));
 
-        given().accept(ContentType.JSON).when().get(BASE + "/categoria/1").then()
+        given().accept(ContentType.JSON).when().get(BASE + "/categorias/1").then()
                 .statusCode(200)
                 .body("size()", is(1));
     }
@@ -128,7 +128,7 @@ class PanelaResourceTest {
     void buscarPorColecao_deveRetornar200() {
         when(service.findByColecao(1L)).thenReturn(List.of(panela(1L)));
 
-        given().accept(ContentType.JSON).when().get(BASE + "/colecao/1").then()
+        given().accept(ContentType.JSON).when().get(BASE + "/colecoes/1").then()
                 .statusCode(200)
                 .body("size()", is(1));
     }

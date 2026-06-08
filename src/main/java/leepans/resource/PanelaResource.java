@@ -61,7 +61,7 @@ public class PanelaResource {
     }
 
     @GET
-    @Path("/categoria/{id}")
+    @Path("/categorias/{id}")
     public Response findByCategoria(@PathParam("id") Long id) {
         List<PanelaEcommerceDTO> lista = service.findByCategoria(id)
                 .stream()
@@ -71,7 +71,7 @@ public class PanelaResource {
     }
 
     @GET
-    @Path("/colecao/{id}")
+    @Path("/colecoes/{id}")
     public Response findByColecao(@PathParam("id") Long id) {
         List<PanelaEcommerceDTO> lista = service.findByColecao(id)
                 .stream()

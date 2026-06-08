@@ -24,7 +24,7 @@ import leepans.service.ecommerce.FornecedorService;
 @QuarkusTest
 class FornecedorResourceTest {
 
-    private static final String BASE = "/fornecedores";
+    private static final String BASE = "/fornecedores/admin";
 
     @InjectMock
     FornecedorService service;

@@ -61,7 +61,7 @@ public class ListaDesejoResource {
     }
 
     @GET
-    @Path("/admin/usuario/{usuarioId}")
+    @Path("/admin/usuarios/{usuarioLogin}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByUsuarioLogin(@PathParam("usuarioLogin") String usuarioLogin) {
         ListaDesejoResponseDTO listaDesejo = listaDesejoMapper.toResponse(service.findByUsuarioLogin(usuarioLogin));
@@ -88,24 +88,22 @@ public class ListaDesejoResource {
     }
 
     @POST
-    @Path("/{listaDesejoId}/produtos/{panelaId}")
+    @Path("/produtos/{panelaId}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response adicionarProduto(
-        @PathParam("listaDesejoId") Long listaDesejoId,
         @PathParam("panelaId") Long panelaId
     ) {
-        service.adicionarProduto(listaDesejoId, panelaId);
+        service.adicionarProduto(jwt.getClaim("upn"), panelaId);
         return Response.noContent().build();
     }
 
     @DELETE
-    @Path("/{listaDesejoId}/produtos/{panelaId}")
+    @Path("/produtos/{panelaId}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response removerProduto(
-        @PathParam("listaDesejoId") Long listaDesejoId,
         @PathParam("panelaId") Long panelaId
     ) {
-        service.removerProduto(listaDesejoId, panelaId);
+        service.removerProduto(jwt.getClaim("upn"), panelaId);
         return Response.noContent().build();
     }
 }

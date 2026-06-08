@@ -19,7 +19,7 @@ public interface UsuarioServiceInter {
     Usuario create(CadastroCompletoDTO dto);
     Usuario createFuncionario(CadastroCompletoDTO dto);
     Usuario createAdmin(CadastroCompletoDTO dto);
-    void update(String login, EditarDadosDTO dto);
+    void setInfo(String login, EditarDadosDTO dto);
     void setEndereco(String login, EnderecoRequestDTO endereco);
     void setPassword(String login, String token, String novaSenha);
     void resetPassword(String token, String novaSenha);

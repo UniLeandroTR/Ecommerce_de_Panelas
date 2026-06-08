@@ -286,7 +286,7 @@ public class PagamentoService implements PagamentoServiceInter {
 
         // Remover cada produto que está na lista de desejo
         for (Long produtoId : produtoIds) {
-            listaDesejoService.removerProduto(listaDesejo.getId(), produtoId);
+            listaDesejoService.removerProduto(pagamento.getPedido().getUsuario().getLogin(), produtoId);
         }
     }
 }

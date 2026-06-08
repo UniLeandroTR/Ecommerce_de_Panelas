@@ -55,7 +55,7 @@ public class EnderecoResource {
     }
     
     @GET
-    @Path("/usuario")
+    @Path("/usuarios/me")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" , "CLIENTE" })
     public Response findByUsuario() {
         String login = jwt.getClaim("upn");

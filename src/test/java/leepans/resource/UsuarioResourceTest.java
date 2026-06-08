@@ -138,13 +138,13 @@ class UsuarioResourceTest {
     @Test
     @TestJwt
     void editarDados_deveRetornar204() {
-        doNothing().when(service).update(eq(TestJwt.LOGIN), any());
+        doNothing().when(service).setInfo(eq(TestJwt.LOGIN), any());
 
         given()
                 .contentType(ContentType.JSON)
                 .body("{\"nome\":\"Novo\",\"sobrenome\":\"Nome\"}")
                 .when()
-                .put(BASE + "/editar/dados")
+                .patch(BASE + "/editar/dados")
                 .then()
                 .statusCode(204);
     }
@@ -154,7 +154,7 @@ class UsuarioResourceTest {
     void remover_deveRetornar204() {
         doNothing().when(service).delete(1L);
 
-        given().when().delete(BASE + "/1").then().statusCode(204);
+        given().when().delete(BASE + "/admin/1").then().statusCode(204);
     }
 
     @Test

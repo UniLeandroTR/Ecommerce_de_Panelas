@@ -59,7 +59,7 @@ class MaterialResourceTest {
     void buscarPorNome_deveRetornar200() {
         when(service.findByNome("Aço")).thenReturn(List.of(material(1L, "Aço")));
 
-        given().accept(ContentType.JSON).when().get(ADMIN + "/nome/Aço").then()
+        given().accept(ContentType.JSON).when().get(ADMIN + "/nomes/Aço").then()
                 .statusCode(200)
                 .body("size()", is(1));
     }

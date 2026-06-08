@@ -85,7 +85,7 @@ class PedidoResourceTest {
     void buscarPorUsuario_deveRetornar200() {
         when(service.findByUsuarioId(1L)).thenReturn(List.of(pedido(1L)));
 
-        given().accept(ContentType.JSON).when().get(ADMIN + "/usuario/1").then()
+        given().accept(ContentType.JSON).when().get(ADMIN + "/usuarios/1").then()
                 .statusCode(200)
                 .body("size()", is(1));
     }
@@ -109,7 +109,7 @@ class PedidoResourceTest {
                 .accept(ContentType.JSON)
                 .queryParam("cidade", "Palmas")
                 .when()
-                .get(ADMIN + "/endereco/cidade")
+                .get(ADMIN + "/enderecos/cidades")
                 .then()
                 .statusCode(200)
                 .body("size()", is(1));
@@ -118,7 +118,7 @@ class PedidoResourceTest {
     @Test
     @TestSecurity(user = "func", roles = "FUNCIONARIO")
     void buscarPorCidade_deveRetornar422SemParametro() {
-        given().accept(ContentType.JSON).when().get(ADMIN + "/endereco/cidade").then().statusCode(422);
+        given().accept(ContentType.JSON).when().get(ADMIN + "/enderecos/cidades").then().statusCode(422);
     }
 
     @Test
@@ -141,7 +141,7 @@ class PedidoResourceTest {
     void atualizarStatus_deveRetornar204() {
         doNothing().when(service).setStatus(1L, StatusPedido.ENTREGUE);
 
-        given().when().patch(BASE + "/1/status/ENTREGUE").then().statusCode(204);
+        given().when().patch(ADMIN + "/1/status/ENTREGUE").then().statusCode(204);
     }
 
     @Test
@@ -149,7 +149,7 @@ class PedidoResourceTest {
     void remover_deveRetornar204() {
         doNothing().when(service).delete(1L);
 
-        given().when().delete(BASE + "/1").then().statusCode(204);
+        given().when().delete(BASE + "/admin/1").then().statusCode(204);
     }
 
     @Test

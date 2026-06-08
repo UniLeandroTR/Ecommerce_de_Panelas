@@ -118,7 +118,7 @@ public class UsuarioService implements UsuarioServiceInter {
 
     @Override
     @Transactional
-    public void update(String login, EditarDadosDTO dto){
+    public void setInfo(String login, EditarDadosDTO dto){
         Usuario usuario = repository.findByLogin(login).firstResult();
         usuario.setNome(dto.nome());
         usuario.setSobrenome(dto.sobrenome());

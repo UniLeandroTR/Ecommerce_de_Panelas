@@ -59,7 +59,7 @@ class SustentacaoResourceTest {
     void buscarPorMaterial_deveRetornar200() {
         when(service.findByMaterial(1L)).thenReturn(List.of(sustentacao(1L)));
 
-        given().accept(ContentType.JSON).when().get(ADMIN + "/material/1").then()
+        given().accept(ContentType.JSON).when().get(ADMIN + "/materiais/1").then()
                 .statusCode(200)
                 .body("size()", is(1));
     }

@@ -38,7 +38,7 @@ class TampaResourceTest {
     void listar_deveRetornar200() {
         when(service.findAll()).thenReturn(List.of(tampa(1L)));
 
-        given().accept(ContentType.JSON).when().get(BASE).then()
+        given().accept(ContentType.JSON).when().get(BASE+"/admin").then()
                 .statusCode(200)
                 .body("size()", is(1))
                 .body("[0].isDePressao", equalTo(true));
@@ -59,7 +59,7 @@ class TampaResourceTest {
     void buscarPorMaterial_deveRetornar200() {
         when(service.findByMaterial(1L)).thenReturn(List.of(tampa(1L)));
 
-        given().accept(ContentType.JSON).when().get(BASE + "/admin/material/1").then()
+        given().accept(ContentType.JSON).when().get(BASE + "/admin/materiais/1").then()
                 .statusCode(200)
                 .body("size()", is(1));
     }
@@ -73,7 +73,7 @@ class TampaResourceTest {
                 .contentType(ContentType.JSON)
                 .body("{\"peso\":0.5,\"idsMateriais\":[1],\"isDePressao\":true}")
                 .when()
-                .post(BASE)
+                .post(BASE+"/admin")
                 .then()
                 .statusCode(201)
                 .body("id", equalTo(2));
@@ -103,7 +103,7 @@ class TampaResourceTest {
 
     @Test
     void listar_deveRetornar401SemAutenticacao() {
-        given().when().get(BASE).then().statusCode(401);
+        given().when().get(BASE+"/admin").then().statusCode(401);
     }
 
     private static Tampa tampa(Long id) {

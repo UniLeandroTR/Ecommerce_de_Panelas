@@ -66,7 +66,7 @@ public class SustentacaoResource {
     }
 
     @GET
-    @Path("/admin/material/{id}")
+    @Path("/admin/materiais/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByMaterial(@PathParam("id") Long id) {
         List<SustentacaoResponseDTO> lista = service.findByMaterial(id)

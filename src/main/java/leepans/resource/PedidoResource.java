@@ -95,7 +95,7 @@ public class PedidoResource {
     }
 
     @GET
-    @Path("/admin/usuario/{usuarioId}")
+    @Path("/admin/usuarios/{usuarioId}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByUsuarioId(@PathParam("usuarioId") Long usuarioId) {
         List<PedidoResponseDTO> lista = service.findByUsuarioId(usuarioId)
@@ -117,7 +117,7 @@ public class PedidoResource {
     }
 
     @GET
-    @Path("/admin/endereco/cidade")
+    @Path("/admin/enderecos/cidades")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByEnderecoCidade(@QueryParam("cidade") String cidade) {
         if (cidade == null || cidade.isBlank()) {
@@ -142,7 +142,7 @@ public class PedidoResource {
     }
 
     @PATCH
-    @Path("/{id}/status/{status}")
+    @Path("/admin/{id}/status/{status}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response setStatus(@PathParam("id") Long id, @PathParam("status") StatusPedido status) {
         service.setStatus(id, status);
@@ -150,7 +150,7 @@ public class PedidoResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

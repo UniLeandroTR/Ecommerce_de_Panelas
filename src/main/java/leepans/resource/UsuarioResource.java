@@ -12,7 +12,6 @@ import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
-import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -115,17 +114,17 @@ public class UsuarioResource {
         return Response.noContent().build();
     }
 
-    @PUT
+    @PATCH
     @Path("/editar/dados")
     @RolesAllowed( { "ADMIN", "FUNCIONARIO", "CLIENTE" } )
-    public Response update (EditarDadosDTO dto){
+    public Response setInfo (EditarDadosDTO dto){
         String login = jwt.getClaim("upn");
-        service.update(login, dto);
+        service.setInfo(login, dto);
         return Response.noContent().build();
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed("ADMIN")
     public Response delete(@PathParam("id") Long id) {
         service.delete(id);

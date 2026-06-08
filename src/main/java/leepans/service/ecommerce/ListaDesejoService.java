@@ -120,8 +120,8 @@ public class ListaDesejoService implements ListaDesejoServiceInter {
 
     @Override
     @Transactional
-    public void adicionarProduto(Long listaDesejoId, Long panelaId) {
-        ListaDesejo listaDesejo = repository.findById(listaDesejoId);
+    public void adicionarProduto(String usuarioLogin, Long panelaId) {
+        ListaDesejo listaDesejo = repository.findByUsuarioLogin(usuarioLogin).firstResult();
         Panela panela = panelaRepository.findById(panelaId);
 
         if (listaDesejo != null && panela != null && !listaDesejo.getProdutos().contains(panela)) {
@@ -132,8 +132,8 @@ public class ListaDesejoService implements ListaDesejoServiceInter {
 
     @Override
     @Transactional
-    public void removerProduto(Long listaDesejoId, Long panelaId) {
-        ListaDesejo listaDesejo = repository.findById(listaDesejoId);
+    public void removerProduto(String usuarioLogin, Long panelaId) {
+        ListaDesejo listaDesejo = repository.findByUsuarioLogin(usuarioLogin).firstResult();
         Panela panela = panelaRepository.findById(panelaId);
 
         if (listaDesejo != null && panela != null) {

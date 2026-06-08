@@ -31,6 +31,7 @@ public class FornecedorResource {
     FornecedorService service;
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid FornecedorRequestDTO dto) {
         Fornecedor fornecedor = service.create(FornecedorMapper.toEntity(dto));
@@ -38,6 +39,7 @@ public class FornecedorResource {
     }
 
     @GET
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<FornecedorResponseDTO> lista = service.findAll()
@@ -48,7 +50,7 @@ public class FornecedorResource {
     }
 
     @GET
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findById(@PathParam("id") Long id) {
         FornecedorResponseDTO fornecedor = FornecedorMapper.toResponse(service.findById(id));
@@ -56,7 +58,7 @@ public class FornecedorResource {
     }
 
     @GET
-    @Path("/nome/{nome}")
+    @Path("/admin/nome/{nome}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByNome(@PathParam("nome") String nome) {
         List<FornecedorResponseDTO> lista = service.findByNome(nome)
@@ -67,7 +69,7 @@ public class FornecedorResource {
     }
 
     @PUT
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response update(@PathParam("id") Long id, FornecedorRequestDTO dto) {
         if (dto.version() == null) {
@@ -78,7 +80,7 @@ public class FornecedorResource {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("/admin/{id}")
     @RolesAllowed({ "ADMIN" })
     public Response delete(@PathParam("id") Long id){
         service.delete(id);

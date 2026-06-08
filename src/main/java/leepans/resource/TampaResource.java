@@ -36,6 +36,7 @@ public class TampaResource {
     TampaMapper tampaMapper;
 
     @POST
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response create(@Valid TampaRequestDTO dto) {
         Tampa tampa = service.create(tampaMapper.toEntity(dto));
@@ -43,6 +44,7 @@ public class TampaResource {
     }
 
     @GET
+    @Path("/admin")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findAll() {
         List<TampaResponseDTO> lista = service.findAll()
@@ -64,7 +66,7 @@ public class TampaResource {
     }
 
     @GET
-    @Path("/admin/material/{id}")
+    @Path("/admin/materiais/{id}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByMaterial(@PathParam("id") Long id) {
         List<TampaResponseDTO> lista = service.findByMaterial(id)

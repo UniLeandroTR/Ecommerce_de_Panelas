@@ -73,7 +73,7 @@ class ListaDesejoResourceTest {
     void buscarPorUsuario_deveInvocarServico() {
         when(service.findByUsuarioLogin(any())).thenReturn(lista(1L));
 
-        given().when().get(BASE + "/admin/usuario/cliente@test.com").then().statusCode(200);
+        given().when().get(BASE + "/admin/usuarios/cliente@test.com").then().statusCode(200);
     }
 
     @Test
@@ -101,17 +101,17 @@ class ListaDesejoResourceTest {
     @Test
     @TestJwt
     void adicionarProduto_deveRetornar204() {
-        doNothing().when(service).adicionarProduto(1L, 2L);
+        doNothing().when(service).adicionarProduto(TestJwt.LOGIN, 2L);
 
-        given().contentType(ContentType.JSON).when().post(BASE + "/1/produtos/2").then().statusCode(204);
+        given().contentType(ContentType.JSON).when().post(BASE + "/produtos/2").then().statusCode(204);
     }
 
     @Test
     @TestJwt
     void removerProduto_deveRetornar204() {
-        doNothing().when(service).removerProduto(1L, 2L);
+        doNothing().when(service).removerProduto(TestJwt.LOGIN, 2L);
 
-        given().when().delete(BASE + "/1/produtos/2").then().statusCode(204);
+        given().when().delete(BASE + "/produtos/2").then().statusCode(204);
     }
 
     @Test

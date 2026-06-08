@@ -63,7 +63,7 @@ public class MaterialResource {
     }
 
     @GET
-    @Path("/admin/nome/{nome}")
+    @Path("/admin/nomes/{nome}")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
     public Response findByNome(@PathParam("nome") String nome) {
         List<MaterialResponseDTO> lista = service.findByNome(nome)

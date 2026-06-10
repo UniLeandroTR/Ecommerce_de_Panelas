@@ -5,11 +5,11 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyDouble;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -95,12 +95,13 @@ class CupomDescontoResourceTest {
     @Test
     @TestSecurity(user = "cliente", roles = "CLIENTE")
     void buscarAplicaveis_deveRetornar200() {
-        when(service.findByAtivoAndValorMinimoCompra(anyBoolean(), anyDouble()))
+        
+        when(service.findByAtivoAndValorMinimoCompra(anyBoolean(), any(BigDecimal.class)))
                 .thenReturn(List.of(cupom(1L, "PROMO10")));
 
         given()
                 .accept(ContentType.JSON)
-                .queryParam("valorCompra", 500.0)
+                .queryParam("valorCompra", 500.00)
                 .when()
                 .get(BASE + "/aplicaveis")
                 .then()
@@ -170,9 +171,9 @@ class CupomDescontoResourceTest {
         CupomDesconto c = new CupomDesconto();
         c.setId(id);
         c.setCodigo(codigo);
-        c.setValorDesconto(10.0);
-        c.setPercentualDesconto(5.0);
-        c.setValorMinimoCompra(100.0);
+        c.setValorDesconto(BigDecimal.TEN);
+        c.setPercentualDesconto(new BigDecimal(5));
+        c.setValorMinimoCompra(new BigDecimal(100));
         c.setDataValidade(LocalDateTime.now().plusDays(30));
         c.setQuantidadeDisponivel(100);
         c.setAtivo(true);

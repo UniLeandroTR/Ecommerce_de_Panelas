@@ -8,6 +8,7 @@ import leepans.dto.cupomDesconto.CupomDescontoRequestDTO;
 import leepans.model.CupomDesconto;
 import leepans.repository.CupomDescontoRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @ApplicationScoped
@@ -37,7 +38,7 @@ public class CupomDescontoService implements CupomDescontoServiceInter {
     }
 
     @Override
-    public List<CupomDesconto> findByAtivoAndValorMinimoCompra(boolean ativo, Double valorMinimo) {
+    public List<CupomDesconto> findByAtivoAndValorMinimoCompra(boolean ativo, BigDecimal valorMinimo) {
         return repository.findByAtivoAndValorMinimoCompra(ativo, valorMinimo).list();
     }
 
@@ -69,12 +70,21 @@ public class CupomDescontoService implements CupomDescontoServiceInter {
         repository.persist(cupomDesconto);
     }
 
+    @Override
+    @Transactional
+    public void changeStatus(Long id) {
+        CupomDesconto cupom = repository.findById(id);
+        if(cupom.isAtivo())
+            cupom.setAtivo(false);
+        else
+            cupom.setAtivo(true);
+        repository.persist(cupom);
+
+    }
+
     @Transactional
     public void decrementarQuantidade(CupomDesconto cupomDesconto) {
-        if (cupomDesconto.getQuantidadeDisponivel() > 0) {
-            cupomDesconto.setQuantidadeDisponivel(cupomDesconto.getQuantidadeDisponivel() - 1);
-            repository.persist(cupomDesconto);
-        }
+        
     }
 
     @Transactional

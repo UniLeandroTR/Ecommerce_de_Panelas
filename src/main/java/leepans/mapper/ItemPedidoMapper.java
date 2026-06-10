@@ -22,10 +22,10 @@ public class ItemPedidoMapper {
 
         ItemPedido itemPedido = new ItemPedido();
         itemPedido.setQuantidade(dto.quantidade());
+        itemPedido.setValorUnitario(dto.valorUnitario());
         if (dto.idPanela() != null) {
             Panela panela = panelaRepository.findById(dto.idPanela());
             itemPedido.setPanela(panela);
-            itemPedido.setValorUnitario(panela.getPreco());
         }
         return itemPedido;
     }

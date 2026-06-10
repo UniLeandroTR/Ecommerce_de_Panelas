@@ -1,5 +1,6 @@
 package leepans.resource;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -84,7 +85,7 @@ public class CupomDescontoResource {
     @GET
     @Path("/aplicaveis")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
-    public Response findAplicaveis(@QueryParam("valorCompra") Double valorCompra) {
+    public Response findAplicaveis(@QueryParam("valorCompra") BigDecimal valorCompra) {
         List<CupomDescontoEcommerceDTO> lista = service.findByAtivoAndValorMinimoCompra(true, valorCompra)
                 .stream()
                 .map(CupomDescontoMapper::toEcommerceDTO)

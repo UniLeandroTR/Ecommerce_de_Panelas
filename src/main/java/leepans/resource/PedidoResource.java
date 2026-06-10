@@ -71,7 +71,7 @@ public class PedidoResource {
     }
 
     @GET
-    @Path("/compras")
+    @Path("/compras/me")
     @Authenticated
     public Response findCompras() {
         String login = jwt.getClaim("upn");
@@ -83,7 +83,7 @@ public class PedidoResource {
     }
 
     @GET
-    @Path("/compras/status/{status}")
+    @Path("/compras/me/status/{status}")
     @Authenticated
     public Response findComprasPorStatus(@PathParam("status") StatusPedido status) {
         String login = jwt.getClaim("upn");

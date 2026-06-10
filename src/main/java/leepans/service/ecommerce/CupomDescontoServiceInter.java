@@ -1,5 +1,6 @@
 package leepans.service.ecommerce;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import leepans.dto.cupomDesconto.CupomDescontoRequestDTO;
@@ -15,11 +16,13 @@ public interface CupomDescontoServiceInter {
 
     CupomDesconto findByCodigo(String codigo);
 
-    List<CupomDesconto> findByAtivoAndValorMinimoCompra(boolean ativo, Double valorMinimo);
+    List<CupomDesconto> findByAtivoAndValorMinimoCompra(boolean ativo, BigDecimal valorMinimo);
 
     CupomDesconto create(CupomDesconto cupomDesconto);
 
     void update(Long id, CupomDescontoRequestDTO dto);
+
+    void changeStatus(Long id);
 
     void decrementarQuantidade(CupomDesconto cupomDesconto);
 

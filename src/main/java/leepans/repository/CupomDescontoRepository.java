@@ -1,5 +1,7 @@
 package leepans.repository;
 
+import java.math.BigDecimal;
+
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,7 +18,7 @@ public class CupomDescontoRepository implements PanacheRepository<CupomDesconto>
         return find("SELECT c FROM CupomDesconto c WHERE UPPER(c.codigo) LIKE UPPER(?1)", "%" + codigo + "%");
     }
 
-    public PanacheQuery<CupomDesconto> findByAtivoAndValorMinimoCompra(boolean ativo, Double valorMinimo) {
+    public PanacheQuery<CupomDesconto> findByAtivoAndValorMinimoCompra(boolean ativo, BigDecimal valorMinimo) {
         return find("ativo = ?1 and valorMinimoCompra <= ?2", ativo, valorMinimo);
     }
 }

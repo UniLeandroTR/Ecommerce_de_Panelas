@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -170,7 +171,7 @@ class PagamentoResourceTest {
         p.setId(id);
         p.setStatusPagamento(StatusPagamento.PENDENTE);
         p.setTipoPagamento(TipoPagamento.PIX);
-        p.setValor(100.0);
+        p.setValor(new BigDecimal(100));
         Pedido pedido = new Pedido();
         pedido.setId(1L);
         p.setPedido(pedido);

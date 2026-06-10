@@ -46,6 +46,7 @@ public class ListaDesejoResource {
     }
 
     @GET
+    @Path("/me")
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response findWishList() {
         ListaDesejoResponseDTO lista = listaDesejoMapper.toResponse(service.findWishList(jwt));

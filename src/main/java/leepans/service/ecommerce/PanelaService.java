@@ -1,5 +1,6 @@
 package leepans.service.ecommerce;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -83,6 +84,14 @@ public class PanelaService implements PanelaServiceInter {
         panela.getTampa().getMateriais().forEach(material -> Hibernate.initialize(material.getQualidades()));
         panela.getSustentacao().getMateriais().forEach(material -> Hibernate.initialize(material.getQualidades()));
         return panela;
+    }
+
+    @Override
+    @Transactional
+    public void setPrice(Long id, BigDecimal preco) {
+        Panela panela = repository.findById(id);
+        panela.setPreco(preco);
+        repository.persist(panela);
     }
 
     @Override

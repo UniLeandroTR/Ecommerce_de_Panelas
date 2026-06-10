@@ -9,6 +9,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -65,7 +66,7 @@ class PedidoResourceTest {
     void listarCompras_deveRetornar200() {
         when(service.findCompras(TestJwt.LOGIN)).thenReturn(List.of(pedido(1L)));
 
-        given().accept(ContentType.JSON).when().get(BASE + "/compras").then()
+        given().accept(ContentType.JSON).when().get(BASE + "/compras/me").then()
                 .statusCode(200)
                 .body("size()", is(1));
     }
@@ -75,7 +76,7 @@ class PedidoResourceTest {
     void listarComprasPorStatus_deveRetornar200() {
         when(service.findCompras(eq(TestJwt.LOGIN), eq(StatusPedido.PENDENTE))).thenReturn(List.of(pedido(1L)));
 
-        given().accept(ContentType.JSON).when().get(BASE + "/compras/status/PENDENTE").then()
+        given().accept(ContentType.JSON).when().get(BASE + "/compras/me/status/PENDENTE").then()
                 .statusCode(200)
                 .body("size()", is(1));
     }
@@ -154,7 +155,7 @@ class PedidoResourceTest {
 
     @Test
     void listarCompras_deveRetornar401SemAutenticacao() {
-        given().when().get(BASE + "/compras").then().statusCode(401);
+        given().when().get(BASE + "/compras/me").then().statusCode(401);
     }
 
     private static String pedidoPayload() {
@@ -171,8 +172,8 @@ class PedidoResourceTest {
         Pedido p = new Pedido();
         p.setId(id);
         p.setStatus(StatusPedido.PENDENTE);
-        p.setValorBruto(100.0);
-        p.setValorDesconto(0.0);
+        p.setValorBruto(new BigDecimal(100));
+        p.setValorDesconto(BigDecimal.ZERO);
 
         Usuario u = new Usuario();
         u.setId(1L);

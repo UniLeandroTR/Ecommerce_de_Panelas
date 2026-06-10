@@ -1,5 +1,6 @@
 package leepans.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -10,9 +11,12 @@ public class CupomDesconto extends DefaultEntity {
 
     @Column(name = "codigo", nullable = false, unique = true)
     private String codigo;
-    private Double valorDesconto;
-    private Double percentualDesconto;
-    private Double valorMinimoCompra;
+    @Column(name = "valor_desconto", precision = 19, scale = 2)
+    private BigDecimal valorDesconto;
+    @Column(name = "percentual_desconto", precision = 5, scale = 2)
+    private BigDecimal percentualDesconto;
+    @Column(name = "valor_minimo_compra", precision = 19, scale = 2)
+    private BigDecimal valorMinimoCompra;
     private LocalDateTime dataValidade;
     private Integer quantidadeDisponivel;
     private boolean ativo;
@@ -25,27 +29,27 @@ public class CupomDesconto extends DefaultEntity {
         this.codigo = codigo;
     }
 
-    public Double getValorDesconto() {
+    public BigDecimal getValorDesconto() {
         return valorDesconto;
     }
 
-    public void setValorDesconto(Double valorDesconto) {
+    public void setValorDesconto(BigDecimal valorDesconto) {
         this.valorDesconto = valorDesconto;
     }
 
-    public Double getPercentualDesconto() {
+    public BigDecimal getPercentualDesconto() {
         return percentualDesconto;
     }
 
-    public void setPercentualDesconto(Double percentualDesconto) {
+    public void setPercentualDesconto(BigDecimal percentualDesconto) {
         this.percentualDesconto = percentualDesconto;
     }
 
-    public Double getValorMinimoCompra() {
+    public BigDecimal getValorMinimoCompra() {
         return valorMinimoCompra;
     }
 
-    public void setValorMinimoCompra(Double valorMinimoCompra) {
+    public void setValorMinimoCompra(BigDecimal valorMinimoCompra) {
         this.valorMinimoCompra = valorMinimoCompra;
     }
 

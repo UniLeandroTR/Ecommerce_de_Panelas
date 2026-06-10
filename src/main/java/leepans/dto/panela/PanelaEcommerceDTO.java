@@ -1,5 +1,7 @@
 package leepans.dto.panela;
 
+import java.math.BigDecimal;
+
 import leepans.dto.categoria.CategoriaEcommerceDTO;
 import leepans.dto.colecao.ColecaoEcommerceDTO;
 import leepans.dto.cor.CorEcommerceDTO;
@@ -12,7 +14,7 @@ import leepans.model.Tamanho;
 public record PanelaEcommerceDTO(
     Long id,
     String modelo,
-    Double preco,
+    BigDecimal preco,
     Double capacidadeLitros,
     boolean isInducao,
     Tamanho tamanho,

@@ -44,10 +44,36 @@ public class EmailService {
         }
     }
 
+    public String sendOrderDeclinedEmail(String nomeCliente, String numeroPedido, String reason) {
+        String destinatario = "leandrotavares@unitins.br";
+        String assunto = "Confirmação de Pedido - LeePans";
+        String htmlContent = emailTemplateService.renderOrderDeclinedTemplate(nomeCliente, numeroPedido, reason);
+
+        try {
+            mailer.send(Mail.withHtml(destinatario, assunto, htmlContent));
+            return "email enviado com sucesso";
+        } catch (Exception e) {
+            return "falha ao enviar email: " + e.getMessage();
+        }
+    }
+
     public String sendPaymentApprovedEmail(String nomeCliente, String numeroPedido) {
         String destinatario = "leandrotavares@unitins.br";
         String assunto = "Pagamento Aprovado - LeePans";
         String htmlContent = emailTemplateService.renderPaymentApprovedTemplate(nomeCliente, numeroPedido);
+
+        try {
+            mailer.send(Mail.withHtml(destinatario, assunto, htmlContent));
+            return "email enviado com sucesso";
+        } catch (Exception e) {
+            return "falha ao enviar email: " + e.getMessage();
+        }
+    }
+
+    public String sendPaymentRefusedEmail(String nomeCliente, String numeroPedido, String erro) {
+        String destinatario = "leandrotavares@unitins.br";
+        String assunto = "Pagamento Recusado - LeePans";
+        String htmlContent = emailTemplateService.renderPaymentRefusedTemplate(nomeCliente, numeroPedido, erro);
 
         try {
             mailer.send(Mail.withHtml(destinatario, assunto, htmlContent));

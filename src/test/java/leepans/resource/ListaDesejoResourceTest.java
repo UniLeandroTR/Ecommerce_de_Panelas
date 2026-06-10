@@ -53,7 +53,7 @@ class ListaDesejoResourceTest {
     void buscarWishList_deveRetornar200() {
         when(service.findWishList(any())).thenReturn(lista(1L));
 
-        given().accept(ContentType.JSON).when().get(BASE).then()
+        given().accept(ContentType.JSON).when().get(BASE+"/me").then()
                 .statusCode(200)
                 .body("id", equalTo(1));
     }

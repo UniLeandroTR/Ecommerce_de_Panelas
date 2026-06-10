@@ -1,5 +1,6 @@
 package leepans.dto.pagamento;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import leepans.model.StatusPagamento;
@@ -9,7 +10,7 @@ public record PixResponseDTO (
     Long pedidoId,
     LocalDateTime dataProcessado,
     LocalDateTime dataCadastro,
-    Double valor,
+    BigDecimal valor,
     StatusPagamento statusPagamento,
     String chavePix,
     Integer version

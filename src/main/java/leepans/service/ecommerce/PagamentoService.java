@@ -1,5 +1,6 @@
 package leepans.service.ecommerce;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -11,15 +12,18 @@ import leepans.dto.pagamento.BoletoRequestDTO;
 import leepans.dto.pagamento.CartaoRequestDTO;
 import leepans.dto.pagamento.PagamentoPatchDTO;
 import leepans.dto.pagamento.PixRequestDTO;
+import leepans.exception.BusinessRuleViolationException;
 import leepans.exception.ResourceNotFoundException;
 import leepans.exception.ValidationException;
 import leepans.model.Boleto;
 import leepans.model.CartaoCredito;
 import leepans.model.CartaoDebito;
+import leepans.model.CupomDesconto;
 import leepans.model.ListaDesejo;
 import leepans.model.Pagamento;
 import leepans.model.Pix;
 import leepans.model.StatusPagamento;
+import leepans.model.StatusPedido;
 import leepans.model.Usuario;
 import leepans.repository.PagamentoRepository;
 import leepans.service.auth.EmailService;
@@ -54,7 +58,7 @@ public class PagamentoService implements PagamentoServiceInter {
         return repository.findByStatusPagamento(statusPagamento).list();
     }
 
-    @Override 
+    @Override
     public List<Pagamento> findByUsuario(String login) {
         return repository.findByUsuario(login).list();
     }
@@ -74,28 +78,49 @@ public class PagamentoService implements PagamentoServiceInter {
             throw new ValidationException("Pagamento inválido ou não persistido.", "pagamento");
         }
 
+        if (pagamento.getStatusPagamento() == StatusPagamento.RECUSADO) {
+            throw new ValidationException("Pagamento já foi recusado", "statusPagamento");
+        }
+
         // Buscar o pagamento atualizado no banco
         Pagamento pagamentoAtual = repository.findById(pagamento.getId());
         if (pagamentoAtual == null) {
             throw new ResourceNotFoundException("Pagamento", pagamento.getId());
         }
 
-        // Validar se todos os dados necessários foram preenchidos
-        validarDadosPagamento(pagamentoAtual);
+        try {
 
-        // Atualizar status para APROVADO e registrar data/hora do processamento
-        pagamentoAtual.setStatusPagamento(StatusPagamento.APROVADO);
-        pagamentoAtual.setDataProcessado(LocalDateTime.now());
+            // Validar se todos os dados necessários foram preenchidos
+            validarDadosPagamento(pagamentoAtual);
 
-        // Persistir as alterações
-        repository.persist(pagamentoAtual);
-        
-        // Verificar e remover itens da lista de desejo do usuário
-        removerItensListaDesejo(pagamentoAtual);
+            if (!isItensPriceRight(pagamentoAtual))
+                throw new BusinessRuleViolationException(
+                        "O valor total do pedido não confere com o valor atualizado dos produtos", "valor");
 
-        //Enviar email de confirmação para o cliente
-        emailService.sendPaymentApprovedEmail(pagamentoAtual.getPedido().getUsuario().getNome(), pagamentoAtual.getId().toString());
+            // Atualizar status para APROVADO e registrar data/hora do processamento
+            pagamentoAtual.setStatusPagamento(StatusPagamento.APROVADO);
+            pagamentoAtual.setDataProcessado(LocalDateTime.now());
 
+            // Persistir as alterações
+            repository.persist(pagamentoAtual);
+
+            // Verificar e remover itens da lista de desejo do usuário
+            removerItensListaDesejo(pagamentoAtual);
+
+            if (pagamentoAtual.getPedido().getCupomDesconto() != null)
+                atualizarCupom(pagamentoAtual.getPedido().getCupomDesconto(), true);
+
+            // Enviar email de confirmação para o cliente
+            emailService.sendPaymentApprovedEmail(pagamentoAtual.getPedido().getUsuario().getNome(),
+                    pagamentoAtual.getId().toString());
+        } catch (Exception e) {
+            pagamentoAtual.setStatusPagamento(StatusPagamento.RECUSADO);
+            pagamentoAtual.getPedido().setStatus(StatusPedido.CANCELADO);
+            if (pagamentoAtual.getPedido().getCupomDesconto() != null)
+                atualizarCupom(pagamentoAtual.getPedido().getCupomDesconto(), false);
+            emailService.sendPaymentRefusedEmail(pagamentoAtual.getPedido().getUsuario().getNome(),
+                    pagamentoAtual.getId().toString(), e.getMessage());
+        }
     }
 
     @Transactional
@@ -166,8 +191,7 @@ public class PagamentoService implements PagamentoServiceInter {
 
         if (pagamento.getVersion() != dto.version()) {
             throw new OptimisticLockException(
-                    "Conflito de concorrência: o pagamento foi alterado por outra transação."
-            );
+                    "Conflito de concorrência: o pagamento foi alterado por outra transação.");
         }
 
         pagamento.setStatusPagamento(dto.statusPagamento());
@@ -184,7 +208,7 @@ public class PagamentoService implements PagamentoServiceInter {
      * Valida se todos os dados obrigatórios do pagamento foram preenchidos
      * de acordo com seu tipo (Cartão, Boleto, PIX)
      */
-    private void validarDadosPagamento(Pagamento pagamento) {
+    private void validarDadosPagamento(Pagamento pagamento) throws ValidationException {
         if (pagamento instanceof CartaoCredito) {
             validarCartao((CartaoCredito) pagamento, "crédito");
         } else if (pagamento instanceof CartaoDebito) {
@@ -213,7 +237,8 @@ public class PagamentoService implements PagamentoServiceInter {
             throw new ValidationException("Validade do cartão de " + tipo + " é obrigatória.", "cartao.validade");
         }
         if (cartao.getCodigoSeguranca() == null || cartao.getCodigoSeguranca().isBlank()) {
-            throw new ValidationException("Código de segurança do cartão de " + tipo + " é obrigatório.", "cartao.codigoSeguranca");
+            throw new ValidationException("Código de segurança do cartão de " + tipo + " é obrigatório.",
+                    "cartao.codigoSeguranca");
         }
     }
 
@@ -231,7 +256,8 @@ public class PagamentoService implements PagamentoServiceInter {
             throw new ValidationException("Validade do cartão de " + tipo + " é obrigatória.", "cartao.validade");
         }
         if (cartao.getCodigoSeguranca() == null || cartao.getCodigoSeguranca().isBlank()) {
-            throw new ValidationException("Código de segurança do cartão de " + tipo + " é obrigatório.", "cartao.codigoSeguranca");
+            throw new ValidationException("Código de segurança do cartão de " + tipo + " é obrigatório.",
+                    "cartao.codigoSeguranca");
         }
     }
 
@@ -259,8 +285,8 @@ public class PagamentoService implements PagamentoServiceInter {
      */
     private void removerItensListaDesejo(Pagamento pagamento) {
         // Validar se o pagamento e pedido existem
-        if (pagamento.getPedido() == null || pagamento.getPedido().getItens() == null || 
-            pagamento.getPedido().getItens().isEmpty()) {
+        if (pagamento.getPedido() == null || pagamento.getPedido().getItens() == null ||
+                pagamento.getPedido().getItens().isEmpty()) {
             return;
         }
 
@@ -271,11 +297,11 @@ public class PagamentoService implements PagamentoServiceInter {
 
         ListaDesejo listaDesejo = null;
         // Buscar a lista de desejo do usuário
-        try{
-            listaDesejo= listaDesejoService.findByUsuarioLogin(usuario.getLogin());
-        }catch(Exception e){
+        try {
+            listaDesejo = listaDesejoService.findByUsuarioLogin(usuario.getLogin());
+        } catch (Exception e) {
             if (listaDesejo == null || listaDesejo.getProdutos() == null || listaDesejo.getProdutos().isEmpty()) {
-            return;
+                return;
             }
         }
 
@@ -288,5 +314,27 @@ public class PagamentoService implements PagamentoServiceInter {
         for (Long produtoId : produtoIds) {
             listaDesejoService.removerProduto(pagamento.getPedido().getUsuario().getLogin(), produtoId);
         }
+    }
+
+    private boolean isItensPriceRight(Pagamento pagamento) {
+        if (pagamento == null || pagamento.getPedido() == null || pagamento.getValor() == null) {
+            return false;
+        }
+
+        BigDecimal valorCalculadoDoPedido = pagamento.getPedido().getValorBruto();
+
+        if (pagamento.getPedido().getValorDesconto() != null) {
+            valorCalculadoDoPedido = valorCalculadoDoPedido.subtract(pagamento.getPedido().getValorDesconto());
+        }
+
+        return pagamento.getValor().compareTo(valorCalculadoDoPedido) == 0;
+    }
+
+    private void atualizarCupom(CupomDesconto cupom, boolean havePagamentoBeenProcessed) {
+        if (havePagamentoBeenProcessed) {
+            if (cupom.getQuantidadeDisponivel() == 0)
+                cupom.setAtivo(false);
+        } else
+            cupom.setQuantidadeDisponivel(cupom.getQuantidadeDisponivel() + 1);
     }
 }

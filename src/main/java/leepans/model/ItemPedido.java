@@ -1,5 +1,7 @@
 package leepans.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -15,8 +17,8 @@ public class ItemPedido extends DefaultEntity {
     @Column(name = "quantidade", nullable = false)
     private Integer quantidade;
 
-    @Column(name = "valor_unitario", nullable = false)
-    private Double valorUnitario;
+    @Column(name = "valor_unitario", nullable = false, precision = 19, scale = 2)
+    private BigDecimal valorUnitario;
 
     public Panela getPanela() {
         return panela;
@@ -34,11 +36,11 @@ public class ItemPedido extends DefaultEntity {
         this.quantidade = quantidade;
     }
 
-    public Double getValorUnitario() {
+    public BigDecimal getValorUnitario() {
         return valorUnitario;
     }
 
-    public void setValorUnitario(Double valorUnitario) {
+    public void setValorUnitario(BigDecimal valorUnitario) {
         this.valorUnitario = valorUnitario;
     }
 }

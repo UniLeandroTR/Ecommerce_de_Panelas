@@ -1,5 +1,6 @@
 package leepans.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -17,7 +18,8 @@ public abstract class Pagamento extends DefaultEntity {
 
     @Column(name = "data_processado")
     private LocalDateTime dataProcessado;
-    private Double valor;
+    @Column(name = "valor", precision = 19, scale = 2)
+    private BigDecimal valor;
 
     @Column(name = "codigo_tipo_pagamento", nullable = false)
     private TipoPagamento tipoPagamento;
@@ -41,11 +43,11 @@ public abstract class Pagamento extends DefaultEntity {
         this.dataProcessado = dataProcessado;
     }
 
-    public Double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 

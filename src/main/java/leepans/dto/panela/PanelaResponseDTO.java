@@ -1,5 +1,6 @@
 package leepans.dto.panela;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import leepans.dto.categoria.CategoriaResponseDTO;
@@ -14,7 +15,7 @@ public record PanelaResponseDTO(
     Long id,
     String modelo,
     LocalDateTime dataCadastro,
-    Double preco,
+    BigDecimal preco,
     Double peso,
     Double capacidadeLitros,
     String descricao,

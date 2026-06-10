@@ -1,5 +1,6 @@
 package leepans.dto.pagamento;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -10,7 +11,7 @@ public record CartaoResponseDTO (
     Long pedidoId,
     LocalDateTime dataProcessado,
     LocalDateTime dataCadastro,
-    Double valor,
+    BigDecimal valor,
     Boolean isCredito,
     StatusPagamento statusPagamento,
     String numero, 

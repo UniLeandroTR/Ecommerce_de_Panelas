@@ -1,11 +1,14 @@
 package leepans.service.ecommerce;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import leepans.exception.BusinessRuleViolationException;
 import leepans.exception.ResourceNotFoundException;
 import leepans.exception.ValidationException;
 import leepans.model.Boleto;
@@ -21,6 +24,7 @@ import leepans.model.StatusPagamento;
 import leepans.model.StatusPedido;
 import leepans.model.TipoPagamento;
 import leepans.model.Usuario;
+import leepans.repository.CupomDescontoRepository;
 import leepans.repository.EnderecoRepository;
 import leepans.repository.ItemPedidoRepository;
 import leepans.repository.PedidoRepository;
@@ -34,6 +38,9 @@ public class PedidoService implements PedidoServiceInter {
 
     @Inject
     ItemPedidoRepository itemRepository;
+
+    @Inject
+    CupomDescontoRepository cupomRepository;
 
     @Inject
     UsuarioService usuarioService;
@@ -55,6 +62,9 @@ public class PedidoService implements PedidoServiceInter {
 
     @Inject
     EmailService emailService;
+
+    @Inject
+    PedidoService self;
 
     @Override
     public List<Pedido> findAll() {
@@ -99,44 +109,59 @@ public class PedidoService implements PedidoServiceInter {
     @Transactional
     public Pedido create(Pedido pedido, String login, Endereco endereco, TipoPagamento tipoPagamento) {
         // Validar itens do pedido
-        validarItens(pedido.getItens());
+        try {
+            validarItens(pedido.getItens());
 
-        // Calcular valor bruto
-        Double valorBruto = calcularValorBruto(pedido.getItens());
+            // Calcular valor bruto
+            BigDecimal valorBruto = calcularValorBruto(pedido.getItens());
 
-        // Validar e aplicar cupom desconto
-        Double valorDesconto = validarEAplicarCupomDesconto(pedido.getCupomDesconto(), valorBruto);
+            // Validar e aplicar cupom desconto
+            BigDecimal valorDesconto = validarEAplicarCupomDesconto(pedido.getCupomDesconto(), valorBruto);
 
-        // Buscar o usuário
-        Usuario usuario = usuarioService.findByLogin(login);
-        if (usuario == null) {
-            throw new ResourceNotFoundException("Usuário", login);
+            // Buscar o usuário
+            Usuario usuario = usuarioService.findByLogin(login);
+            if (usuario == null) {
+                throw new ResourceNotFoundException("Usuário", login);
+            }
+
+            // Validar e processar endereço
+            Endereco enderecoFinal = validarEProcessarEndereco(endereco, usuario);
+
+            // Criar e configurar pagamento
+            Pagamento pagamento = criarPagamento(pedido, tipoPagamento);
+            pagamento.setValor(valorBruto.subtract(valorDesconto));
+
+            // Configurar pedido
+            pedido.setUsuario(usuario);
+            pedido.setEndereco(enderecoFinal);
+            pedido.setValorBruto(valorBruto);
+            pedido.setValorDesconto(valorDesconto);
+            pedido.setPagamento(pagamento);
+            pedido.setStatus(StatusPedido.PENDENTE);
+
+            // Persistir pedido e pagamento
+            repository.persist(pedido);
+            pagamentoService.create(pagamento);
+
+            // Enviar email de confirmação para o cliente
+            emailService.sendOrderConfirmedEmail(pedido.getUsuario().getNome(), pedido.getId().toString());
+
+            return pedido;
+        } catch (Exception e) {
+            self.cancelarPedido(pedido, e);
+            throw e;
         }
+    }
 
-        // Validar e processar endereço
-        Endereco enderecoFinal = validarEProcessarEndereco(endereco, usuario);
-
-        // Criar e configurar pagamento
-        Pagamento pagamento = criarPagamento(pedido, tipoPagamento);
-        pagamento.setValor(valorBruto - valorDesconto);
-
-        // Configurar pedido
-        pedido.setUsuario(usuario);
-        pedido.setEndereco(enderecoFinal);
-        pedido.setValorBruto(valorBruto);
-        pedido.setValorDesconto(valorDesconto);
-        pedido.setPagamento(pagamento);
-        pedido.setStatus(StatusPedido.PENDENTE);
-
-        // Persistir pedido e pagamento
-        repository.persist(pedido);
-        pagamentoService.create(pagamento);
-
-        //Enviar email de confirmação para o cliente
-        emailService.sendOrderConfirmedEmail(pedido.getUsuario().getNome(), pedido.getId().toString());
-
-
-        return pedido;
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    void cancelarPedido(Pedido pedido, Exception e) {
+        if (pedido.getId() != null) {
+            pedido.setStatus(StatusPedido.CANCELADO);
+            repository.getEntityManager().merge(pedido);
+        }
+        String nome = pedido.getUsuario() != null ? pedido.getUsuario().getNome() : "Cliente";
+        String idPedido = pedido.getId() != null ? pedido.getId().toString() : "N/A";
+        emailService.sendOrderDeclinedEmail(nome, idPedido, e.getMessage());
     }
 
     @Override
@@ -179,10 +204,11 @@ public class PedidoService implements PedidoServiceInter {
         return pagamento;
     }
 
-    private double calcularValorBruto(List<ItemPedido> itens) {
-        double valorBruto = 0.0;
+    private BigDecimal calcularValorBruto(List<ItemPedido> itens) {
+        BigDecimal valorBruto = BigDecimal.ZERO;
         for (ItemPedido item : itens) {
-            valorBruto += item.getValorUnitario() * item.getQuantidade();
+            BigDecimal quantidade = BigDecimal.valueOf(item.getQuantidade());
+            valorBruto = valorBruto.add(item.getValorUnitario().multiply(quantidade));
         }
         return valorBruto;
     }
@@ -190,7 +216,7 @@ public class PedidoService implements PedidoServiceInter {
     /**
      * Valida os itens do pedido
      */
-    private void validarItens(List<ItemPedido> itens) {
+    private void validarItens(List<ItemPedido> itens) throws BusinessRuleViolationException, ValidationException {
         if (itens == null || itens.isEmpty()) {
             throw new ValidationException("O pedido deve conter pelo menos um item.", "itens");
         }
@@ -199,8 +225,11 @@ public class PedidoService implements PedidoServiceInter {
             if (item.getQuantidade() == null || item.getQuantidade() <= 0) {
                 throw new ValidationException("A quantidade de cada item deve ser maior que zero.", "quantidade");
             }
-            if (item.getValorUnitario() == null || item.getValorUnitario() < 0) {
+            if (item.getValorUnitario() == null || item.getValorUnitario().compareTo(BigDecimal.ZERO) < 0) {
                 throw new ValidationException("O valor unitário não pode ser negativo.", "valorUnitario");
+            } else if (item.getValorUnitario().compareTo(item.getPanela().getPreco()) != 0) {
+                throw new BusinessRuleViolationException("O valor unitário está diferente do valor da panela",
+                        "valorUnitario");
             }
         }
     }
@@ -208,44 +237,52 @@ public class PedidoService implements PedidoServiceInter {
     /**
      * Valida e aplica o cupom desconto ao pedido
      */
-    private Double validarEAplicarCupomDesconto(CupomDesconto cupomDesconto, Double valorBruto) {
+    @Transactional
+    public BigDecimal validarEAplicarCupomDesconto(CupomDesconto cupomDesconto, BigDecimal valorBruto) {
         if (cupomDesconto == null) {
-            return 0.0;
+            return BigDecimal.ZERO;
         }
 
-        // Validar se o cupom está ativo
         if (!cupomDesconto.isAtivo()) {
             throw new ValidationException("O cupom desconto está inativo.", "cupomDesconto");
         }
 
-        // Validar se o cupom não expirou
         if (cupomDesconto.getDataValidade() != null && cupomDesconto.getDataValidade().isBefore(LocalDateTime.now())) {
             throw new ValidationException("O cupom desconto expirou.", "cupomDesconto");
         }
 
-        // Validar se tem quantidade disponível
         if (cupomDesconto.getQuantidadeDisponivel() != null && cupomDesconto.getQuantidadeDisponivel() <= 0) {
             throw new ValidationException("O cupom desconto não possui quantidade disponível.", "cupomDesconto");
         }
 
-        // Validar valor mínimo de compra
-        if (cupomDesconto.getValorMinimoCompra() != null && cupomDesconto.getValorMinimoCompra() > valorBruto) {
+        if (cupomDesconto.getValorMinimoCompra() != null
+                && cupomDesconto.getValorMinimoCompra().compareTo(valorBruto) > 0) {
             throw new ValidationException(
                     "O valor mínimo de compra para este cupom é R$ " + cupomDesconto.getValorMinimoCompra(),
                     "cupomDesconto");
         }
 
-        // Retornar valor do desconto
-        if (cupomDesconto.getValorDesconto() != null && cupomDesconto.getValorDesconto() > 0) {
-            return cupomDesconto.getValorDesconto();
-        } else if (cupomDesconto.getPercentualDesconto() != null && cupomDesconto.getPercentualDesconto() > 0) {
-            return valorBruto * (cupomDesconto.getPercentualDesconto() / 100.0);
+        BigDecimal desconto = BigDecimal.ZERO;
+
+        if (cupomDesconto.getValorDesconto() != null
+                && cupomDesconto.getValorDesconto().compareTo(BigDecimal.ZERO) > 0) {
+            desconto = cupomDesconto.getValorDesconto();
+        } else if (cupomDesconto.getPercentualDesconto() != null
+                && cupomDesconto.getPercentualDesconto().compareTo(new BigDecimal(0)) > 0) {
+            BigDecimal percentual = cupomDesconto.getPercentualDesconto();
+            desconto = valorBruto.multiply(percentual).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
         }
 
-        // Decrementar quantidade disponível do cupom para reservar ao cliente
-        cupomDescontoService.decrementarQuantidade(cupomDesconto);
+        if (desconto.compareTo(BigDecimal.ZERO) > 0) {
+            // cupomDescontoService.decrementarQuantidade(cupomDesconto);
+            if (cupomDesconto.getQuantidadeDisponivel() > 0) {
+                cupomDesconto.setQuantidadeDisponivel(cupomDesconto.getQuantidadeDisponivel() - 1);
+                cupomRepository.getEntityManager().merge(cupomDesconto);
+            }
+            return desconto;
+        }
 
-        return 0.0;
+        return BigDecimal.ZERO;
     }
 
     /**

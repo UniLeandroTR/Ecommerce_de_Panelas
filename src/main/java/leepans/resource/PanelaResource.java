@@ -1,5 +1,6 @@
 package leepans.resource;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.annotation.security.RolesAllowed;
@@ -8,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -94,6 +96,14 @@ public class PanelaResource {
     @RolesAllowed({ "ADMIN", "FUNCIONARIO", "CLIENTE" })
     public Response findByIdEcommerce(@PathParam("id") Long id) {
         return Response.ok(mapper.toEcommerceDTO(service.findById(id))).build();
+    }
+
+    @PATCH
+    @Path("/admin/{id}")
+    @RolesAllowed({ "ADMIN", "FUNCIONARIO" })
+    public Response setPrice(@PathParam("id") Long id, BigDecimal preco){
+        service.setPrice(id, preco);
+        return Response.noContent().build();
     }
 
     @PUT

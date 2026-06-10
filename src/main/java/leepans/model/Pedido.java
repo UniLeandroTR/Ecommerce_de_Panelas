@@ -1,5 +1,6 @@
 package leepans.model;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -23,11 +24,11 @@ public class Pedido extends DefaultEntity {
     @Column(name = "codigo_status_pedido", nullable = false)
     private StatusPedido status;
 
-    @Column(name = "valor_bruto", nullable = false)
-    private Double valorBruto;
+    @Column(name = "valor_bruto", nullable = false, precision = 19, scale = 2)
+    private BigDecimal valorBruto;
 
-    @Column(name = "valor_desconto")
-    private Double valorDesconto;
+    @Column(name = "valor_desconto", precision = 19, scale = 2)
+    private BigDecimal valorDesconto;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<ItemPedido> itens;
@@ -38,6 +39,26 @@ public class Pedido extends DefaultEntity {
 
     @OneToOne(mappedBy = "pedido")
     private Pagamento pagamento;
+
+    /**
+     * Calcula o valor total dos itens usando o snapshot de preço salvo no item.
+     */
+    public BigDecimal totalItens() {
+        if (this.itens == null || this.itens.isEmpty()) {
+            return BigDecimal.ZERO;
+        }
+        return this.itens.stream()
+                .map(item -> item.getValorUnitario().multiply(BigDecimal.valueOf(item.getQuantidade())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    /**
+     * Calcula o valor final líquido que deve ser cobrado no pagamento.
+     */
+    public BigDecimal totalPedido() {
+        BigDecimal desconto = this.valorDesconto != null ? this.valorDesconto : BigDecimal.ZERO;
+        return totalItens().subtract(desconto);
+    }
 
     public Usuario getUsuario() {
         return usuario;
@@ -63,19 +84,19 @@ public class Pedido extends DefaultEntity {
         this.status = status;
     }
 
-    public Double getValorBruto() {
+    public BigDecimal getValorBruto() {
         return valorBruto;
     }
 
-    public void setValorBruto(Double valorTotal) {
+    public void setValorBruto(BigDecimal valorTotal) {
         this.valorBruto = valorTotal;
     }
 
-    public Double getValorDesconto() {
+    public BigDecimal getValorDesconto() {
         return valorDesconto;
     }
 
-    public void setValorDesconto(Double valorDesconto) {
+    public void setValorDesconto(BigDecimal valorDesconto) {
         this.valorDesconto = valorDesconto;
     }
 

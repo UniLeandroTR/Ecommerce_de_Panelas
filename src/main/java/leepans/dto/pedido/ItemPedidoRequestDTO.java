@@ -1,5 +1,8 @@
 package leepans.dto.pedido;
 
+import java.math.BigDecimal;
+
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,7 +15,7 @@ public record ItemPedidoRequestDTO(
         Integer quantidade,
 
         @NotNull(message = "O valor unitário é obrigatório")
-        @Min(value = 0, message = "O valor unitário não pode ser negativo")
-        Double valorUnitario
+        @DecimalMin(value = "0.0", inclusive = true, message = "O valor unitário não pode ser negativo")
+        BigDecimal valorUnitario
 ) {
 }

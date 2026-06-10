@@ -8,6 +8,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -227,6 +228,18 @@ class PanelaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "admin", roles ="ADMIN")
+    void atualizarPreco_deveRetornar204() {
+        doNothing().when(service).setPrice(1L, new BigDecimal(300));
+
+        given()
+        .when()
+        .patch(ADMIN + "/1")
+        .then()
+        .statusCode(204);
+    }
+
+    @Test
     @TestSecurity(user = "admin", roles = "ADMIN")
     void remover_deveRetornar204() {
         doNothing().when(service).delete(1L);
@@ -244,7 +257,7 @@ class PanelaResourceTest {
         Panela p = new Panela();
         p.setId(id);
         p.setModelo("Panela A");
-        p.setPreco(100.0);
+        p.setPreco(new BigDecimal(100));
         p.setCapacidadeLitros(2.0);
         p.setIsInducao(true);
         p.setTamanho(Tamanho.PEQUENA);

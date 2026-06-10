@@ -1,6 +1,8 @@
 package leepans.dto.panela;
 
-import jakarta.validation.constraints.Min;
+import java.math.BigDecimal;
+
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -12,8 +14,9 @@ public record PanelaRequestDTO(
     @Size(min = 3, max = 100, message = "O nome deve ter entre 3 a 100 caracteres")
     String modelo,
 
-    @Min(value = 0, message = "O preço não pode ser negativo ou menor que zero")
-    Double preco,
+    @NotNull(message = "O preço é obrigatório")
+    @DecimalMin(value = "0.0", inclusive = true, message = "O preço não pode ser negativo")
+    BigDecimal preco,
 
     Double peso,
 

@@ -1,5 +1,6 @@
 package leepans.dto.pedido;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -14,8 +15,8 @@ public record PedidoResponseDTO(
         UsuarioResponseDTO usuario,
         EnderecoResponseDTO endereco,
         StatusPedido status,
-        Double valorBruto,
-        Double valorDesconto,
+        BigDecimal valorBruto,
+        BigDecimal valorDesconto,
         CupomDescontoResponseDTO cupomDesconto,
         PagamentoResponseDTO pagamento,
         List<ItemPedidoResponseDTO> itens,

@@ -1,5 +1,7 @@
 package leepans.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -10,7 +12,8 @@ import jakarta.persistence.OneToOne;
 public class Panela extends DefaultEntity {
 
     private String modelo;
-    private Double preco;
+    @Column(name = "preco", nullable = false, precision = 19, scale = 2)
+    private BigDecimal preco;
     private Double peso;
     private Double capacidadeLitros;
     private String descricaco;
@@ -59,11 +62,11 @@ public class Panela extends DefaultEntity {
         this.modelo = modelo;
     }
 
-    public Double getPreco() {
+    public BigDecimal getPreco() {
         return preco;
     }
 
-    public void setPreco(Double preco) {
+    public void setPreco(BigDecimal preco) {
         this.preco = preco;
     }
 

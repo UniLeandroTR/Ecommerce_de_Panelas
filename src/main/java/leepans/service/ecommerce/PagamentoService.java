@@ -78,8 +78,8 @@ public class PagamentoService implements PagamentoServiceInter {
             throw new ValidationException("Pagamento inválido ou não persistido.", "pagamento");
         }
 
-        if (pagamento.getStatusPagamento() == StatusPagamento.RECUSADO) {
-            throw new ValidationException("Pagamento já foi recusado", "statusPagamento");
+        if (pagamento.getStatusPagamento() == StatusPagamento.RECUSADO && pagamento.getTentativasProcessamento() >= 3) {
+            throw new ValidationException("Pagamento já foi recusado 3 vezes. O pedido foi cancelado. Crie um novo pedido.", "statusPagamento");
         }
 
         // Buscar o pagamento atualizado no banco
@@ -115,9 +115,14 @@ public class PagamentoService implements PagamentoServiceInter {
                     pagamentoAtual.getId().toString());
         } catch (Exception e) {
             pagamentoAtual.setStatusPagamento(StatusPagamento.RECUSADO);
-            pagamentoAtual.getPedido().setStatus(StatusPedido.CANCELADO);
-            if (pagamentoAtual.getPedido().getCupomDesconto() != null)
-                atualizarCupom(pagamentoAtual.getPedido().getCupomDesconto(), false);
+            pagamentoAtual.setTentativasProcessamento(pagamentoAtual.getTentativasProcessamento() + 1);
+
+            if (pagamentoAtual.getTentativasProcessamento() >= 3) {
+                pagamentoAtual.getPedido().setStatus(StatusPedido.CANCELADO);
+                if (pagamentoAtual.getPedido().getCupomDesconto() != null)
+                    atualizarCupom(pagamentoAtual.getPedido().getCupomDesconto(), false);
+            }
+
             emailService.sendPaymentRefusedEmail(pagamentoAtual.getPedido().getUsuario().getNome(),
                     pagamentoAtual.getId().toString(), e.getMessage());
         }

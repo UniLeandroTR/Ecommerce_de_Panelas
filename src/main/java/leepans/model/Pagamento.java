@@ -27,6 +27,9 @@ public abstract class Pagamento extends DefaultEntity {
     @Column(name = "codigo_status_pagamento", nullable = false)
     private StatusPagamento statusPagamento;
 
+    @Column(name = "tentativas_processamento", nullable = false)
+    private Integer tentativasProcessamento = 0;
+
     public Pedido getPedido() {
         return pedido;
     }
@@ -65,5 +68,13 @@ public abstract class Pagamento extends DefaultEntity {
 
     public void setStatusPagamento(StatusPagamento statusPagamento) {
         this.statusPagamento = statusPagamento;
+    }
+
+    public Integer getTentativasProcessamento() {
+        return tentativasProcessamento;
+    }
+
+    public void setTentativasProcessamento(Integer tentativasProcessamento) {
+        this.tentativasProcessamento = tentativasProcessamento;
     }
 }

@@ -108,6 +108,7 @@ public class ListaDesejoService implements ListaDesejoServiceInter {
                 }
             }
         }
+        listaDesejo.setUsuario(usuarioRepository.findById(dto.idUsuario()));
 
         repository.persist(listaDesejo);
     }

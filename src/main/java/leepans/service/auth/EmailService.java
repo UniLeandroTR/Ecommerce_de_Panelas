@@ -46,7 +46,7 @@ public class EmailService {
 
     public String sendOrderDeclinedEmail(String nomeCliente, String numeroPedido, String reason) {
         String destinatario = "leandrotavares@unitins.br";
-        String assunto = "Confirmação de Pedido - LeePans";
+        String assunto = "Pedido Recusado - LeePans";
         String htmlContent = emailTemplateService.renderOrderDeclinedTemplate(nomeCliente, numeroPedido, reason);
 
         try {

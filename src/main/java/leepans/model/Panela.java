@@ -2,6 +2,7 @@ package leepans.model;
 
 import java.math.BigDecimal;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -16,7 +17,7 @@ public class Panela extends DefaultEntity {
     private BigDecimal preco;
     private Double peso;
     private Double capacidadeLitros;
-    private String descricaco;
+    private String descricao;
     private Boolean isInducao;
 
     @ManyToOne
@@ -31,11 +32,11 @@ public class Panela extends DefaultEntity {
     @JoinColumn(name = "id_colecao")
     private Colecao colecao;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_fundo")
     private Fundo fundo;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_sustentacao")
     private Sustentacao sustentacao;
 
@@ -86,12 +87,12 @@ public class Panela extends DefaultEntity {
         this.capacidadeLitros = capacidadeLitros;
     }
 
-    public String getDescricaco() {
-        return descricaco;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDescricaco(String descricaco) {
-        this.descricaco = descricaco;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public Boolean getIsInducao() {

@@ -1,18 +1,18 @@
 @startuml ecommerce
 class DefaultEntity{
 - id : Long
-- dataCriacao : LocalDateTime
+- dataCadastro : LocalDateTime
 - version : Integer
 
 }
 
 class Panela{
 - modelo : String
-- preco : double
-- peso : double
-- capacidadeLitros : double
+- preco : BigDecimal
+- peso : Double
+- capacidadeLitros : Double
 - descricao : String
-- isInducao : boolean
+- isInducao : Boolean
 }
 
 class Colecao{
@@ -28,7 +28,8 @@ class Cor{
 }
 
 abstract Componente{
-- peso : double
+- peso : Double
+- materiais : List<Material>
 }
 
 enum Tamanho{
@@ -54,29 +55,30 @@ class Material{
 }
 
 class Tampa{
-- isDePressao : boolean
+- isDePressao : Boolean
 }
 
 class Fundo{
-- espessura : double
-- isAntiaderente : boolean
+- espessura : Double
+- isAntiaderente : Boolean
 }
 
 class Sustentacao{
-- tamanhoEmCm : int
-- quantidade : int
+- tamanhoEmCm : Integer
+- quantidade : Integer
+- tipoSustentacao : TipoSustentacao
 }
 
 class Usuario{
 - nome : String
 - sobrenome : String
 - login : String
-- senha : String
+- senhaHash : String
 }
 
 enum Perfil{
 + ADMIN
-+ FUCIONARIO
++ FUNCIONARIO
 + CLIENTE
 }
 
@@ -88,17 +90,18 @@ class Endereco{
 - cep : String
 }
 
-class ListaDeDesejo{
+class ListaDesejo{
 }
 
 class Pedido{
-- valorBruto : double
-- valorDesconto : double
+- valorBruto : BigDecimal
+- valorDesconto : BigDecimal
+- endereco : Endereco
 }
 
 class ItemPedido{
 - quantidade : Integer
-- valorUnitario : double
+- valorUnitario : BigDecimal
 }
 
 enum StatusPedido{
@@ -109,28 +112,33 @@ enum StatusPedido{
 
 class CupomDesconto {
 - codigo : String
-- percentualDesconto : double
-- valorDesconto : double
+- percentualDesconto : BigDecimal
+- valorDesconto : BigDecimal
+- valorMinimoCompra : BigDecimal
 - dataValidade : LocalDateTime
-- quantidadeDisponivel : int
-- isAtivo : boolean
+- quantidadeDisponivel : Integer
+- ativo : boolean
 }
 
 abstract Pagamento{
 - dataProcessado : LocalDateTime
+- valor : BigDecimal
+- tipoPagamento : TipoPagamento
+- statusPagamento : StatusPagamento
+- tentativasProcessamento : Integer
 }
 
 class CartaoCredito{
 - numero : String
-- nomeTitular : String
-- dataValidade : String
+- titular : String
+- validade : LocalDate
 - codigoSeguranca : String
 }
 
 class CartaoDebito{
 - numero : String
-- nomeTitular : String
-- dataValidade : String
+- titular : String
+- validade : LocalDate
 - codigoSeguranca : String
 }
 
@@ -157,15 +165,18 @@ enum StatusPagamento{
 
 
 Panela "*" o--> "1" Colecao
+Colecao "1" --> "*" Panela
 Panela "1" *--> "1" Fundo
 Panela "1" *--> "1" Sustentacao
 Panela "1" *--> "0..1" Tampa
 Panela "*" o--> "1" Fornecedor
-Panela "*" *--> "1" Tamanho
+Fornecedor "1" --> "*" Panela
+Panela "*" --> "1" Tamanho
 Panela "*" o--> "1" Categoria
+Categoria "1" --> "*" Panela
 Panela "*" o--> "1" Cor
 Panela "*" o--> "1" Material
-Panela <-up- ItemPedido
+ItemPedido "*" --> "1" Panela
 
 Componente <|-up- Tampa
 Componente <|-up- Fundo
@@ -177,15 +188,15 @@ Sustentacao "*" -down-> "1" TipoSustentacao
 Usuario "*" --> "1" Perfil
 Usuario "*" --> "1" Endereco
 
-ListaDeDesejo "1" --> "1" Usuario
-ListaDeDesejo "*" --> "*" Panela
+ListaDesejo "1" --> "1" Usuario
+ListaDesejo "*" --> "*" Panela
 
 Pedido "*" --> "1" Usuario
 Pedido "1" --> "*" ItemPedido
 Pedido "*" --> "1" StatusPedido
 Pedido "1" --> "1" Pagamento
 Pedido "*" --> "0..1" CupomDesconto
-Pedido -- TipoPagamento
+Pagamento "*" --> "1" TipoPagamento
 
 Pagamento "*" --> "1" StatusPagamento
 Pagamento <|-- CartaoCredito

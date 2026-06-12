@@ -78,7 +78,7 @@ class PanelaResourceTest {
                     panela.getPreco(),
                     panela.getPeso(),
                     panela.getCapacidadeLitros(),
-                    panela.getDescricaco(),
+                    panela.getDescricao(),
                     panela.getIsInducao(),
                     panela.getTamanho(),
                     CategoriaMapper.toResponse(panela.getCategoria()),

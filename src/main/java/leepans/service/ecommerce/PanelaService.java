@@ -106,7 +106,7 @@ public class PanelaService implements PanelaServiceInter {
         panela.setPreco(dto.preco());
         panela.setPeso(dto.peso());
         panela.setCapacidadeLitros(dto.capacidadeLitros());
-        panela.setDescricaco(dto.descricao());
+        panela.setDescricao(dto.descricao());
         panela.setIsInducao(dto.isInducao());
         panela.setTamanho(dto.tamanho());
         panela.setColecao(colecaoRepository.findById(dto.idColecao()));

@@ -74,7 +74,7 @@ insert into componente_material (componente_id, material_id) values (8, 3);
 insert into componente_material (componente_id, material_id) values (9, 1);
 
 -- Panelas
-insert into Panela (modelo, preco, peso, capacidadelitros, descricaco, isinducao, id_cor, id_material_principal, id_colecao, id_fundo, id_sustentacao, id_tampa, id_fornecedor, codigo_tamanho, id_categoria, data_cadastro, version) values
+insert into Panela (modelo, preco, peso, capacidadelitros, descricao, isinducao, id_cor, id_material_principal, id_colecao, id_fundo, id_sustentacao, id_tampa, id_fornecedor, codigo_tamanho, id_categoria, data_cadastro, version) values
   ('Classic 24', 24990, 1.8, 3.5, 'Panela clássica com fundo triplo.', true, 3, 2, 1, 1, 4, 7, 1, 1, 1, CURRENT_DATE, 0),
   ('PressurePro', 49990, 2.4, 5.0, 'Panela de pressão com tampa de segurança.', false, 1, 1, 2, 2, 5, 8, 2, 2, 2, CURRENT_DATE, 0),
   ('CookPlus', 32990, 2.0, 4.2, 'Panela multiuso com acabamento inox.', true, 2, 2, 3, 3, 6, 9, 3, 3, 3, CURRENT_DATE, 0);

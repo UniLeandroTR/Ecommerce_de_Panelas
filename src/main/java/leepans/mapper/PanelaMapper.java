@@ -55,7 +55,7 @@ public class PanelaMapper {
         panela.setPreco(dto.preco());
         panela.setPeso(dto.peso());
         panela.setCapacidadeLitros(dto.capacidadeLitros());
-        panela.setDescricaco(dto.descricao());
+        panela.setDescricao(dto.descricao());
         panela.setIsInducao(dto.isInducao());
         panela.setTamanho(dto.tamanho());
         panela.setColecao(colecaoRepository.findById(dto.idColecao()));
@@ -81,7 +81,7 @@ public class PanelaMapper {
                 panela.getPreco(),
                 panela.getPeso(),
                 panela.getCapacidadeLitros(),
-                panela.getDescricaco(),
+                panela.getDescricao(),
                 panela.getIsInducao(),
                 panela.getTamanho(),
                 CategoriaMapper.toResponse(panela.getCategoria()),

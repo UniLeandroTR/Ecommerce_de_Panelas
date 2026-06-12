@@ -32,11 +32,11 @@ public class Panela extends DefaultEntity {
     @JoinColumn(name = "id_colecao")
     private Colecao colecao;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "id_fundo")
     private Fundo fundo;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "id_sustentacao")
     private Sustentacao sustentacao;
 
